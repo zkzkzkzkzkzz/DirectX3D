@@ -151,7 +151,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
 	pObj->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
 
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CubeMesh"));
+	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std3DMtrl"));
 	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Fighter.bmp", L"texture\\Fighter.bmp"));
 
