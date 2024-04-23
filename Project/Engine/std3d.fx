@@ -49,7 +49,7 @@ VTX_OUT VS_Std3D(VTX_IN _in)
 float4 PS_Std3D(VTX_OUT _in) : SV_Target
 {
     float4 vOutColor = float4(0.f, 0.f, 0.f, 1.f);
-        
+         
     // 물체 색상
     float4 ObjectColor = float4(1.f, 0.f, 1.f, 1.f);
     
