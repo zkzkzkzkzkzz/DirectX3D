@@ -94,7 +94,7 @@ CGameObject* CLevel::FindObjectByName(const wstring& _strName)
 			list<CGameObject*> queue;
 			queue.push_back(vecParent[j]);
 
-			// ·¹ÀÌ¾î¿¡ ÀÔ·ÂµÇ´Â ¿ÀºêÁ§Æ® Æ÷ÇÔ, ±× ¹Ø¿¡ ´Ş¸° ÀÚ½Äµé±îÁö ¸ğµÎ È®ÀÎ
+			// ë ˆì´ì–´ì— ì…ë ¥ë˜ëŠ” ì˜¤ë¸Œì íŠ¸ í¬í•¨, ê·¸ ë°‘ì— ë‹¬ë¦° ìì‹ë“¤ê¹Œì§€ ëª¨ë‘ í™•ì¸
 			while (!queue.empty())
 			{
 				CGameObject* pObject = queue.front();
@@ -128,7 +128,7 @@ void CLevel::FindObjectsByName(const wstring& _strName, vector<CGameObject*>& _v
 			list<CGameObject*> queue;
 			queue.push_back(vecParent[j]);
 
-			// ·¹ÀÌ¾î¿¡ ÀÔ·ÂµÇ´Â ¿ÀºêÁ§Æ® Æ÷ÇÔ, ±× ¹Ø¿¡ ´Ş¸° ÀÚ½Äµé±îÁö ¸ğµÎ È®ÀÎ
+			// ë ˆì´ì–´ì— ì…ë ¥ë˜ëŠ” ì˜¤ë¸Œì íŠ¸ í¬í•¨, ê·¸ ë°‘ì— ë‹¬ë¦° ìì‹ë“¤ê¹Œì§€ ëª¨ë‘ í™•ì¸
 			while (!queue.empty())
 			{
 				CGameObject* pObject = queue.front();
@@ -162,35 +162,40 @@ void CLevel::ChangeState(LEVEL_STATE _NextState)
 	if (m_State == _NextState)
 		return;
 
-	// Á¤Áö -> ÇÃ·¹ÀÌ
+	// ì •ì§€ -> í”Œë ˆì´
 	if ((LEVEL_STATE::STOP == m_State || LEVEL_STATE::PAUSE == m_State || LEVEL_STATE::NONE == m_State)
 		&& LEVEL_STATE::PLAY == _NextState)
 	{
 		CTimeMgr::GetInst()->LockDeltaTime(false);
 
-		// ·¹º§ Ä«¸Ş¶ó ¸ğµå
+		// ë ˆë²¨ ì¹´ë©”ë¼ ëª¨ë“œ
 		CRenderMgr::GetInst()->ActiveEditorMode(false);
 
 		// None, Stop -> Play
 		if (LEVEL_STATE::STOP == m_State || LEVEL_STATE::NONE == m_State)
 		{
-			// ·¹º§ ½ºÅ×ÀÌÆ® º¯°æ
+			// ë ˆë²¨ ìŠ¤í…Œì´íŠ¸ ë³€ê²½
 			m_State = _NextState;
 
 			begin();
 		}
+		// Pause -> Play
+		else if (LEVEL_STATE::PAUSE == m_State)
+		{
+			m_State = _NextState;
+		}
 	}
 
-	// ÇÃ·¹ÀÌ -> Á¤Áö or ÀÏ½ÃÁ¤Áö
+	// í”Œë ˆì´ -> ì •ì§€ or ì¼ì‹œì •ì§€
 	else if ( (LEVEL_STATE::PLAY == m_State || LEVEL_STATE::NONE == m_State) &&
 		(LEVEL_STATE::STOP == _NextState || LEVEL_STATE::PAUSE == _NextState || LEVEL_STATE::NONE == _NextState))
 	{
-		// ·¹º§ ½ºÅ×ÀÌÆ® º¯°æ
+		// ë ˆë²¨ ìŠ¤í…Œì´íŠ¸ ë³€ê²½
 		m_State = _NextState;
 
 		CTimeMgr::GetInst()->LockDeltaTime(true);
 
-		// ¿¡µğÅÍ Ä«¸Ş¶ó ¸ğµå
+		// ì—ë””í„° ì¹´ë©”ë¼ ëª¨ë“œ
 		CRenderMgr::GetInst()->ActiveEditorMode(true);
 	}
 }
