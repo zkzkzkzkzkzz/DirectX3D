@@ -165,7 +165,6 @@ void GetAllContents()
 
 	FindAllFiles(path);
 
-	int a = 0;
 }
 
 void FindAllFiles(const wstring& path)
@@ -220,13 +219,65 @@ void SortExtention(const string& path, const string& extention)
 	return;
 }
 
-void MakeStrHeaderFX()
+void MakeStrHeader(const string& path, const string& symbol, const vector<string>& vec)
 {
 	wstring solPath = CPathMgr::GetSolutionPath();
-	wstring Path = solPath + L"Scripts\\strFx.h";
-	wfstream fout;
+	string Path = string(solPath.begin(), solPath.end()) + path;
+
+	fstream fout;
 	fout.open(Path, ofstream::out | ofstream::trunc);
 	if (!fout.is_open()) return;
 
+	fout << "#pragma once" << endl << endl;
+	for (int i = 0; i < vec.size(); i++) {
+		std::string path = vec[i];
+		std::string filename = path.substr(path.find_last_of('\\') + 1);
+		std::string basename = filename.substr(0, filename.find_last_of('.'));
 
+		fout << "#define ";
+		fout << symbol;
+		fout << basename;
+		fout << " L\"";
+		for (int j = 0; j < vec[i].size(); j++) {
+			if (vec[i][j] == '\\') {
+				fout << "\\\\";
+			}
+			else {
+				fout << vec[i][j];
+			}
+		}
+		fout << "\"";
+		fout << endl;
+	}
+}
+
+void MakeStrHeaderFX()
+{
+	wstring solPath = CPathMgr::GetSolutionPath();
+	string Path = string(solPath.begin(), solPath.end()) + "Scripts\\strFx.h";
+	fstream fout;
+	fout.open(Path, ofstream::out | ofstream::trunc);
+	if (!fout.is_open()) return;
+
+	fout << "#pragma once" << endl << endl;
+	for (int i = 0; i < g_vecFxNames.size(); i++) {
+		std::string path = g_vecFxNames[i];
+		std::string filename = path.substr(path.find_last_of('\\') + 1);
+		std::string basename = filename.substr(0, filename.find_last_of('.'));
+
+		fout << "#define FX";
+		fout << basename;
+		fout << " L\"";
+		for (int j = 0; j < g_vecFxNames[i].size(); j++) {
+			if (g_vecFxNames[i][j] == '\\') {
+				fout << "\\\\";
+			}
+			else {
+				fout << g_vecFxNames[i][j];
+			}
+		}
+		//fout << g_vecFxNames[i];
+		fout << "\"";
+		fout << endl;
+	}
 }

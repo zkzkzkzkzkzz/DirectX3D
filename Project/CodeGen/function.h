@@ -23,4 +23,6 @@ void FindAllFiles(const wstring& path);
 
 void SortExtention(const string& path, const string& extention);
 
+void MakeStrHeader(const string& path, const string& symbol, const vector<string>& vec);
+
 void MakeStrHeaderFX();
