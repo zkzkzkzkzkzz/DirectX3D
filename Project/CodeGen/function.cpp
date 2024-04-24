@@ -147,3 +147,12 @@ void MakeScriptMgrCPP()
 	}
 	fout << L"\t}" << endl << "\treturn nullptr;" << endl << "}";
 }
+
+void MakeStrHeaderFX()
+{
+	wstring solPath = CPathMgr::GetSolutionPath();
+	wstring Path = solPath + L"Scripts\\CScriptMgr.cpp";
+	wfstream fout;
+	fout.open(Path, ofstream::out | ofstream::trunc);
+	if (!fout.is_open()) return;
+}
