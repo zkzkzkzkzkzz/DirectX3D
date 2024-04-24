@@ -22,11 +22,11 @@ Outliner::Outliner()
 
 	AddChildUI(m_Tree);
 
-	// Æ®¸®¿¡ Å¬¸¯ ÀÌº¥Æ® µî·Ï
+	// íŠ¸ë¦¬ì— í´ë¦­ ì´ë²¤íŠ¸ ë“±ë¡
 	m_Tree->AddSelectDelegate(this, (Delegate_1)&Outliner::SelectObject);
 	m_Tree->AddDragDropDelegate(this, (Delegate_2)&Outliner::DragDropObject);
 
-	// Æ®¸® ³»¿ëÀ» ÇöÀç ·¹º§ÀÇ ¹°Ã¼µé·Î ±¸¼º
+	// íŠ¸ë¦¬ ë‚´ìš©ì„ í˜„ì¬ ë ˆë²¨ì˜ ë¬¼ì²´ë“¤ë¡œ êµ¬ì„±
 	ResetCurrentLevel();
 }
 
@@ -54,15 +54,15 @@ void Outliner::render_update()
 
 void Outliner::ResetCurrentLevel()
 {
-	// Æ®¸® ³»¿ëÀ» »èÁ¦
+	// íŠ¸ë¦¬ ë‚´ìš©ì„ ì‚­ì œ
 	m_Tree->ClearNode();
 
-	// ÇöÀç ·¹º§À» °¡Á®¿Â´Ù.
+	// í˜„ì¬ ë ˆë²¨ì„ ê°€ì ¸ì˜¨ë‹¤.
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 	if (nullptr == pCurLevel)
 		return;
 
-	// Æ®¸®¿¡ ·çÆ® Ãß°¡
+	// íŠ¸ë¦¬ì— ë£¨íŠ¸ ì¶”ê°€
 	TreeNode* pRootNode = m_Tree->AddTreeNode(nullptr, "DummyRoot", 0);
 
 	for (UINT i = 0; i < LAYER_MAX; ++i)
@@ -103,6 +103,9 @@ void Outliner::SelectObject(DWORD_PTR _Node)
 
 void Outliner::DragDropObject(DWORD_PTR _Dest, DWORD_PTR _Source)
 {
+	if (0 == _Source)
+		return;
+
 	TreeNode* pDestNode = (TreeNode*)_Dest;
 	TreeNode* pSourceNode = (TreeNode*)_Source;
 
@@ -112,7 +115,7 @@ void Outliner::DragDropObject(DWORD_PTR _Dest, DWORD_PTR _Source)
 
 	CGameObject* pSourceObj = (CGameObject*)pSourceNode->GetData();
 
-	// ºÎ¸ğ ¿ÀºêÁ§Æ®°¡ ÀÚ½ÅÀÇ ÀÚ½Ä¿ÀºêÁ§Æ®ÀÇ ÀÚ½ÄÀ¸·Î µé¾î°¡·Á´Â °æ¿ì´Â ¹æÁö
+	// ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸ê°€ ìì‹ ì˜ ìì‹ì˜¤ë¸Œì íŠ¸ì˜ ìì‹ìœ¼ë¡œ ë“¤ì–´ê°€ë ¤ëŠ” ê²½ìš°ëŠ” ë°©ì§€
 	if (pDestObj != nullptr && pDestObj->IsAncestor(pSourceObj))
 		return;
 
@@ -120,7 +123,7 @@ void Outliner::DragDropObject(DWORD_PTR _Dest, DWORD_PTR _Source)
 	{
 		int LayerIdx = pSourceObj->DisconnectWithParent();
 
-		// ¿ø·¡ ºÎ¸ğ°¡ ¾ø¾ú´Ù
+		// ì›ë˜ ë¶€ëª¨ê°€ ì—†ì—ˆë‹¤
 		if (LayerIdx == -1)
 			return;
 
