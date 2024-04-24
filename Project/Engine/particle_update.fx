@@ -107,6 +107,12 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
                         float3 vDir = -normalize(Particle.vLocalPos.xyz);
                         Particle.vVelocity.xyz = vDir * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
                     }
+                    if (2 == Module.AddVelocityType)
+                    {
+                        float3 vDir = normalize(Module.FixedDirection);
+                        Particle.vVelocity.xyz = vDir * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
+                    }
+
                 }
                 else
                 {
