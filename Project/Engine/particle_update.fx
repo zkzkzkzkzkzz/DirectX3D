@@ -88,7 +88,7 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
                                 
                 // 스폰 Life 설정
                 Particle.Age = 0.f;
-                Particle.Life = (Module.MaxLife - Module.MinLife) * vRand[0] + Module.MaxLife;
+                Particle.Life = (Module.MaxLife - Module.MinLife) * vRand[0] + Module.MinLife;
                       
                 // 스폰 Mass 설정
                 Particle.Mass = clamp(vRand1[0], Module.MinMass, Module.MaxMass);
