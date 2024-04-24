@@ -72,8 +72,18 @@ void CRenderMgr::render_debug()
 	if (m_vecCam.empty())
 		return;
 
-	g_Transform.matView = m_vecCam[0]->GetViewMat();
-	g_Transform.matProj = m_vecCam[0]->GetProjMat();
+	//레벨이 플레이상태일경우(랜더Func가 render_play 일 경우)
+	if (&CRenderMgr::render_play == m_RenderFunc)
+	{
+		g_Transform.matView = m_vecCam[0]->GetViewMat();
+		g_Transform.matProj = m_vecCam[0]->GetProjMat();
+	}
+	//레벨이 플레이상태가 아닐경우
+	else
+	{
+		g_Transform.matView = m_EditorCam->GetViewMat();
+		g_Transform.matProj = m_EditorCam->GetProjMat();
+	}
 
 	list<tDebugShapeInfo>::iterator iter = m_DbgShapeInfo.begin();
 	for (; iter != m_DbgShapeInfo.end(); )
