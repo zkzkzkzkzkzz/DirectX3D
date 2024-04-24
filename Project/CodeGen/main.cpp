@@ -13,5 +13,7 @@ int main()
 	MakeScriptMgrHeader();
 	MakeScriptMgrCPP();
 
+	GetAllContents();
+
 	return 0;
 }

@@ -2,8 +2,18 @@
 #include "function.h"
 
 #include "PathMgr.h"
+#include <filesystem>
 
 vector<wstring> g_vecScriptNames;
+vector<string> g_vecFileNames;
+
+vector<string> g_vecLevelNames;
+vector<string> g_vecFxNames;
+vector<string> g_vecSndNames;
+vector<string> g_vecTexNames;
+vector<string> g_vecMtrlNames;
+vector<string> g_vecPrefNames;
+vector<string> g_vecAnimNames;
 
 void ScriptNameInput()
 {
@@ -148,11 +158,75 @@ void MakeScriptMgrCPP()
 	fout << L"\t}" << endl << "\treturn nullptr;" << endl << "}";
 }
 
+void GetAllContents()
+{
+	wstring solPath = CPathMgr::GetSolutionPath();
+	wstring path = solPath + L"..\\OutputFile\\content";
+
+	FindAllFiles(path);
+
+	int a = 0;
+}
+
+void FindAllFiles(const wstring& path)
+{
+	namespace fs = filesystem;
+	wstring solPath = CPathMgr::GetSolutionPath();
+	wstring subpath = solPath + L"..\\OutputFile\\content";
+	for (const auto& entry : fs::directory_iterator(path)) {
+		if (entry.is_directory()) {
+			int a = 0;
+			
+			FindAllFiles(entry.path().wstring());
+		}
+		else {
+			string str = entry.path().string();
+			str = str.substr(str.find("content") +8);
+			g_vecFileNames.push_back(str);
+
+			SortExtention(str, entry.path().extension().string());
+
+		}
+	}
+}
+
+void SortExtention(const string& path, const string& extention)
+{
+	if (extention == ".lv") {
+		g_vecLevelNames.push_back(path);
+	}
+	else if (extention == ".fx") {
+		g_vecFxNames.push_back(path);
+	}
+	else if (extention == ".wav" || extention == ".ogg") {
+		g_vecSndNames.push_back(path);
+	}
+	else if (extention == ".png" || extention == ".bmp" || extention == ".jpg") {
+		g_vecTexNames.push_back(path);
+	}
+	else if (extention == ".mtrl") {
+		g_vecMtrlNames.push_back(path);
+	}
+	else if (extention == ".pref") {
+		g_vecPrefNames.push_back(path);
+	}
+	else if (extention == ".anim") {
+		g_vecAnimNames.push_back(path);
+	}
+	else {
+		MessageBox(nullptr, wstring(extention.begin(), extention.end()).c_str(), L"없는 자료형", 0);
+	}
+
+	return;
+}
+
 void MakeStrHeaderFX()
 {
 	wstring solPath = CPathMgr::GetSolutionPath();
-	wstring Path = solPath + L"Scripts\\CScriptMgr.cpp";
+	wstring Path = solPath + L"Scripts\\strFx.h";
 	wfstream fout;
 	fout.open(Path, ofstream::out | ofstream::trunc);
 	if (!fout.is_open()) return;
+
+
 }
