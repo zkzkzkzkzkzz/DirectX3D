@@ -34,22 +34,6 @@ void CCameraMoveScript::tick()
 	{
 		MovePerspective();
 	}
-
-	if (KEY_PRESSED(KEY::NUM1))
-	{
-		if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)		
-			Camera()->SetScale(Camera()->GetScale() + DT_ENGINE * 0.2f);
-		else
-			Camera()->SetFOV(Camera()->GetFOV() + DT_ENGINE * 2.f);
-	}
-
-	if (KEY_PRESSED(KEY::NUM2))
-	{
-		if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
-			Camera()->SetScale(Camera()->GetScale() - DT_ENGINE * 0.2f);
-		else
-			Camera()->SetFOV(Camera()->GetFOV() - DT_ENGINE * 2.f);
-	}
 }
 
 void CCameraMoveScript::MoveOrthographic()

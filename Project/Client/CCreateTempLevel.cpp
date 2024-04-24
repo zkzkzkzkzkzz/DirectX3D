@@ -32,7 +32,7 @@
 
 void CCreateTempLevel::Init()
 {
-	// Missile Prefab »ı¼º
+	// Missile Prefab ìƒì„±
 	/*CGameObject* pObj = nullptr;
 
 	pObj = new CGameObject;
@@ -53,7 +53,7 @@ void CCreateTempLevel::Init()
 	//pMissilePrefab->Save(L"prefab\\missile.pref");
 	*/
 
-	// ÀÓ½Ã FSM °´Ã¼ ¿¡¼Â ÇÏ³ª »ı¼ºÇÏ±â
+	// ì„ì‹œ FSM ê°ì²´ ì—ì…‹ í•˜ë‚˜ ìƒì„±í•˜ê¸°
 	Ptr<CFSM>	pFSM = new CFSM(true);
 
 	pFSM->AddState(L"IdleState", new CIdleState);
@@ -86,8 +86,8 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->GetLayer(6)->SetName(L"Tile");
 	pTempLevel->GetLayer(31)->SetName(L"UI");
 
-	// ComputeShader Å×½ºÆ®
-	// »ç¿ëÇÒ ÅØ½ºÃÄ »ı¼º
+	// ComputeShader í…ŒìŠ¤íŠ¸
+	// ì‚¬ìš©í•  í…ìŠ¤ì³ ìƒì„±
 	Ptr<CTexture> pTestTex = CAssetMgr::GetInst()->CreateTexture(L"TestTex"
 		, 1024, 1024, DXGI_FORMAT_R8G8B8A8_UNORM
 		, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS);
@@ -100,7 +100,7 @@ void CCreateTempLevel::CreateTempLevel()
 	tPixel* pPixel = pTestTex->GetPixels();
 	tPixel pixel = pPixel[pTestTex->GetWidth() * 1 + 5];
 
-	// Main Camera Object »ı¼º
+	// Main Camera Object ìƒì„±
 	CGameObject* pCamObj = new CGameObject;
 	pCamObj->SetName(L"MainCamera");
 	pCamObj->AddComponent(new CTransform);
@@ -116,7 +116,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pCamObj, 0);
 
-	// UI Ä«¸Ş¶ó »ı¼º
+	// UI ì¹´ë©”ë¼ ìƒì„±
 	pCamObj = new CGameObject;
 	pCamObj->SetName(L"UICamera");
 	pCamObj->AddComponent(new CTransform);
@@ -133,7 +133,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 	CGameObject* pObj = nullptr;
 
-	// Player Object »ı¼º
+	// Player Object ìƒì„±
 	pObj = new CGameObject;
 	pObj->SetName(L"Player");
 
@@ -144,8 +144,9 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CPlayerScript);
 	pObj->AddComponent(new CMissileScript);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
-	pObj->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 500.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, -1000.f, 500.f));
+	pObj->Transform()->SetRelativeScale(Vec3(2000.f, 2000.f, 2000.f));
+	pObj->Transform()->SetRelativeRotation(Vec3(XM_PI / 2.f, 0.f, 0.f));
 
 	pObj->Collider2D()->SetAbsolute(true);
 	pObj->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
@@ -153,14 +154,15 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std3DMtrl"));
-	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Fighter.bmp", L"texture\\Fighter.bmp"));
+	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01.tga", L"texture\\tile\\TILE_01.tga"));
+	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01_N.tga", L"texture\\tile\\TILE_01_N.tga"));
 
 	pTempLevel->AddObject(pObj, L"Player", false);
 
 
 
 
-	// Ãæµ¹ ¼³Á¤
+	// ì¶©ëŒ ì„¤ì •
 	CCollisionMgr::GetInst()->LayerCheck(3, 4);
 	CCollisionMgr::GetInst()->LayerCheck(4, 4);
 
