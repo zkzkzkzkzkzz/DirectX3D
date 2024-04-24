@@ -78,4 +78,72 @@ void MakeScriptMgrHeader()
 
 void MakeScriptMgrCPP()
 {
+	wstring solPath = CPathMgr::GetSolutionPath();
+	wstring Path = solPath + L"Scripts\\CScriptMgr.cpp";
+	wfstream fout;
+	fout.open(Path, ofstream::out | ofstream::trunc);
+	if (!fout.is_open()) return;
+
+	// 헤더 입력
+	fout << L"#include \"pch.h\"" << endl;
+	fout << L"#include \"CScriptMgr.h\"" << endl << endl;
+
+	for (UINT i = 0; i < g_vecScriptNames.size(); ++i)
+	{
+		fout << L"#include \"" << g_vecScriptNames[i] << L".h\"" << endl;
+	}
+
+	// 첫 번째 함수 작성
+	fout << L"\nvoid CScriptMgr::GetScriptInfo(vector<wstring>& _vec)" << endl << "{" << endl;
+
+	for (UINT i = 0; i < g_vecScriptNames.size(); ++i)
+	{
+		fout << L"\t_vec.push_back(L\"" << g_vecScriptNames[i] << L"\");" << endl;
+	}
+	fout << L"}" << endl << endl;
+
+	// 두번째 함수 작성
+	fout << L"CScript * CScriptMgr::GetScript(const wstring& _strScriptName)" << endl << "{" << endl;
+
+	for (UINT i = 0; i < g_vecScriptNames.size(); ++i)
+	{
+		fout << L"\tif (L\"" << g_vecScriptNames[i] << L"\" == _strScriptName)" << endl;
+		fout << L"\t\treturn new " << g_vecScriptNames[i] << L";" << endl;
+	}
+	fout << L"\treturn nullptr;" << endl << "}" << endl << endl;
+
+	// 세번째 함수
+	fout << L"CScript * CScriptMgr::GetScript(UINT _iScriptType)" << endl << "{" << endl;
+
+	fout << L"\tswitch (_iScriptType)" << endl << "\t{" << endl;
+	for (UINT i = 0; i < g_vecScriptNames.size(); ++i)
+	{
+		wstring strScriptUpperName = L"";
+		for (UINT j = 1; j < g_vecScriptNames[i].size(); ++j)
+		{
+			strScriptUpperName += toupper(g_vecScriptNames[i][j]);
+		}
+		fout << L"\tcase (UINT)SCRIPT_TYPE::" << strScriptUpperName << L":" << endl;
+		fout << L"\t\treturn new " << g_vecScriptNames[i] << L";" << endl;
+		fout << L"\t\tbreak;" << endl;
+	}
+	fout << L"\t}\n\treturn nullptr;" << endl << "}" << endl << endl;
+
+	// 네번째 함수
+	fout << L"const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)" << endl << "{" << endl;
+	fout << L"\tswitch ((SCRIPT_TYPE)_pScript->GetScriptType())" << endl << "\t{" << endl;
+	for (UINT i = 0; i < g_vecScriptNames.size(); ++i)
+	{
+		fout << L"\tcase SCRIPT_TYPE::";
+
+		wstring strScriptUpperName = L"";
+		for (UINT j = 1; j < g_vecScriptNames[i].size(); ++j)
+		{
+			strScriptUpperName += toupper(g_vecScriptNames[i][j]);
+		}
+		fout << strScriptUpperName;
+		fout << L":" << endl << "\t\treturn " << L"L\"" << g_vecScriptNames[i];
+		fout << L"\";" << endl << "\t\tbreak;" << endl << endl;
+	}
+	fout << L"\t}" << endl << "\treturn nullptr;" << endl << "}";
 }

@@ -23,6 +23,7 @@ int main()
 
 	ScriptNameInput();
 	MakeScriptMgrHeader();
+	MakeScriptMgrCPP();
 
 	//// 예외 리스트 목록을 알아낸다.
 	//FILE* pExeptList = nullptr;
