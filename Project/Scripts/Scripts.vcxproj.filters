@@ -45,6 +45,9 @@
     <ClInclude Include="strTex.h">
       <Filter>Default\GenString</Filter>
     </ClInclude>
+    <ClInclude Include="strTxt.h">
+      <Filter>Default\GenString</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

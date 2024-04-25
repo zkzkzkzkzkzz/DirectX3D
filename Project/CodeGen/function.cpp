@@ -14,6 +14,7 @@ vector<string> g_vecTexNames;
 vector<string> g_vecMtrlNames;
 vector<string> g_vecPrefNames;
 vector<string> g_vecAnimNames;
+vector<string> g_vecTxtNames;
 #include <iostream>
 
 void ScriptNameInput()
@@ -214,6 +215,9 @@ void SortExtention(const string& path, const string& extention)
 	else if (extention == ".anim") {
 		g_vecAnimNames.push_back(path);
 	}
+	else if (extention == ".txt") {
+		g_vecTxtNames.push_back(path);
+	}
 	else {
 		MessageBox(nullptr, wstring(extention.begin(), extention.end()).c_str(), L"없는 자료형", 0);
 	}
@@ -226,10 +230,14 @@ void MakeStrHeader(const string& path, const string& symbol, const vector<string
 	wstring solPath = CPathMgr::GetSolutionPath();
 	string Path = string(solPath.begin(), solPath.end()) + path;
 
+	cout << Path << endl;
 	fstream fout;
+
+
+	cout << "is open ?";
 	fout.open(Path, ofstream::out | ofstream::trunc);
 	if (!fout.is_open()) return;
-
+	cout << " is open " << endl;
 	fout << "#pragma once" << endl << endl;
 	for (int i = 0; i < vec.size(); i++) {
 		std::string path = vec[i];
