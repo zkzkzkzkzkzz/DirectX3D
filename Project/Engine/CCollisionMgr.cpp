@@ -184,6 +184,28 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider2D* _pLeft, CCollider2D* _pRig
 	return true;
 }
 
+bool CCollisionMgr::CollisionBtwCirCleCollider(CCollider2D* _pLeft, CCollider2D* _pRight)
+{
+	const Matrix& matLeft = _pLeft->GetColliderWorldMat();
+	const Matrix& matRight = _pRight->GetColliderWorldMat();
+
+	Vec3 vCenter = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matRight) - XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matLeft);
+
+	Vec2 LeftRadius = _pLeft->Collider2D()->GetOffsetScale();
+	Vec2 RightRadius = _pRight->Collider2D()->GetOffsetScale();
+
+	float fCenterDist = sqrtf(powf(vCenter.x, 2) + powf(vCenter.y, 2));
+
+	// 타원이 아니라는 전제하에 두 충돌체의 반지름의 합보다
+	// 두 충돌체의 중점 사이의 거리가 작거나 같다면 충돌 상태
+	if ((LeftRadius.x + RightRadius.x) / 2 >= fCenterDist)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 
 
 

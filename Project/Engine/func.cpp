@@ -60,6 +60,19 @@ void GamePlayStatic::DrawDebugRect(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWo
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
+void GamePlayStatic::DrawDebugCircle(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration)
+{
+	tDebugShapeInfo info = {};
+	info.eShape = DEBUG_SHAPE::CIRCLE;
+
+	info.matWorld = _WorldMat;
+	info.vColor = _Color;
+	info.bDepthTest = _bDepthTest;
+	info.fDuration = _Duration;
+
+	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
 void GamePlayStatic::DrawDebugCircle(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration)
 {
 	tDebugShapeInfo info = {};
