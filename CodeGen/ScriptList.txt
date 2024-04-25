@@ -2,3 +2,10 @@ CBackgroundScript
 CMissileScript
 CMonsterScript
 CPlayerScript
+strAnim
+strFx
+strLevel
+strMtrl
+strPref
+strSnd
+strTex
