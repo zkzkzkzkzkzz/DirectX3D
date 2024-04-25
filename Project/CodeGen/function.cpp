@@ -14,11 +14,13 @@ vector<string> g_vecTexNames;
 vector<string> g_vecMtrlNames;
 vector<string> g_vecPrefNames;
 vector<string> g_vecAnimNames;
+#include <iostream>
 
 void ScriptNameInput()
 {
 	wstring solPath = CPathMgr::GetSolutionPath();
-	wstring filterPath = solPath + L"Scripts\\Scripts.vcxproj.filters";
+	wstring filterPath = solPath + L"Project\\Scripts\\Scripts.vcxproj.filters";
+
 
 	wifstream fin;
 	fin.open(filterPath);
@@ -51,7 +53,8 @@ void ScriptNameInput()
 void MakeScriptMgrHeader()
 {
 	wstring solPath = CPathMgr::GetSolutionPath();
-	wstring Path = solPath + L"Scripts\\CScriptMgr.h";
+	wstring Path = solPath + L"Project\\Scripts\\CScriptMgr.h";	
+
 	wfstream fout;
 	fout.open(Path, ofstream::out | ofstream::trunc);
 	if (!fout.is_open()) return;
@@ -89,7 +92,7 @@ void MakeScriptMgrHeader()
 void MakeScriptMgrCPP()
 {
 	wstring solPath = CPathMgr::GetSolutionPath();
-	wstring Path = solPath + L"Scripts\\CScriptMgr.cpp";
+	wstring Path = solPath + L"Project\\Scripts\\CScriptMgr.cpp";
 	wfstream fout;
 	fout.open(Path, ofstream::out | ofstream::trunc);
 	if (!fout.is_open()) return;
@@ -161,8 +164,7 @@ void MakeScriptMgrCPP()
 void GetAllContents()
 {
 	wstring solPath = CPathMgr::GetSolutionPath();
-	wstring path = solPath + L"..\\OutputFile\\content";
-
+	wstring path = solPath + L"OutputFile\\content";
 	FindAllFiles(path);
 
 }
@@ -200,7 +202,7 @@ void SortExtention(const string& path, const string& extention)
 	else if (extention == ".wav" || extention == ".ogg") {
 		g_vecSndNames.push_back(path);
 	}
-	else if (extention == ".png" || extention == ".bmp" || extention == ".jpg") {
+	else if (extention == ".png" || extention == ".bmp" || extention == ".jpg" || extention == ".tga" || extention == ".dds") {
 		g_vecTexNames.push_back(path);
 	}
 	else if (extention == ".mtrl") {
