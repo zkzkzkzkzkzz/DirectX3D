@@ -6,6 +6,7 @@
 class CGameObject;
 class CCamera;
 class CLight2D;
+class CLight3D;
 class CStructuredBuffer;
 
 
@@ -16,22 +17,25 @@ class CRenderMgr :
     SINGLE(CRenderMgr);
 private:
     vector<CCamera*>        m_vecCam;
-    CCamera*                m_EditorCam;
+    CCamera* m_EditorCam;
 
     Ptr<CTexture>           m_PostProcessTex;
 
-    CStructuredBuffer*      m_Light2DBuffer;
+    CStructuredBuffer* m_Light2DBuffer;
     vector<CLight2D*>       m_vecLight2D;
 
+    CStructuredBuffer* m_Light3DBuffer;
+    vector<CLight3D*>       m_vecLight3D;
+
     list<tDebugShapeInfo>   m_DbgShapeInfo;
-    CGameObject*            m_pDebugObj;
+    CGameObject* m_pDebugObj;
     bool                    m_DebugPosition;
-    
+
     // NoiseTexture
     vector<Ptr<CTexture>>   m_vecNoiseTex;
 
     // render function pointer
-    typedef void(CRenderMgr::*RENDER_FUNC)(void);
+    typedef void(CRenderMgr::* RENDER_FUNC)(void);
     RENDER_FUNC             m_RenderFunc;
 
 public:
@@ -39,12 +43,13 @@ public:
     void AddDebugShapeInfo(const tDebugShapeInfo& _info) { m_DbgShapeInfo.push_back(_info); }
 
     void SetDebugPosition(bool _OnOff) { m_DebugPosition = _OnOff; }
-    bool IsDebugPosition() { return m_DebugPosition ; }
+    bool IsDebugPosition() { return m_DebugPosition; }
 
     void RegisterLight2D(CLight2D* _Light2D) { m_vecLight2D.push_back(_Light2D); }
+    void RegisterLight3D(CLight3D* _Light3D) { m_vecLight3D.push_back(_Light3D); }
 
     void CopyRenderTargetToPostProcessTarget();
-	Ptr<CTexture> GetPostProcessTex() { return m_PostProcessTex; }
+    Ptr<CTexture> GetPostProcessTex() { return m_PostProcessTex; }
 
     void RegisterEditorCamera(CCamera* _Cam) { m_EditorCam = _Cam; }
     void ClearCamera() { m_vecCam.clear(); }

@@ -35,12 +35,19 @@ void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
             }
             
             _output.vColor += info.Color.vColor * fAttenu;
-        }        
+        }
     }
     
     // Spot Light
     else
     {
+
+     // Point Light 거의 유사
+     // 내적을 활용, 각도 체크
+     // 간단한 영상 찍어서 올리기
+     // 광원을 회전시키기
+    }
+
         float fAttenu = 1.f;    // 각도 감쇠
         float fAttenu2 = 1.f;   // 거리 감쇠
         
@@ -79,6 +86,64 @@ void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
     }    
 }
 
+void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLightColor _LightColor)
+{
+    // ������ ������ Ȯ��
+    tLightInfo Light = g_Light3D[_LightIdx];
+    
+	// ������ ��ü�� ���ϴ� ���⺤��
+    float3 vViewLightDir = (float3) 0.f;
+
+    float fDistanceRatio = 1.f;
+
+    // Directional Light
+    if (0 == Light.LightType)
+    {
+	    // ���� ������ ViewSpace ���� ����Ǳ�� �߱� ������,
+        // ������ �����ϴ� ���⵵ View ���� �������� ������
+        vViewLightDir = normalize(mul(float4(Light.vWorldDir, 0.f), g_matView).xyz);
+    }
+
+    // Point Light
+    else if (1 == Light.LightType)
+    {
+        float3 vLightViewPos = mul(float4(Light.vWorldPos, 1.f), g_matView).xyz;
+        vViewLightDir = _vViewPos - vLightViewPos;
+
+        // ������ ��ü ������ �Ÿ�
+        float fDistance = length(vViewLightDir);
+        vViewLightDir = normalize(vViewLightDir);
+
+        // ���� �ݰ�� ��ü������ �Ÿ��� ���� ���� ����
+        fDistanceRatio = saturate(1.f - (fDistance / Light.fRadius));
+    }
+
+    // Spot Light
+    else
+    {
+        
+    }
+
+     // ViewSpace ���� ������ �����, ��ü ǥ���� ������ �̿��ؼ� ������ ���� ����(Diffuse) �� ���Ѵ�.
+    float LightPow = saturate(dot(_vViewNormal, -vViewLightDir));
+            
+    // ���� ǥ�鿡 �����ؼ� �ݻ�Ǵ� ������ ���Ѵ�.
+    float3 vReflect = vViewLightDir + 2 * dot(-vViewLightDir, _vViewNormal) * _vViewNormal;
+    vReflect = normalize(vReflect);
+    
+    // ī�޶� ��ü�� ���ϴ� ����
+    float3 vEye = normalize(_vViewPos);
+    
+    // �ü����Ϳ� �ݻ纤�� ����, �ݻ籤�� ����
+    float ReflectPow = saturate(dot(-vEye, vReflect));
+    ReflectPow = pow(ReflectPow, 20.f);
+
+    _LightColor.vColor += Light.Color.vColor * LightPow * fDistanceRatio;
+    _LightColor.vAmbient += Light.Color.vAmbient;
+    _LightColor.vSpecular += Light.Color.vColor * Light.Color.vSpecular * ReflectPow * fDistanceRatio;
+
+
+}
 
 // ======
 // Random

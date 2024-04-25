@@ -14,7 +14,7 @@ class CComponent :
 {
 private:
     const COMPONENT_TYPE    m_Type;
-    CGameObject*            m_Owner;
+    CGameObject* m_Owner;
 
 
 public:
@@ -33,10 +33,11 @@ public:
     GET_OTHER_COMPONENT(Collider2D);
     GET_OTHER_COMPONENT(Animator2D);
     GET_OTHER_COMPONENT(Light2D);
+    GET_OTHER_COMPONENT(Light3D);
     GET_OTHER_COMPONENT(TileMap);
     GET_OTHER_COMPONENT(StateMachine);
-   
-    CRenderComponent* GetRenderComponent() { return m_Owner->GetRenderComopnent();}
+
+    CRenderComponent* GetRenderComponent() { return m_Owner->GetRenderComopnent(); }
 
 
     virtual void SaveToFile(FILE* _File) = 0;
