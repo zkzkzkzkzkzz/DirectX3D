@@ -27,7 +27,7 @@
 #define CLONE_DISABLE(TYPE) TYPE* Clone() { return nullptr; assert(nullptr); }\
 							TYPE(const TYPE& _OriginBuffer) = delete;
 
-enum LAYER
+enum class LAYER
 {
 	LAYER_DEFAULT,
 	LAYER_BACKGROUND,
