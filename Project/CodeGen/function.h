@@ -13,6 +13,7 @@ extern vector<string> g_vecTexNames;
 extern vector<string> g_vecMtrlNames;
 extern vector<string> g_vecPrefNames;
 extern vector<string> g_vecAnimNames;
+extern vector<string> g_vecTxtNames;
 void ScriptNameInput();
 void MakeScriptMgrHeader();
 void MakeScriptMgrCPP();

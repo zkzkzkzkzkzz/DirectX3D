@@ -176,6 +176,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="strPref.h" />
     <ClInclude Include="strSnd.h" />
     <ClInclude Include="strTex.h" />
+    <ClInclude Include="strTxt.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CBackgroundScript.cpp" />
