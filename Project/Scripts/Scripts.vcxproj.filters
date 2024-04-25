@@ -22,7 +22,9 @@
     <ClInclude Include="CMonsterScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="CTimeMgrScript.h" />
+    <ClInclude Include="CTimeMgrScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -46,7 +48,9 @@
     <ClCompile Include="CMonsterScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="CTimeMgrScript.cpp" />
+    <ClCompile Include="CTimeMgrScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
