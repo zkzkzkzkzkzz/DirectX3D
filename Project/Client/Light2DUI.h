@@ -4,6 +4,8 @@
 class Light2DUI :
     public ComponentUI
 {
+public:
+    Vec3 AngleToVector(float _angle);
 
 public:
     virtual void render_update() override;

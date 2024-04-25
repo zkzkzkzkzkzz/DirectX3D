@@ -21,7 +21,7 @@ void ScriptUI::SetScript(CScript* _Script)
 
 	wstring strScriptName = CScriptMgr::GetScriptName(_Script);
 	SetName(ToString(strScriptName));
-	SetComopnentTitle(ToString(strScriptName));
+	SetComponentTitle(ToString(strScriptName));
 	Activate();
 }
 
