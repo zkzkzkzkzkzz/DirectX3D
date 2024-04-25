@@ -16,7 +16,7 @@ CLevel::CLevel()
 		m_arrLayer[i] = new CLayer;
 		m_arrLayer[i]->m_iLayerIdx = i;
 		auto s = magic_enum::enum_name((LAYER)i);
-		m_arrLayer[i]->SetName(ToWString({ s.data(),s.size() }));
+		m_arrLayer[i]->SetName(ToWString(s));
 	}
 }
 
