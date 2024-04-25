@@ -3,13 +3,13 @@
 #include <vector>
 #include <string>
 
-enum SCRIPT_TYPE
+enum class SCRIPT_TYPE
 {
 	BACKGROUNDSCRIPT,
 	MISSILESCRIPT,
-	MONSTERSCRIPT,
 	PLAYERSCRIPT,
 	TIMEMGRSCRIPT,
+	MONSTERSCRIPT,
 	END,
 };
 
@@ -19,9 +19,9 @@ class CScript;
 
 class CScriptMgr
 {
-public:
+public: 
 	static void GetScriptInfo(vector<wstring>& _vec);
-	static CScript * GetScript(const wstring& _strScriptName);
-	static CScript * GetScript(UINT _iScriptType);
-	static const wchar_t * GetScriptName(CScript * _pScript);
+	static CScript* GetScript(const wstring& _strScriptName);
+	static CScript* GetScript(UINT _iScriptType);
+	static const wchar_t* GetScriptName(CScript* _pScript);
 };

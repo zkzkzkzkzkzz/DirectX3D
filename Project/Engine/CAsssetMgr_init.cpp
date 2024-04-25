@@ -29,7 +29,7 @@ void CAssetMgr::CreateDefaultMesh()
 	AddAsset(L"PointMesh", pMesh);
 
 
-	// Àü¿ªº¯¼ö¿¡ »ï°¢Çü À§Ä¡ ¼³Á¤
+	// ì „ì—­ë³€ìˆ˜ì— ì‚¼ê°í˜• ìœ„ì¹˜ ì„¤ì •
 	//   0(Red)-- 1(Blue)	     
 	//    |   \   |	     
 	//   3(G)---- 2(Magenta)  
@@ -62,7 +62,7 @@ void CAssetMgr::CreateDefaultMesh()
 
 	
 
-	// ÀÎµ¦½º
+	// ì¸ë±ìŠ¤
 	vecIdx.push_back(0);
 	vecIdx.push_back(1);
 	vecIdx.push_back(2);
@@ -78,7 +78,7 @@ void CAssetMgr::CreateDefaultMesh()
 		
 	vecIdx.clear();
 
-	// Topology LineStrip ¿ëµµ
+	// Topology LineStrip ìš©ë„
 	//   0(Red)-- 1(Blue)	     
 	//    |       |	     
 	//   3(G)---- 2(Magenta)   
@@ -97,12 +97,12 @@ void CAssetMgr::CreateDefaultMesh()
 
 
 	// =================
-	// CircleMesh ¸¸µé±â
+	// CircleMesh ë§Œë“¤ê¸°
 	// =================
 	
 	
 
-	// Áß½É Á¡
+	// ì¤‘ì‹¬ ì 
 	v.vPos = Vec3(0.f, 0.f, 0.f);
 	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
 	v.vUV = Vec2(0.5f, 0.5f);
@@ -149,7 +149,7 @@ void CAssetMgr::CreateDefaultMesh()
 	vecIdx.clear();
 
 	// =================
-	// CrossMesh ¸¸µé±â
+	// CrossMesh ë§Œë“¤ê¸°
 	// =================
 	v.vPos = Vec3(0.f, 0.5f, 0.f);
 	v.vUV = Vec2(0.f, 0.f);
@@ -178,11 +178,11 @@ void CAssetMgr::CreateDefaultMesh()
 	// ==========
 	// Cube Mesh
 	// ==========
-	// 6°³ÀÇ °¢ ¸é ¸¶´Ù °¢ÀÚÀÇ ¹æÇâº¤ÅÍ(³ë¸», ÅºÁ¨Æ®, ¹ÙÀÌ³ë¸») ÀÌ ¼¼ÆÃµÇ¾î¾ß ÇÏ±â ¶§¹®¿¡
-	// ¸é ´ÜÀ§·Î Á¤Á¡ 4°³¾¿ 6¸é, ÃÑ 24°³ÀÇ Á¤Á¡ÀÌ ÇÊ¿äÇÏ´Ù.	
+	// 6ê°œì˜ ê° ë©´ ë§ˆë‹¤ ê°ìì˜ ë°©í–¥ë²¡í„°(ë…¸ë§, íƒ„ì  íŠ¸, ë°”ì´ë…¸ë§) ì´ ì„¸íŒ…ë˜ì–´ì•¼ í•˜ê¸° ë•Œë¬¸ì—
+	// ë©´ ë‹¨ìœ„ë¡œ ì •ì  4ê°œì”© 6ë©´, ì´ 24ê°œì˜ ì •ì ì´ í•„ìš”í•˜ë‹¤.	
 	Vtx arrCube[24] = {};
 	 
-	// À­¸é
+	// ìœ—ë©´
 	arrCube[0].vPos = Vec3(-0.5f, 0.5f, 0.5f);
 	arrCube[0].vColor = Vec4(1.f, 1.f, 1.f, 1.f);
 	arrCube[0].vUV = Vec2(0.f, 0.f);
@@ -204,7 +204,7 @@ void CAssetMgr::CreateDefaultMesh()
 	arrCube[3].vNormal = Vec3(0.f, 1.f, 0.f);
 
 
-	// ¾Æ·§ ¸é	
+	// ì•„ë« ë©´	
 	arrCube[4].vPos = Vec3(-0.5f, -0.5f, -0.5f);
 	arrCube[4].vColor = Vec4(1.f, 0.f, 0.f, 1.f);
 	arrCube[4].vUV = Vec2(0.f, 0.f);
@@ -225,7 +225,7 @@ void CAssetMgr::CreateDefaultMesh()
 	arrCube[7].vUV = Vec2(0.f, 0.f);
 	arrCube[7].vNormal = Vec3(0.f, -1.f, 0.f);
 
-	// ¿ŞÂÊ ¸é
+	// ì™¼ìª½ ë©´
 	arrCube[8].vPos = Vec3(-0.5f, 0.5f, 0.5f);
 	arrCube[8].vColor = Vec4(0.f, 1.f, 0.f, 1.f);
 	arrCube[8].vUV = Vec2(0.f, 0.f);
@@ -246,7 +246,7 @@ void CAssetMgr::CreateDefaultMesh()
 	arrCube[11].vUV = Vec2(0.f, 0.f);
 	arrCube[11].vNormal = Vec3(-1.f, 0.f, 0.f);
 
-	// ¿À¸¥ÂÊ ¸é
+	// ì˜¤ë¥¸ìª½ ë©´
 	arrCube[12].vPos = Vec3(0.5f, 0.5f, -0.5f);
 	arrCube[12].vColor = Vec4(0.f, 0.f, 1.f, 1.f);
 	arrCube[12].vUV = Vec2(0.f, 0.f);
@@ -267,7 +267,7 @@ void CAssetMgr::CreateDefaultMesh()
 	arrCube[15].vUV = Vec2(0.f, 0.f);
 	arrCube[15].vNormal = Vec3(1.f, 0.f, 0.f);
 
-	// µŞ ¸é
+	// ë’· ë©´
 	arrCube[16].vPos = Vec3(0.5f, 0.5f, 0.5f);
 	arrCube[16].vColor = Vec4(1.f, 1.f, 0.f, 1.f);
 	arrCube[16].vUV = Vec2(0.f, 0.f);
@@ -288,7 +288,7 @@ void CAssetMgr::CreateDefaultMesh()
 	arrCube[19].vUV = Vec2(0.f, 0.f);
 	arrCube[19].vNormal = Vec3(0.f, 0.f, 1.f);
 
-	// ¾Õ ¸é
+	// ì• ë©´
 	arrCube[20].vPos = Vec3(-0.5f, 0.5f, -0.5f);;
 	arrCube[20].vColor = Vec4(1.f, 0.f, 1.f, 1.f);
 	arrCube[20].vUV = Vec2(0.f, 0.f);
@@ -309,7 +309,7 @@ void CAssetMgr::CreateDefaultMesh()
 	arrCube[23].vUV = Vec2(0.f, 0.f);
 	arrCube[23].vNormal = Vec3(0.f, 0.f, -1.f);
 
-	// ÀÎµ¦½º
+	// ì¸ë±ìŠ¤
 	for (int i = 0; i < 12; i += 2)
 	{
 		vecIdx.push_back(i * 2);
@@ -342,8 +342,8 @@ void CAssetMgr::CreateDefaultMesh()
 	vecVtx.push_back(v);
 
 	// Body
-	UINT iStackCount = 40; // °¡·Î ºĞÇÒ °³¼ö
-	UINT iSliceCount = 40; // ¼¼·Î ºĞÇÒ °³¼ö
+	UINT iStackCount = 40; // ê°€ë¡œ ë¶„í•  ê°œìˆ˜
+	UINT iSliceCount = 40; // ì„¸ë¡œ ë¶„í•  ê°œìˆ˜
 
 	float fStackAngle = XM_PI / iStackCount;
 	float fSliceAngle = XM_2PI / iSliceCount;
@@ -391,8 +391,8 @@ void CAssetMgr::CreateDefaultMesh()
 	v.vBinormal = Vec3(0.f, 0.f, -1.f);
 	vecVtx.push_back(v);
 
-	// ÀÎµ¦½º
-	// ºÏ±ØÁ¡
+	// ì¸ë±ìŠ¤
+	// ë¶ê·¹ì 
 	for (UINT i = 0; i < iSliceCount; ++i)
 	{
 		vecIdx.push_back(0);
@@ -400,7 +400,7 @@ void CAssetMgr::CreateDefaultMesh()
 		vecIdx.push_back(i + 1);
 	}
 
-	// ¸öÅë
+	// ëª¸í†µ
 	for (UINT i = 0; i < iStackCount - 2; ++i)
 	{
 		for (UINT j = 0; j < iSliceCount; ++j)
@@ -421,7 +421,7 @@ void CAssetMgr::CreateDefaultMesh()
 		}
 	}
 
-	// ³²±ØÁ¡
+	// ë‚¨ê·¹ì 
 	UINT iBottomIdx = (UINT)vecVtx.size() - 1;
 	for (UINT i = 0; i < iSliceCount; ++i)
 	{
@@ -476,6 +476,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 
 	pShader->AddScalarParam(SCALAR_PARAM::INT_0, "Lighting Type, 0 : Gouraud, 1 : Phong");
+	pShader->AddTexParam(TEX_PARAM::TEX_0, "Output Texture");
+	pShader->AddTexParam(TEX_PARAM::TEX_1, "Normal Texture");
 
 	AddAsset(L"Std3DShader", pShader.Get());
 
@@ -520,7 +522,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
-	pShader->SetDSType(DS_TYPE::NO_WRITE);		// ±íÀÌ Å×½ºÆ®´Â ÁøÇà, ±íÀÌ´Â ±â·Ï X
+	pShader->SetDSType(DS_TYPE::NO_WRITE);		// ê¹Šì´ í…ŒìŠ¤íŠ¸ëŠ” ì§„í–‰, ê¹Šì´ëŠ” ê¸°ë¡ X
 	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
@@ -655,6 +657,6 @@ void CAssetMgr::InitSound()
 		assert(nullptr);
 	}
 
-	// 32°³ Ã¤³Î »ı¼º
+	// 32ê°œ ì±„ë„ ìƒì„±
 	CSound::g_pFMOD->init(32, FMOD_DEFAULT, nullptr);
 }
