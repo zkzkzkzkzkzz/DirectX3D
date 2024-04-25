@@ -7,7 +7,7 @@
 
 void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
 {
-    // ºûÀ» Àû¿ë½ÃÅ³ ±¤¿øÀÇ Á¤º¸
+    // ë¹›ì„ ì ìš©ì‹œí‚¬ ê´‘ì›ì˜ ì •ë³´
     tLightInfo info = g_Light2D[_LightIdx];    
     
     // Directional Light
@@ -41,10 +41,41 @@ void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
     // Spot Light
     else
     {
-        // Point Light °ÅÀÇ À¯»ç
-        // ³»ÀûÀ» È°¿ë, °¢µµ Ã¼Å©
-        // °£´ÜÇÑ ¿µ»ó Âï¾î¼­ ¿Ã¸®±â
-        // ±¤¿øÀ» È¸Àü½ÃÅ°±â
+        float fAttenu = 1.f;    // ê°ë„ ê°ì‡ 
+        float fAttenu2 = 1.f;   // ê±°ë¦¬ ê°ì‡ 
+        
+        float fDist = distance(info.vWorldPos.xy, _WorldPos.xy);
+        
+        float2 lightDir = normalize(info.vWorldDir.xy); // ì´ˆê¸° ê´‘ì›ì˜ ë°©í–¥ ë²¡í„°
+        float2 targetDir = normalize(_WorldPos.xy - info.vWorldPos.xy); // íƒ€ê²Ÿ ë²¡í„°
+        
+        
+        // ê´‘ì› ë°©í–¥ê³¼ íƒ€ê²Ÿ ë°©í–¥ ì‚¬ì´ì˜ ê°ë„ë¥¼ ê³„ì‚°
+        float fTheta = acos(dot(lightDir, targetDir));
+        
+        // íƒ€ê²Ÿ ê°ë„ê°€ ê´‘ì›ì˜ ê°ë„ ë²”ìœ„ ì•ˆì— ìˆì„ ë•Œ
+        if (fTheta < info.fAngle)
+        {
+            // ê°ë„ì— ë”°ë¥¸ ê°ì‡  ê³„ì‚°
+            fAttenu = saturate(1.f - fTheta / info.fAngle);
+            
+            if (fDist < info.fRadius)
+            {
+                float fTheta2 = (fDist / info.fRadius) * (PI / 2.f);
+                fAttenu2 = saturate(cos(fTheta2));
+            }
+            else
+            {
+                fAttenu2 = saturate(1.f - fDist / g_Light2D[0].fRadius);
+            }
+        }
+        // íƒ€ê²Ÿ ê°ë„ê°€ ê´‘ì› ê°ë„ ë²”ìœ„ ë°–ì´ë©´ ë³´ì´ì§€ ì•ŠìŒ
+        else
+        {
+            fAttenu = 0.f;
+        }
+        
+        _output.vColor += info.Color.vColor * fAttenu * fAttenu2;
     }    
 }
 
@@ -67,8 +98,8 @@ void GaussianSample(in Texture2D _NoiseTex, float2 _vResolution, float _Nomalize
     
     vUV.x += g_time * 0.5f;
     
-    // sin ±×·¡ÇÁ·Î ÅØ½ºÃÄÀÇ »ùÇÃ¸µ À§Ä¡ UV ¸¦ °è»ê
-    vUV.y -= (sin((_NomalizedThreadID - (g_time /*±×·¡ÇÁ ¿ìÃø ÀÌµ¿ ¼Óµµ*/)) * 2.f * 3.1415926535f * 10.f /*¹İº¹ÁÖ±â*/) / 2.f);
+    // sin ê·¸ë˜í”„ë¡œ í…ìŠ¤ì³ì˜ ìƒ˜í”Œë§ ìœ„ì¹˜ UV ë¥¼ ê³„ì‚°
+    vUV.y -= (sin((_NomalizedThreadID - (g_time /*ê·¸ë˜í”„ ìš°ì¸¡ ì´ë™ ì†ë„*/)) * 2.f * 3.1415926535f * 10.f /*ë°˜ë³µì£¼ê¸°*/) / 2.f);
     
     if (1.f < vUV.x)
         vUV.x = frac(vUV.x);

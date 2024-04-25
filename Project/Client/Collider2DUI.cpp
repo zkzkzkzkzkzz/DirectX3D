@@ -6,7 +6,7 @@
 Collider2DUI::Collider2DUI()
 	: ComponentUI("Collider2D", "##Collider2D", COMPONENT_TYPE::COLLIDER2D)
 {
-	SetSize(ImVec2(0.f, 135.f));
+	SetSize(ImVec2(0.f, 120.f));
 	SetComponentTitle("Collider2D");
 }
 
@@ -48,7 +48,7 @@ void Collider2DUI::render_update()
 	GetTargetObject()->Collider2D()->SetOffsetScale(vScale);
 	GetTargetObject()->Collider2D()->SetColliderType((COLLIDER2D_TYPE)ColType);
 
-	// Ãæµ¹Ã¼ ·»´õ ¿©ºÎ
+	// ï¿½æµ¹Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	bool b = GetTargetObject()->Collider2D()->IsDebug();
 	ImGui::Text("Show Collider");
 	ImGui::SameLine(0, 15);
