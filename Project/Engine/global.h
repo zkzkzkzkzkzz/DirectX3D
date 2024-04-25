@@ -65,3 +65,7 @@ typedef Vector4 Vec4;
 #include "define.h"
 #include "struct.h"
 #include "func.h"
+
+
+// Magic Enum 헤더 참조
+#include <Magic_Enum/magic_enum_all.hpp>

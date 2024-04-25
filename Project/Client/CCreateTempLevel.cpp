@@ -77,14 +77,6 @@ void CCreateTempLevel::CreateTempLevel()
 
 	CLevel* pTempLevel = new CLevel;
 
-	pTempLevel->GetLayer(0)->SetName(L"Default");
-	pTempLevel->GetLayer(1)->SetName(L"Background");
-	pTempLevel->GetLayer(2)->SetName(L"Tile");
-	pTempLevel->GetLayer(3)->SetName(L"Player");
-	pTempLevel->GetLayer(4)->SetName(L"Monster");
-	pTempLevel->GetLayer(5)->SetName(L"Light");
-	pTempLevel->GetLayer(6)->SetName(L"Tile");
-	pTempLevel->GetLayer(31)->SetName(L"UI");
 
 	// ComputeShader 테스트
 	// 사용할 텍스쳐 생성
@@ -114,7 +106,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->Camera()->LayerCheckAll();
 	pCamObj->Camera()->LayerCheck(31, false);
 
-	pTempLevel->AddObject(pCamObj, 0);
+	pTempLevel->AddObject(pCamObj, LAYER_DEFAULT);
 
 	// UI 카메라 생성
 	pCamObj = new CGameObject;
@@ -128,7 +120,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->Camera()->SetCameraPriority(1);
 	pCamObj->Camera()->LayerCheck(31, true);
 
-	pTempLevel->AddObject(pCamObj, 0);
+	pTempLevel->AddObject(pCamObj, LAYER_DEFAULT);
 
 
 	CGameObject* pObj = nullptr;
@@ -157,14 +149,14 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01.tga", L"texture\\tile\\TILE_01.tga"));
 	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01_N.tga", L"texture\\tile\\TILE_01_N.tga"));
 
-	pTempLevel->AddObject(pObj, L"Player", false);
+	pTempLevel->AddObject(pObj, LAYER_PLAYER, false);
 
 
 
 
 	// 충돌 설정
-	CCollisionMgr::GetInst()->LayerCheck(3, 4);
-	CCollisionMgr::GetInst()->LayerCheck(4, 4);
+	CCollisionMgr::GetInst()->LayerCheck(LAYER_PLAYER, LAYER_MONSTER);
+	CCollisionMgr::GetInst()->LayerCheck(LAYER_MONSTER, LAYER_MONSTER);
 
 	CLevelMgr::GetInst()->ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 
