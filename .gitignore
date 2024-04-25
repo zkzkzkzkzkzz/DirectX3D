@@ -3,9 +3,12 @@ unity*.cpp
 
 External/Include/Engine
 External/Include/Scripts
+OutputFile/content/level
+OutputFile/content/shader
 
 *.cso
 *.idb
+
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio,c++
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio,c++
