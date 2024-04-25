@@ -166,7 +166,7 @@ void CameraUI::render_update()
 
     //이중 for문이 들어간 button 을 우회처리
     //(조건에 맞는 원소를 vector에 한번더 담아준다)
-    for (int i = 0; i < LAYER_MAX; ++i)
+    for (int i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
     {
         auto Layer = CurLevel->GetLayer(i);
         auto& LayerName = Layer->GetName();

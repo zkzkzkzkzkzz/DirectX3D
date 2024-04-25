@@ -106,7 +106,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->Camera()->LayerCheckAll();
 	pCamObj->Camera()->LayerCheck(31, false);
 
-	pTempLevel->AddObject(pCamObj, LAYER_DEFAULT);
+	pTempLevel->AddObject(pCamObj, (UINT)LAYER::LAYER_DEFAULT);
 
 	// UI 카메라 생성
 	pCamObj = new CGameObject;
@@ -120,7 +120,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->Camera()->SetCameraPriority(1);
 	pCamObj->Camera()->LayerCheck(31, true);
 
-	pTempLevel->AddObject(pCamObj, LAYER_DEFAULT);
+	pTempLevel->AddObject(pCamObj, (UINT)LAYER::LAYER_DEFAULT);
 
 
 	CGameObject* pObj = nullptr;
@@ -149,14 +149,14 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01.tga", L"texture\\tile\\TILE_01.tga"));
 	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01_N.tga", L"texture\\tile\\TILE_01_N.tga"));
 
-	pTempLevel->AddObject(pObj, LAYER_PLAYER, false);
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_PLAYER, false);
 
 
 
 
 	// 충돌 설정
-	CCollisionMgr::GetInst()->LayerCheck(LAYER_PLAYER, LAYER_MONSTER);
-	CCollisionMgr::GetInst()->LayerCheck(LAYER_MONSTER, LAYER_MONSTER);
+	CCollisionMgr::GetInst()->LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_MONSTER);
+	CCollisionMgr::GetInst()->LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_MONSTER);
 
 	CLevelMgr::GetInst()->ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 

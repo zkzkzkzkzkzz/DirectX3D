@@ -65,7 +65,7 @@ void Outliner::ResetCurrentLevel()
 	// 트리에 루트 추가
 	TreeNode* pRootNode = m_Tree->AddTreeNode(nullptr, "DummyRoot", 0);
 
-	for (UINT i = 0; i < LAYER_MAX; ++i)
+	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		CLayer* pLayer = pCurLevel->GetLayer(i);
 		const vector<CGameObject*>& vecParent = pLayer->GetParentObjects();

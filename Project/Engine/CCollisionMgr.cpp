@@ -21,9 +21,9 @@ CCollisionMgr::~CCollisionMgr()
 
 void CCollisionMgr::tick()
 {
-	for (UINT iRow = 0; iRow < LAYER_MAX; ++iRow)
+	for (UINT iRow = 0; iRow < (UINT)LAYER::LAYER_MAX; ++iRow)
 	{
-		for (UINT iCol = iRow; iCol < LAYER_MAX; ++iCol)
+		for (UINT iCol = iRow; iCol < (UINT)LAYER::LAYER_MAX; ++iCol)
 		{
 			if (!(m_matrix[iRow] & (1 << iCol)) )			
 				continue;
