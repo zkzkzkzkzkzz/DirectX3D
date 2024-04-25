@@ -12,6 +12,7 @@ CTimeMgr::CTimeMgr()
 	, m_Time(0.f)
 	, m_bLock(true)
 	, m_szText{}
+	, m_DTScale(1.f)
 {	
 
 }
@@ -38,6 +39,10 @@ void CTimeMgr::tick()
 	{
 		m_DeltaTime = 0.f;
 	}
+	else
+	{
+		m_DeltaTime *= m_DTScale;
+	}
 
 	m_PrevCount = m_CurCount;
 
@@ -47,10 +52,10 @@ void CTimeMgr::tick()
 
 	// 시간 누적 ==> 1초마다 if 구문 실행
 	m_Time += m_EngineDeltaTime;
-	m_szText[50] = {};
+	m_szText[70] = {};
 	if (1.f <= m_Time)
 	{		
-		swprintf_s(m_szText, 50, L"DeltaTime : %f, FPS : %d", m_DeltaTime, m_iCall);
+		swprintf_s(m_szText, 70, L"DeltaTime : %f[Scale: %f], FPS : %d", m_DeltaTime, m_DTScale, m_iCall);
 		m_iCall = 0;
 		m_Time = 0.f;
 	}

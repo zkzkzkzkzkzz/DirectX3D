@@ -22,6 +22,8 @@
     <ClInclude Include="CMonsterScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CTimeMgrScript.h">
+      <Filter>Scripts</Filter>
     <ClInclude Include="strAnim.h">
       <Filter>Default\GenString</Filter>
     </ClInclude>
@@ -64,6 +66,9 @@
       <Filter>ScriptMgr</Filter>
     </ClCompile>
     <ClCompile Include="CMonsterScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimeMgrScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>

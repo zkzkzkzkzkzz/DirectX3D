@@ -7,8 +7,8 @@
 
 void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
 {
-    // ºûÀ» Àû¿ë½ÃÅ³ ±¤¿øÀÇ Á¤º¸
-    tLightInfo info = g_Light2D[_LightIdx];
+    // ë¹›ì„ ì ìš©ì‹œí‚¬ ê´‘ì›ì˜ ì •ë³´
+    tLightInfo info = g_Light2D[_LightIdx];    
     
     // Directional Light
     if (0 == info.LightType)
@@ -41,19 +41,57 @@ void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
     // Spot Light
     else
     {
-        // Point Light °ÅÀÇ À¯»ç
-        // ³»ÀûÀ» È°¿ë, °¢µµ Ã¼Å©
-        // °£´ÜÇÑ ¿µ»ó Âï¾î¼­ ¿Ã¸®±â
-        // ±¤¿øÀ» È¸Àü½ÃÅ°±â
+
+     // Point Light ê±°ì˜ ìœ ì‚¬
+     // ë‚´ì ì„ í™œìš©, ê°ë„ ì²´í¬
+     // ê°„ë‹¨í•œ ì˜ìƒ ì°ì–´ì„œ ì˜¬ë¦¬ê¸°
+     // ê´‘ì›ì„ íšŒì „ì‹œí‚¤ê¸°
     }
+
+        float fAttenu = 1.f;    // ê°ë„ ê°ì‡ 
+        float fAttenu2 = 1.f;   // ê±°ë¦¬ ê°ì‡ 
+        
+        float fDist = distance(info.vWorldPos.xy, _WorldPos.xy);
+        
+        float2 lightDir = normalize(info.vWorldDir.xy); // ì´ˆê¸° ê´‘ì›ì˜ ë°©í–¥ ë²¡í„°
+        float2 targetDir = normalize(_WorldPos.xy - info.vWorldPos.xy); // íƒ€ê²Ÿ ë²¡í„°
+        
+        
+        // ê´‘ì› ë°©í–¥ê³¼ íƒ€ê²Ÿ ë°©í–¥ ì‚¬ì´ì˜ ê°ë„ë¥¼ ê³„ì‚°
+        float fTheta = acos(dot(lightDir, targetDir));
+        
+        // íƒ€ê²Ÿ ê°ë„ê°€ ê´‘ì›ì˜ ê°ë„ ë²”ìœ„ ì•ˆì— ìˆì„ ë•Œ
+        if (fTheta < info.fAngle)
+        {
+            // ê°ë„ì— ë”°ë¥¸ ê°ì‡  ê³„ì‚°
+            fAttenu = saturate(1.f - fTheta / info.fAngle);
+            
+            if (fDist < info.fRadius)
+            {
+                float fTheta2 = (fDist / info.fRadius) * (PI / 2.f);
+                fAttenu2 = saturate(cos(fTheta2));
+            }
+            else
+            {
+                fAttenu2 = saturate(1.f - fDist / g_Light2D[0].fRadius);
+            }
+        }
+        // íƒ€ê²Ÿ ê°ë„ê°€ ê´‘ì› ê°ë„ ë²”ìœ„ ë°–ì´ë©´ ë³´ì´ì§€ ì•ŠìŒ
+        else
+        {
+            fAttenu = 0.f;
+        }
+        
+        _output.vColor += info.Color.vColor * fAttenu * fAttenu2;
+    }    
 }
 
 void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLightColor _LightColor)
 {
-    // ±¤¿øÀÇ Á¤º¸¸¦ È®ÀÎ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
     tLightInfo Light = g_Light3D[_LightIdx];
     
-	// ±¤¿øÀÌ ¹°Ã¼¸¦ ÇâÇÏ´Â ¹æÇâº¤ÅÍ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½âº¤ï¿½ï¿½
     float3 vViewLightDir = (float3) 0.f;
 
     float fDistanceRatio = 1.f;
@@ -61,8 +99,8 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
     // Directional Light
     if (0 == Light.LightType)
     {
-	    // ±¤¿ø ¿¬»êÀÌ ViewSpace ¿¡¼­ ÁøÇàµÇ±â·Î Çß±â ¶§¹®¿¡,
-        // ±¤¿øÀÌ ÁøÀÔÇÏ´Â ¹æÇâµµ View °ø°£ ±âÁØÀ¸·Î º¯°æÇÔ
+	    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ViewSpace ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç±ï¿½ï¿½ ï¿½ß±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½âµµ View ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         vViewLightDir = normalize(mul(float4(Light.vWorldDir, 0.f), g_matView).xyz);
     }
 
@@ -72,11 +110,11 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
         float3 vLightViewPos = mul(float4(Light.vWorldPos, 1.f), g_matView).xyz;
         vViewLightDir = _vViewPos - vLightViewPos;
 
-        // ±¤¿ø°ú ¹°Ã¼ »çÀÌÀÇ °Å¸®
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½
         float fDistance = length(vViewLightDir);
         vViewLightDir = normalize(vViewLightDir);
 
-        // ±¤¿ø ¹İ°æ°ú ¹°Ã¼±îÁöÀÇ °Å¸®¿¡ µû¸¥ ºûÀÇ ¼¼±â
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½İ°ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         fDistanceRatio = saturate(1.f - (fDistance / Light.fRadius));
     }
 
@@ -86,17 +124,17 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
         
     }
 
-     // ViewSpace ¿¡¼­ ±¤¿øÀÇ ¹æÇâ°ú, ¹°Ã¼ Ç¥¸éÀÇ ¹ı¼±¸¦ ÀÌ¿ëÇØ¼­ ±¤¿øÀÇ ÁøÀÔ ¼¼±â(Diffuse) ¸¦ ±¸ÇÑ´Ù.
+     // ViewSpace ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Ã¼ Ç¥ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(Diffuse) ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½.
     float LightPow = saturate(dot(_vViewNormal, -vViewLightDir));
             
-    // ºûÀÌ Ç¥¸é¿¡ ÁøÀÔÇØ¼­ ¹İ»çµÇ´Â ¹æÇâÀ» ±¸ÇÑ´Ù.
+    // ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½é¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½İ»ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½.
     float3 vReflect = vViewLightDir + 2 * dot(-vViewLightDir, _vViewNormal) * _vViewNormal;
     vReflect = normalize(vReflect);
     
-    // Ä«¸Ş¶ó°¡ ¹°Ã¼¸¦ ÇâÇÏ´Â ¹æÇâ
+    // Ä«ï¿½Ş¶ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
     float3 vEye = normalize(_vViewPos);
     
-    // ½Ã¼±º¤ÅÍ¿Í ¹İ»çº¤ÅÍ ³»Àû, ¹İ»ç±¤ÀÇ ¼¼±â
+    // ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½İ»çº¤ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½İ»ç±¤ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     float ReflectPow = saturate(dot(-vEye, vReflect));
     ReflectPow = pow(ReflectPow, 20.f);
 
@@ -125,8 +163,8 @@ void GaussianSample(in Texture2D _NoiseTex, float2 _vResolution, float _Nomalize
     
     vUV.x += g_time * 0.5f;
     
-    // sin ±×·¡ÇÁ·Î ÅØ½ºÃÄÀÇ »ùÇÃ¸µ À§Ä¡ UV ¸¦ °è»ê
-    vUV.y -= (sin((_NomalizedThreadID - (g_time /*±×·¡ÇÁ ¿ìÃø ÀÌµ¿ ¼Óµµ*/)) * 2.f * 3.1415926535f * 10.f /*¹İº¹ÁÖ±â*/) / 2.f);
+    // sin ê·¸ë˜í”„ë¡œ í…ìŠ¤ì³ì˜ ìƒ˜í”Œë§ ìœ„ì¹˜ UV ë¥¼ ê³„ì‚°
+    vUV.y -= (sin((_NomalizedThreadID - (g_time /*ê·¸ë˜í”„ ìš°ì¸¡ ì´ë™ ì†ë„*/)) * 2.f * 3.1415926535f * 10.f /*ë°˜ë³µì£¼ê¸°*/) / 2.f);
     
     if (1.f < vUV.x)
         vUV.x = frac(vUV.x);

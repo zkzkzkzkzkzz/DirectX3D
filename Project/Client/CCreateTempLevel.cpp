@@ -22,6 +22,8 @@
 #include <Scripts/CMissileScript.h>
 #include <Scripts/CMonsterScript.h>
 
+#include <Scripts/CTimeMgrScript.h>
+
 #include <Engine/CAssetMgr.h>
 #include <Engine/CPrefab.h>
 #include <Engine/CFSM.h>
@@ -166,6 +168,14 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pObj, L"Player", false);
 
+
+	// TimeMgr Object »ý¼º
+	pObj = new CGameObject;
+	pObj->SetName(L"Manager Object");
+
+	pObj->AddComponent(new CTimeMgrScript);
+
+	pTempLevel->AddObject(pObj, 0);
 
 
 
