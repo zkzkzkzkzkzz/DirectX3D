@@ -5,7 +5,7 @@ Light2DUI::Light2DUI()
 	: ComponentUI("Light2D", "##Light2D", COMPONENT_TYPE::LIGHT2D)
 {
 	SetSize(ImVec2(0.f, 120.f));
-	SetComopnentTitle("Light2D");
+	SetComponentTitle("Light2D");
 }
 
 Light2DUI::~Light2DUI()

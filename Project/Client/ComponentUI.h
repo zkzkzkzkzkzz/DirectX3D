@@ -18,7 +18,7 @@ public:
 public:
     CGameObject* GetTargetObject() { return m_TargetObject; }
     void SetTargetObject(CGameObject* _Target);
-    void SetComopnentTitle(const string& _title) { m_ComponentTitle = _title; }
+    void SetComponentTitle(const string& _title) { m_ComponentTitle = _title; }
     COMPONENT_TYPE GetType() { return m_Type; }
 
 public:
