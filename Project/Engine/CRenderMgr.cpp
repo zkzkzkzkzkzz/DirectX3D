@@ -18,7 +18,7 @@ CRenderMgr::CRenderMgr()
 	, m_DebugPosition(true)
 	, m_EditorCam(nullptr)
 	, m_RenderFunc(nullptr)
-{	
+{
 	m_RenderFunc = &CRenderMgr::render_play;
 }
 
@@ -29,6 +29,9 @@ CRenderMgr::~CRenderMgr()
 
 	if (nullptr != m_Light2DBuffer)
 		delete m_Light2DBuffer;
+
+	if (nullptr != m_Light3DBuffer)
+		delete m_Light3DBuffer;
 }
 
 void CRenderMgr::tick()
@@ -37,7 +40,7 @@ void CRenderMgr::tick()
 	Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
 	Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 	CONTEXT->OMSetRenderTargets(1, pRTTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
-	
+
 	Vec4 vClearColor = Vec4(0.f, 0.f, 0.f, 1.f);
 	CDevice::GetInst()->ClearRenderTarget(vClearColor);
 
@@ -141,7 +144,7 @@ void CRenderMgr::render_debug()
 void CRenderMgr::UpdateData()
 {
 	g_global.g_Light2DCount = (int)m_vecLight2D.size();
-	//g_global.g_Light3DCount = (int)m_vecLight3D.size();
+	g_global.g_Light3DCount = (int)m_vecLight3D.size();
 
 	// 전역 데이터 업데이트
 	static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
@@ -162,17 +165,33 @@ void CRenderMgr::UpdateData()
 	if (!vecLight2DInfo.empty())
 	{
 		m_Light2DBuffer->SetData(vecLight2DInfo.data(), (UINT)vecLight2DInfo.size());
-	}	
+	}
 	m_Light2DBuffer->UpdateData(11);
 
 	vecLight2DInfo.clear();
 
 	// 3D 광원정보 업데이트
+	static vector<tLightInfo> vecLight3DInfo;
+
+	for (size_t i = 0; i < m_vecLight3D.size(); ++i)
+	{
+		const tLightInfo& info = m_vecLight3D[i]->GetLightInfo();
+		vecLight3DInfo.push_back(info);
+	}
+
+	if (!vecLight3DInfo.empty())
+	{
+		m_Light3DBuffer->SetData(vecLight3DInfo.data(), (UINT)vecLight3DInfo.size());
+	}
+	m_Light3DBuffer->UpdateData(12);
+
+	vecLight3DInfo.clear();
 }
 
 void CRenderMgr::Clear()
 {
 	m_vecLight2D.clear();
+	m_vecLight3D.clear();
 }
 
 void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
