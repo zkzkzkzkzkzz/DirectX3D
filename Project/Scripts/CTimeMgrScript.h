@@ -9,8 +9,8 @@ private:
 	int		m_DTLock; // 원래라면 bool 형식을 사용해야 하지만, 현재 스크립트 파람에 bool이 없기에 int를 사용함.
 
 public:
-	void SetDTScale(float _DTScale) { m_DTScale = _DTScale; }
-	void LockDeltaTime(bool _DTLock) { m_DTLock = _DTLock; }
+	void SetDTScale(float _DTScale);
+	void LockDeltaTime(bool _DTLock);
 
 public:
 	virtual void begin() override;
