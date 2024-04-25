@@ -60,9 +60,6 @@ public:
     void LayerCheck(const wstring& _strLayerName, bool _bCheck);
     void LayerCheckAll() { m_LayerCheck = 0xffffffff; }
 
-    float GetWidth() { return m_Width; }
-    void SetWidth(float _Width) { m_Width = _Width; }
-
     UINT GetLayerCheck() { return m_LayerCheck; }
     void SetLayerCheck(UINT _LayerCheck) { m_LayerCheck = _LayerCheck; }
     void LayerCheckToggle(UINT _LayerIdx) { m_LayerCheck ^ (1 << _LayerIdx); }
