@@ -204,6 +204,19 @@ void CParticleSystem::SaveToFile(FILE* _File)
 	SaveAssetRef(m_ParticleTex, _File);	
 }
 
+void CParticleSystem::SaveToFile(ofstream& fout)
+{
+	fout << "[MaxParticleCount]" << endl;
+	fout << m_MaxParticleCount << endl;
+
+	fout << "[Modules]" << endl;
+	fout << m_Module << endl;
+
+	fout << "[ParticleTexture]" << endl;
+	SaveAssetRef(m_ParticleTex, fout);
+
+}
+
 void CParticleSystem::LoadFromFile(FILE* _File)
 {
 	// 파티클 최대 갯수 및 모듈 정보 로드
