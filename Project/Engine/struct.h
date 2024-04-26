@@ -43,6 +43,8 @@ struct tLightInfo
 	int		LightType;	// ±¤¿ø Å¸ÀÔ
 
 	Vec3	vPadding;
+
+	friend ofstream& operator<<(ofstream& fout, const tLightInfo& info);
 };
 
 struct tPixel
