@@ -210,6 +210,34 @@ void CCamera::SaveToFile(FILE* _File)
 	fwrite(&m_CameraPriority, sizeof(int), 1, _File);
 }
 
+void CCamera::SaveToFile(ofstream& fout)
+{
+	fout << "[ProjType]" << endl;
+	auto str = magic_enum::enum_name((PROJ_TYPE)m_ProjType);
+	fout << ToString(str) << endl;
+
+	fout << "[FOV]" << endl;
+	fout << m_FOV << endl;
+
+	fout << "[Width]" << endl;
+	fout << m_Width << endl;
+
+	fout << "[Scale]" << endl;
+	fout << m_Scale << endl;
+
+	fout << "[AspectRatio]" << endl;
+	fout << m_AspectRatio << endl;
+
+	fout << "[Far]" << endl;
+	fout << m_Far << endl;
+
+	fout << "[LayerCheck]" << endl;
+	fout << m_LayerCheck << endl;
+
+	fout << "[Priority]" << endl;
+	fout << m_CameraPriority << endl;
+}
+
 void CCamera::LoadFromFile(FILE* _File)
 {
 	fread(&m_ProjType, sizeof(PROJ_TYPE), 1, _File);
