@@ -327,6 +327,7 @@
     <ClCompile Include="CLight3D.cpp">
       <Filter>08. Component\07. Light3D</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleMath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
