@@ -8,18 +8,24 @@
 #define DEVICE CDevice::GetInst()->GetDevice()
 #define CONTEXT CDevice::GetInst()->GetContext()
 
-#define KEY_CHECK(Key, State) CKeyMgr::GetInst()->GetKeyState(Key) == State
 #define DT	CTimeMgr::GetInst()->GetDeltaTime()
 #define DTd	CTimeMgr::GetInst()->GetDeltaTime_d()
 
 #define DT_ENGINE	CTimeMgr::GetInst()->GetEngineDeltaTime()
 #define DTd_ENGINE	CTimeMgr::GetInst()->GetEngineDeltaTime_d()
 
+#define ENGINE_KEY_CHECK(Key, State) (CKeyMgr::GetInst()->GetKeyState(Key) == State) && (CKeyMgr::GetInst()->GetFocusState() == FOCUS_STATE::ENGINE)
+#define KEY_TAP(Key)				ENGINE_KEY_CHECK(Key, TAP)
+#define KEY_PRESSED(Key)			ENGINE_KEY_CHECK(Key, PRESSED)
+#define KEY_RELEASED(Key)			ENGINE_KEY_CHECK(Key, RELEASED)
+#define KEY_NONE(Key)				ENGINE_KEY_CHECK(Key, NONE)
 
-#define KEY_TAP(Key) KEY_CHECK(Key, TAP)
-#define KEY_PRESSED(Key) KEY_CHECK(Key, PRESSED)
-#define KEY_RELEASED(Key) KEY_CHECK(Key, RELEASED)
-#define KEY_NONE(Key) KEY_CHECK(Key, NONE)
+#define CLIENT_KEY_CHECK(Key, State) (CKeyMgr::GetInst()->GetKeyState(Key) == State) && (CKeyMgr::GetInst()->GetFocusState() == FOCUS_STATE::CLIENT)
+#define CLIENT_KEY_TAP(Key)			CLIENT_KEY_CHECK(Key, TAP)
+#define CLIENT_KEY_PRESSED(Key)		CLIENT_KEY_CHECK(Key, PRESSED)
+#define CLIENT_KEY_RELEASED(Key)	CLIENT_KEY_CHECK(Key, RELEASED)
+#define CLIENT_KEY_NONE(Key)		CLIENT_KEY_CHECK(Key, NONE)
+
 
 #define LAYER_MAX 32
 
