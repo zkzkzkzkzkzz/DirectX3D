@@ -139,7 +139,7 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, ofstream& fout)
 		fout << ToString(type) << endl;
 
 		// 해당 컴포넌트가 저장할 데이터 저장
-		//pCom->SaveToFile(_File);
+		pCom->SaveToFile(fout);
 	}
 	fout << "[Component_End]" << endl;
 

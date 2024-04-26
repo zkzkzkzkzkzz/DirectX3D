@@ -117,6 +117,18 @@ void CTransform::SaveToFile(FILE* _File)
 	fwrite(&m_bAbsolute, sizeof(bool), 1, _File);	
 }
 
+void CTransform::SaveToFile(ofstream& fout)
+{
+	fout << "[Pos]" << endl;
+	fout << m_vRelativePos << endl;
+	fout << "[Scale]" << endl;
+	fout << m_vRelativeScale << endl;
+	fout << "[Rotation]" << endl;
+	fout << m_vRealtiveRotation << endl;
+	fout << "[Absolute]" << endl;
+	fout << m_bAbsolute << endl;
+}
+
 void CTransform::LoadFromFile(FILE* _File)
 {
 	fread(&m_vRelativePos, sizeof(Vec3), 1, _File);

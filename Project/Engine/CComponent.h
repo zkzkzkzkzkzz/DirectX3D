@@ -41,6 +41,7 @@ public:
 
 
     virtual void SaveToFile(FILE* _File) = 0;
+    virtual void SaveToFile(ofstream& fout) {};
     virtual void LoadFromFile(FILE* _File) = 0;
 
     virtual CComponent* Clone() = 0;
