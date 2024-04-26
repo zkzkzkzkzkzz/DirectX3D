@@ -142,9 +142,17 @@ void CTransform::LoadFromFile(ifstream& fin)
 	string tag;
 	getline(fin, tag); // [Pos]
 	fin >> m_vRelativePos;
+	getline(fin, tag); // 
+
 	getline(fin, tag); // [Scale]
 	fin >> m_vRelativeScale;
+	getline(fin, tag); // 
+
 	getline(fin, tag); // [Rotation]
 	fin >> m_vRelativeRotation;
+	getline(fin, tag); // 
 
+	getline(fin, tag); // [Absolute]
+	fin >> m_bAbsolute;
+	getline(fin, tag); // 
 }

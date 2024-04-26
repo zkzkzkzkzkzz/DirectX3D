@@ -393,7 +393,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 
 			// 해당 컴포넌트가 저장한 데이터를 로드
 			pObject->AddComponent(pComponent);
-			//pComponent->LoadFromFile(fin);
+			pComponent->LoadFromFile(fin);
 		}
 		else {
 			MessageBox(nullptr, L"컴포넌트 타입 오류", L"게임 오브젝트 불러오기", 0);
