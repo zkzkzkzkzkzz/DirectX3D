@@ -41,7 +41,7 @@ void Outliner::render_update()
 		ResetCurrentLevel();
 	}
 
-	if (KEY_TAP(KEY::DEL))
+	if (CLIENT_KEY_TAP(KEY::DEL))
 	{
 		TreeNode* pNode = m_Tree->GetSelectedNode();
 		if (nullptr != pNode)

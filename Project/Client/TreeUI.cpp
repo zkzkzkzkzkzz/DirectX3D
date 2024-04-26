@@ -54,7 +54,7 @@ void TreeNode::render_update()
 
 		else
 		{
-			if ( KEY_RELEASED(KEY::LBTN) && ImGui::IsItemHovered(ImGuiHoveredFlags_None))
+			if (CLIENT_KEY_RELEASED(KEY::LBTN) && ImGui::IsItemHovered(ImGuiHoveredFlags_None))
 			{
 				m_Owner->SetSelectedNode(this);
 			}
@@ -80,7 +80,7 @@ void TreeNode::render_update()
 		}
 		else
 		{
-			if (KEY_RELEASED(KEY::LBTN) && ImGui::IsItemHovered(ImGuiHoveredFlags_None))
+			if (CLIENT_KEY_RELEASED(KEY::LBTN) && ImGui::IsItemHovered(ImGuiHoveredFlags_None))
 			{
 				m_Owner->SetSelectedNode(this);
 			}
@@ -144,7 +144,7 @@ void TreeUI::render_update()
 
 
 	// 드래그 대상을 특정 노드가 아닌 공중드랍 시킨 경우
-	if (KEY_RELEASED(KEY::LBTN) && m_DragNode && !m_DropNode)
+	if (CLIENT_KEY_RELEASED(KEY::LBTN) && m_DragNode && !m_DropNode)
 	{
 		if (m_DragDropInst && m_DragDropFunc)
 		{
