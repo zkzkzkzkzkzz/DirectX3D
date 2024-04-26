@@ -39,6 +39,7 @@ public:
     virtual void EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider) {}
 
     virtual void SaveToFile(FILE* _File) = 0;
+    virtual void SaveToFile(ofstream& fout) {};
     virtual void LoadFromFile(FILE* _File) = 0;
 
 
