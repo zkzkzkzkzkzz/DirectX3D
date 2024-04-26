@@ -121,6 +121,19 @@ void CCollider2D::SaveToFile(FILE* _File)
 	fwrite(&m_Type, sizeof(UINT), 1, _File);	
 }
 
+void CCollider2D::SaveToFile(ofstream& fout)
+{
+	fout << "[OffsetPos]" << endl;
+	fout << m_vOffsetPos << endl;
+	fout << "[OffsetScale]" << endl;
+	fout << m_vOffsetScale << endl;
+	fout << "[Absolute]" << endl;
+	fout << m_bAbsolute << endl;
+	fout << "[Collider_Type]" << endl;
+	auto type = magic_enum::enum_name(m_Type);
+	fout << ToString(type) << endl;
+}
+
 void CCollider2D::LoadFromFile(FILE* _File)
 {
 	fread(&m_vOffsetPos, sizeof(Vec3), 1, _File);
