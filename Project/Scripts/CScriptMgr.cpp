@@ -4,16 +4,16 @@
 #include "CBackgroundScript.h"
 #include "CMissileScript.h"
 #include "CPlayerScript.h"
-#include "CTimeMgrScript.h"
 #include "CMonsterScript.h"
+#include "CTimeMgrScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CBackgroundScript");
 	_vec.push_back(L"CMissileScript");
 	_vec.push_back(L"CPlayerScript");
-	_vec.push_back(L"CTimeMgrScript");
 	_vec.push_back(L"CMonsterScript");
+	_vec.push_back(L"CTimeMgrScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -24,10 +24,10 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CMissileScript;
 	if (L"CPlayerScript" == _strScriptName)
 		return new CPlayerScript;
-	if (L"CTimeMgrScript" == _strScriptName)
-		return new CTimeMgrScript;
 	if (L"CMonsterScript" == _strScriptName)
 		return new CMonsterScript;
+	if (L"CTimeMgrScript" == _strScriptName)
+		return new CTimeMgrScript;
 	return nullptr;
 }
 
@@ -44,11 +44,11 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::PLAYERSCRIPT:
 		return new CPlayerScript;
 		break;
-	case (UINT)SCRIPT_TYPE::TIMEMGRSCRIPT:
-		return new CTimeMgrScript;
-    break;
 	case (UINT)SCRIPT_TYPE::MONSTERSCRIPT:
 		return new CMonsterScript;
+		break;
+	case (UINT)SCRIPT_TYPE::TIMEMGRSCRIPT:
+		return new CTimeMgrScript;
 		break;
 	}
 	return nullptr;
@@ -70,12 +70,12 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CPlayerScript";
 		break;
 
-	case SCRIPT_TYPE::TIMEMGRSCRIPT:
-		return L"CTimeMgrScript";
-    break;
-      
 	case SCRIPT_TYPE::MONSTERSCRIPT:
 		return L"CMonsterScript";
+		break;
+
+	case SCRIPT_TYPE::TIMEMGRSCRIPT:
+		return L"CTimeMgrScript";
 		break;
 
 	}

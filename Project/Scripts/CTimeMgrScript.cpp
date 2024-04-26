@@ -8,7 +8,7 @@
 #define TIMEMGR CTimeMgr::GetInst()
 
 CTimeMgrScript::CTimeMgrScript()
-	: CScript(TIMEMGRSCRIPT)
+	: CScript((UINT)SCRIPT_TYPE::TIMEMGRSCRIPT)
 	, m_DTLock(false)
 	, m_DTScale(1.f)
 {

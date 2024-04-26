@@ -41,15 +41,8 @@ void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
     // Spot Light
     else
     {
-
-     // Point Light 거의 유사
-     // 내적을 활용, 각도 체크
-     // 간단한 영상 찍어서 올리기
-     // 광원을 회전시키기
-    }
-
-        float fAttenu = 1.f;    // 각도 감쇠
-        float fAttenu2 = 1.f;   // 거리 감쇠
+        float fAttenu = 1.f; // 각도 감쇠
+        float fAttenu2 = 1.f; // 거리 감쇠
         
         float fDist = distance(info.vWorldPos.xy, _WorldPos.xy);
         
@@ -83,15 +76,15 @@ void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
         }
         
         _output.vColor += info.Color.vColor * fAttenu * fAttenu2;
-    }    
+    }
 }
 
 void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLightColor _LightColor)
 {
-    // ������ ������ Ȯ��
+    // 광원의 정보를 확인
     tLightInfo Light = g_Light3D[_LightIdx];
     
-	// ������ ��ü�� ���ϴ� ���⺤��
+    // 광원이 물체를 향하는 방향벡터
     float3 vViewLightDir = (float3) 0.f;
 
     float fDistanceRatio = 1.f;
@@ -99,8 +92,8 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
     // Directional Light
     if (0 == Light.LightType)
     {
-	    // ���� ������ ViewSpace ���� ����Ǳ�� �߱� ������,
-        // ������ �����ϴ� ���⵵ View ���� �������� ������
+        // 광원 연산이 ViewSpace 에서 진행되기로 했기 때문에,
+        // 광원이 진입하는 방향도 View 공간 기준으로 변경함
         vViewLightDir = normalize(mul(float4(Light.vWorldDir, 0.f), g_matView).xyz);
     }
 
@@ -110,11 +103,11 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
         float3 vLightViewPos = mul(float4(Light.vWorldPos, 1.f), g_matView).xyz;
         vViewLightDir = _vViewPos - vLightViewPos;
 
-        // ������ ��ü ������ �Ÿ�
+        // 광원과 물체 사이의 거리
         float fDistance = length(vViewLightDir);
         vViewLightDir = normalize(vViewLightDir);
 
-        // ���� �ݰ�� ��ü������ �Ÿ��� ���� ���� ����
+        // 광원 반경과 물체까지의 거리에 따른 빛의 세기
         fDistanceRatio = saturate(1.f - (fDistance / Light.fRadius));
     }
 
@@ -124,17 +117,17 @@ void CalLight3D(int _LightIdx, float3 _vViewPos, float3 _vViewNormal, inout tLig
         
     }
 
-     // ViewSpace ���� ������ �����, ��ü ǥ���� ������ �̿��ؼ� ������ ���� ����(Diffuse) �� ���Ѵ�.
+     // ViewSpace 에서 광원의 방향과, 물체 표면의 법선를 이용해서 광원의 진입 세기(Diffuse) 를 구한다.
     float LightPow = saturate(dot(_vViewNormal, -vViewLightDir));
             
-    // ���� ǥ�鿡 �����ؼ� �ݻ�Ǵ� ������ ���Ѵ�.
+    // 빛이 표면에 진입해서 반사되는 방향을 구한다.
     float3 vReflect = vViewLightDir + 2 * dot(-vViewLightDir, _vViewNormal) * _vViewNormal;
     vReflect = normalize(vReflect);
     
-    // ī�޶� ��ü�� ���ϴ� ����
+    // 카메라가 물체를 향하는 방향
     float3 vEye = normalize(_vViewPos);
     
-    // �ü����Ϳ� �ݻ纤�� ����, �ݻ籤�� ����
+    // 시선벡터와 반사벡터 내적, 반사광의 세기
     float ReflectPow = saturate(dot(-vEye, vReflect));
     ReflectPow = pow(ReflectPow, 20.f);
 
