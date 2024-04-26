@@ -53,11 +53,11 @@ void CKeyMgr::tick()
 	}
 	else if (GetFocus() == CEngine::GetInst()->GetMainWind())
 	{
-		m_FocusState = FOCUS_STATE::ENGINE;
+		m_FocusState = FOCUS_STATE::MAIN;
 	}
 	else
 	{
-		m_FocusState = FOCUS_STATE::CLIENT;
+		m_FocusState = FOCUS_STATE::OTHER;
 	}
 
 	// 1. 포커싱 되어있는 창이 없을 경우
