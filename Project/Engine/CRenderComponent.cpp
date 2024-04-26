@@ -78,6 +78,14 @@ void CRenderComponent::SaveToFile(FILE* _File)
 	SaveAssetRef(m_SharedMtrl, _File);	
 }
 
+void CRenderComponent::SaveToFile(ofstream& fout)
+{
+	fout << "[Mesh]" << endl;
+	SaveAssetRef(m_Mesh, fout);
+	fout << "[Shader]" << endl;
+	SaveAssetRef(m_SharedMtrl, fout);
+}
+
 void CRenderComponent::LoadFromFile(FILE* _File)
 {
 	LoadAssetRef(m_Mesh, _File);

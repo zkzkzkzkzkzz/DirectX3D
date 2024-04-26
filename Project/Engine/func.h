@@ -56,6 +56,24 @@ void SaveAssetRef(Ptr<T> _Asset, FILE* _File)
 }
 
 template<typename T>
+void SaveAssetRef(Ptr<T> _Asset, ofstream& fout)
+{
+	fout << "[Asset Exist]" << endl;
+	bool bAssetExist = false;
+	_Asset == nullptr ? bAssetExist = false : bAssetExist = true;
+
+	fout << bAssetExist << endl;
+
+	if (bAssetExist)
+	{
+		fout << "[Key]" << endl;
+		fout << ToString(_Asset->GetKey()) << endl;
+		fout << "[Path]" << endl;
+		fout << ToString(_Asset->GetRelativePath()) << endl;
+	}
+}
+
+template<typename T>
 void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
 {	
 	bool bAssetExist = false;
@@ -71,7 +89,6 @@ void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
 		_Asset = CAssetMgr::GetInst()->Load<T>(strKey, strRelativePath);
 	}
 }
-
 
 
 
