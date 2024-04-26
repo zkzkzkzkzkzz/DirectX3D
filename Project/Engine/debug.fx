@@ -25,8 +25,6 @@ VS_OUT VS_DebugShape(VS_IN _in)
     return output;
 }
 
-static float g_Thickness = 0.1f;
-
 float4 PS_DebugShape(VS_OUT _in) : SV_Target
 {
     float4 vOutColor = (float4) 0.f;

@@ -22,8 +22,11 @@ namespace GamePlayStatic
 	void Play2DSound(const wstring& _SoundPath, int _Loop, float _Volume, bool _Overlap = true);
 	void Play2DBGM(const wstring& _SoundPath, float _Volume);
 
-	//void DrawDebugCube();
-	//void DrawDebugSphere();
+	void DrawDebugCube(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
+	void DrawDebugCube(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
+
+	void DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
+
 }
 
 string ToString(const wstring& _str);

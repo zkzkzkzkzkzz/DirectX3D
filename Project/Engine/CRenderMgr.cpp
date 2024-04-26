@@ -36,7 +36,7 @@ CRenderMgr::~CRenderMgr()
 
 void CRenderMgr::tick()
 {
-	// ·»´õÅ¸°Ù ¹× ±íÀÌ Å¸°Ù ¼³Á¤
+	// ë Œë”íƒ€ê²Ÿ ë° ê¹Šì´ íƒ€ê²Ÿ ì„¤ì •
 	Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
 	Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 	CONTEXT->OMSetRenderTargets(1, pRTTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
@@ -72,18 +72,21 @@ void CRenderMgr::render_editor()
 
 void CRenderMgr::render_debug()
 {
-	if (m_vecCam.empty())
-		return;
-
-	//·¹º§ÀÌ ÇÃ·¹ÀÌ»óÅÂÀÏ°æ¿ì(·£´õFunc°¡ render_play ÀÏ °æ¿ì)
+	//ë ˆë²¨ì´ í”Œë ˆì´ìƒíƒœì¼ê²½ìš°(ëœë”Funcê°€ render_play ì¼ ê²½ìš°)
 	if (&CRenderMgr::render_play == m_RenderFunc)
 	{
+		if (m_vecCam.empty())
+			return;
+
 		g_Transform.matView = m_vecCam[0]->GetViewMat();
 		g_Transform.matProj = m_vecCam[0]->GetProjMat();
 	}
-	//·¹º§ÀÌ ÇÃ·¹ÀÌ»óÅÂ°¡ ¾Æ´Ò°æ¿ì
+	//ë ˆë²¨ì´ í”Œë ˆì´ìƒíƒœê°€ ì•„ë‹ê²½ìš°
 	else
 	{
+		if (m_EditorCam == nullptr)
+			return;
+
 		g_Transform.matView = m_EditorCam->GetViewMat();
 		g_Transform.matProj = m_EditorCam->GetProjMat();
 	}
@@ -104,7 +107,7 @@ void CRenderMgr::render_debug()
 			break;
 
 		case DEBUG_SHAPE::CUBE:
-			m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CubeMesh"));
+			m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CubeMesh_Debug"));
 			break;
 		case DEBUG_SHAPE::SPHERE:
 			m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
@@ -116,10 +119,23 @@ void CRenderMgr::render_debug()
 		m_pDebugObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DebugShapeMtrl"));
 		m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_0, (*iter).vColor);
 
+
+		// ê¹Šì´íŒì • ì˜µì…˜ ì„¤ì •
+		if ((*iter).bDepthTest)
+			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetDSType(DS_TYPE::NO_WRITE);
+		else
+			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+
+
+		// ì´ì „ Topology ì €ì¥
 		D3D11_PRIMITIVE_TOPOLOGY PrevTopology = m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->GetTopology();
 		if (DEBUG_SHAPE::CROSS == (*iter).eShape)
 		{
 			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_LINELIST);
+		}
+		else if (DEBUG_SHAPE::SPHERE == (*iter).eShape)
+		{
+			m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		}
 
 		m_pDebugObj->Transform()->SetWorldMat((*iter).matWorld);
@@ -146,14 +162,14 @@ void CRenderMgr::UpdateData()
 	g_global.g_Light2DCount = (int)m_vecLight2D.size();
 	g_global.g_Light3DCount = (int)m_vecLight3D.size();
 
-	// Àü¿ª µ¥ÀÌÅÍ ¾÷µ¥ÀÌÆ®
+	// ì „ì—­ ë°ì´í„° ì—…ë°ì´íŠ¸
 	static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
 	pCB->SetData(&g_global);
 
 	pCB->UpdateData();
 	pCB->UpdateData_CS();
 
-	// 2D ±¤¿øÁ¤º¸ ¾÷µ¥ÀÌÆ®
+	// 2D ê´‘ì›ì •ë³´ ì—…ë°ì´íŠ¸
 	static vector<tLightInfo> vecLight2DInfo;
 
 	for (size_t i = 0; i < m_vecLight2D.size(); ++i)
@@ -170,7 +186,7 @@ void CRenderMgr::UpdateData()
 
 	vecLight2DInfo.clear();
 
-	// 3D ±¤¿øÁ¤º¸ ¾÷µ¥ÀÌÆ®
+	// 3D ê´‘ì›ì •ë³´ ì—…ë°ì´íŠ¸
 	static vector<tLightInfo> vecLight3DInfo;
 
 	for (size_t i = 0; i < m_vecLight3D.size(); ++i)
@@ -201,7 +217,7 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
 		m_vecCam.resize(_Idx + 1);
 	}
 
-	// µ¿ÀÏÇÑ ¿ì¼±¼øÀ§ÀÇ Ä«¸Ş¶ó°¡ ÀÌ¹Ì Á¸ÀçÇÏ¸é assert
+	// ë™ì¼í•œ ìš°ì„ ìˆœìœ„ì˜ ì¹´ë©”ë¼ê°€ ì´ë¯¸ ì¡´ì¬í•˜ë©´ assert
 	assert(nullptr == m_vecCam[_Idx]);
 
 	m_vecCam[_Idx] = _Cam;
