@@ -19,7 +19,7 @@ CameraUI::CameraUI()
     : ComponentUI("Camera", "##Camera", COMPONENT_TYPE::CAMERA)
 {
     SetSize(ImVec2(0.f, 600.f));
-    SetComopnentTitle("Camera");
+    SetComponentTitle("Camera");
 
 }
 
