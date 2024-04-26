@@ -249,3 +249,39 @@ void CCamera::LoadFromFile(FILE* _File)
 	fread(&m_LayerCheck, sizeof(UINT), 1, _File);
 	fread(&m_CameraPriority, sizeof(int), 1, _File);
 }
+
+void CCamera::LoadFromFile(ifstream& fin)
+{
+	string tag, str;
+	getline(fin, tag); // [ProjType]
+	getline(fin, str);
+	m_ProjType = magic_enum::enum_cast<PROJ_TYPE>(str).value();
+
+	getline(fin, tag); // [FOV]
+	getline(fin, str);
+	m_FOV = stof(str);
+
+	getline(fin, tag); // [Width]
+	getline(fin, str);
+	m_Width = stof(str);
+
+	getline(fin, tag); // [Scale]
+	getline(fin, str);
+	m_Scale = stof(str);
+
+	getline(fin, tag); // [AspectRatio]
+	getline(fin, str);
+	m_AspectRatio = stof(str);
+
+	getline(fin, tag); // [Far]
+	getline(fin, str);
+	m_Far = stof(str);
+
+	getline(fin, tag); // [LayerCheck]
+	getline(fin, str);
+	m_LayerCheck = stoul(str);
+
+	getline(fin, tag); // [Priority]
+	getline(fin, str);
+	m_CameraPriority = stoi(str);
+}

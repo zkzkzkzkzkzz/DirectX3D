@@ -419,7 +419,6 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 	getline(fin, tag); // [name's ChildCount]
 	getline(fin, str);
 	childCnt = stoul(str);
-	fin >> childCnt;
 
 	for (size_t i = 0; i < childCnt; i++)
 	{
