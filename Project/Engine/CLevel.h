@@ -10,7 +10,7 @@ class CLevel :
 	public CEntity
 {
 private:
-	CLayer*			m_arrLayer[LAYER_MAX];
+	CLayer*			m_arrLayer[(UINT)LAYER::LAYER_MAX];
 	LEVEL_STATE		m_State;
 
 public:

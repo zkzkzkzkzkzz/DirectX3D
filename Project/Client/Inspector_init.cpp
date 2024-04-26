@@ -17,6 +17,7 @@ void Inspector::CreateChildUI()
 #include "Light2DUI.h"
 #include "Animator2DUI.h"
 #include "PrefabUI.h"
+#include "CameraUI.h"
 
 void Inspector::CreateComponentUI()
 {
@@ -40,6 +41,9 @@ void Inspector::CreateComponentUI()
 	m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR2D]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::ANIMATOR2D]);
 
+	m_arrComUI[(UINT)COMPONENT_TYPE::CAMERA] = new CameraUI;
+	m_arrComUI[(UINT)COMPONENT_TYPE::CAMERA]->Deactivate();
+	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::CAMERA]);
 
 }
 

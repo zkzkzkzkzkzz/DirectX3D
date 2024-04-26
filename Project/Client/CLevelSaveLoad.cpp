@@ -29,7 +29,7 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _strLevelPath)
 	SaveWString(_Level->GetName(), pFile);
 
 	// 레벨의 레이어 저장
-	for (UINT i = 0; i < LAYER_MAX; ++i)
+	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		SaveLayer(_Level->GetLayer(i), pFile);
 	}
@@ -124,7 +124,7 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _strLevelPath)
 	pLevel->SetName(strLevelName);
 
 	// Layer 로드
-	for (UINT i = 0; i < LAYER_MAX; ++i)
+	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		LoadLayer(pLevel->GetLayer(i), pFile);		
 	}

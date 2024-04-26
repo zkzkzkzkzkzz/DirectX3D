@@ -28,6 +28,8 @@ namespace GamePlayStatic
 
 string ToString(const wstring& _str);
 wstring ToWString(const string& _str);
+string ToString(const std::string_view& _sv);
+wstring ToWString(const std::string_view& _sv);
 
 void SaveWString(const wstring& _str, FILE* _File);
 void LoadWString(wstring& _str, FILE* _FILE);

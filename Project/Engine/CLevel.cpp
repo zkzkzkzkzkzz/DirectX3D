@@ -11,10 +11,12 @@ CLevel::CLevel()
 	: m_arrLayer{}
 	, m_State(LEVEL_STATE::NONE)
 {
-	for (UINT i = 0; i < LAYER_MAX; ++i)
+	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		m_arrLayer[i] = new CLayer;
 		m_arrLayer[i]->m_iLayerIdx = i;
+		auto s = magic_enum::enum_name((LAYER)i);
+		m_arrLayer[i]->SetName(ToWString(s));
 	}
 }
 
@@ -22,7 +24,7 @@ CLevel::CLevel(const CLevel& _OriginLevel)
 	: CEntity(_OriginLevel)
 	, m_arrLayer{}
 {
-	for (UINT i = 0; i < LAYER_MAX; ++i)
+	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		m_arrLayer[i] = _OriginLevel.m_arrLayer[i]->Clone();
 	}
@@ -35,7 +37,7 @@ CLevel::~CLevel()
 
 void CLevel::begin()
 {
-	for (int i = 0; i < LAYER_MAX; ++i)
+	for (int i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		m_arrLayer[i]->begin();
 	}
@@ -43,7 +45,7 @@ void CLevel::begin()
 
 void CLevel::tick()
 {
-	for (int i = 0; i < LAYER_MAX; ++i)
+	for (int i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		m_arrLayer[i]->tick();
 	}
@@ -51,7 +53,7 @@ void CLevel::tick()
 
 void CLevel::finaltick()
 {
-	for (int i = 0; i < LAYER_MAX; ++i)
+	for (int i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		m_arrLayer[i]->finaltick();
 	}
@@ -73,7 +75,7 @@ void CLevel::AddObject(CGameObject* _Object, const wstring& _strLayerName, bool 
 
 CLayer* CLevel::GetLayer(const wstring& _strLayerName)
 {
-	for (int i = 0; i < LAYER_MAX; ++i)
+	for (int i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		if (_strLayerName == m_arrLayer[i]->GetName())
 		{
@@ -85,7 +87,7 @@ CLayer* CLevel::GetLayer(const wstring& _strLayerName)
 
 CGameObject* CLevel::FindObjectByName(const wstring& _strName)
 {
-	for (UINT i = 0; i < LAYER_MAX; ++i)
+	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		const vector<CGameObject*>& vecParent = m_arrLayer[i]->GetParentObjects();
 
@@ -119,7 +121,7 @@ CGameObject* CLevel::FindObjectByName(const wstring& _strName)
 
 void CLevel::FindObjectsByName(const wstring& _strName, vector<CGameObject*>& _vecObj)
 {
-	for (UINT i = 0; i < LAYER_MAX; ++i)
+	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		const vector<CGameObject*>& vecParent = m_arrLayer[i]->GetParentObjects();
 
@@ -151,7 +153,7 @@ void CLevel::FindObjectsByName(const wstring& _strName, vector<CGameObject*>& _v
 
 void CLevel::clear()
 {
-	for (UINT i = 0; i < LAYER_MAX; ++i)
+	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		m_arrLayer[i]->m_vecObjects.clear();
 	}
