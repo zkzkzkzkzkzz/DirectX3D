@@ -34,7 +34,7 @@
 
 void CCreateTempLevel::Init()
 {
-	// Missile Prefab ìƒì„±
+	// Missile Prefab »ı¼º
 	/*CGameObject* pObj = nullptr;
 
 	pObj = new CGameObject;
@@ -55,7 +55,7 @@ void CCreateTempLevel::Init()
 	//pMissilePrefab->Save(L"prefab\\missile.pref");
 	*/
 
-	// ì„ì‹œ FSM ê°ì²´ ì—ì…‹ í•˜ë‚˜ ìƒì„±í•˜ê¸°
+	// ÀÓ½Ã FSM °´Ã¼ ¿¡¼Â ÇÏ³ª »ı¼ºÇÏ±â
 	Ptr<CFSM>	pFSM = new CFSM(true);
 
 	pFSM->AddState(L"IdleState", new CIdleState);
@@ -78,7 +78,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->GetLayer(6)->SetName(L"Tile");
 	pTempLevel->GetLayer(31)->SetName(L"UI");
 
-	// Main Camera Object ìƒì„±
+	// Main Camera Object »ı¼º
 	CGameObject* pCamObj = new CGameObject;
 	pCamObj->SetName(L"MainCamera");
 	pCamObj->AddComponent(new CTransform);
@@ -94,7 +94,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pCamObj, 0);
 
-	// UI ì¹´ë©”ë¼ ìƒì„±
+	// UI Ä«¸Ş¶ó »ı¼º
 	pCamObj = new CGameObject;
 	pCamObj->SetName(L"UICamera");
 	pCamObj->AddComponent(new CTransform);
@@ -112,7 +112,7 @@ void CCreateTempLevel::CreateTempLevel()
 	CGameObject* pObj = nullptr;
 
 
-	// 3D Light ì¶”ê°€
+	// 3D Light Ãß°¡
 	pObj = new CGameObject;
 	pObj->SetName(L"Light3D");
 	pObj->AddComponent(new CTransform);
@@ -142,7 +142,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->AddObject(pObj, L"Default", false);
 
 
-	// Player Object ìƒì„±
+	// Player Object »ı¼º
 	pObj = new CGameObject;
 	pObj->SetName(L"Player");
 
@@ -179,7 +179,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 
 
-	// ì¶©ëŒ ì„¤ì •
+	// Ãæµ¹ ¼³Á¤
 	CCollisionMgr::GetInst()->LayerCheck(3, 4);
 	CCollisionMgr::GetInst()->LayerCheck(4, 4);
 
