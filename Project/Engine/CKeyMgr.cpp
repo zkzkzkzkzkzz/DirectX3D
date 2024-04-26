@@ -43,22 +43,26 @@ void CKeyMgr::init()
 }
 
 void CKeyMgr::tick()
-{	 
-	if (nullptr == GetFocus())
+{
+	// GetFocus()는 현재 포커싱 되어있는 윈도우를 반환한다.
+	// 메인 윈도우와 비교해서 메인 윈도우가 포커싱 되어있는지 판단한다.
+	bool IsFocus = GetFocus() == CEngine::GetInst()->GetMainWind();
+
+	if (!IsFocus)
 	{
 		for (size_t i = 0; i < m_vecKeyData.size(); ++i)
 		{
-			if (TAP == m_vecKeyData[i].eState)
+			switch (m_vecKeyData[i].eState)
 			{
+			case TAP:
 				m_vecKeyData[i].eState = PRESSED;
-			}
-			else if (PRESSED == m_vecKeyData[i].eState)
-			{
+				break;
+			case PRESSED:
 				m_vecKeyData[i].eState = RELEASED;
-			}
-			else if (RELEASED == m_vecKeyData[i].eState)
-			{
+				break;
+			case RELEASED:
 				m_vecKeyData[i].eState = NONE;
+				break;
 			}
 		}
 	}
@@ -104,10 +108,11 @@ void CKeyMgr::tick()
 
 		POINT pt = {};
 		GetCursorPos(&pt);
-		ScreenToClient(CEngine::GetInst()->GetMainWind(), &pt);		
+		ScreenToClient(CEngine::GetInst()->GetMainWind(), &pt);
 		m_vMousePos = Vec2((float)pt.x, (float)pt.y);
 
 		// 마우스 이동 방향
 		m_vMouseDrag = m_vMousePos - m_vMousePrevPos;
+
 	}
 }
