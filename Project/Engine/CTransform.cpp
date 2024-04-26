@@ -23,9 +23,9 @@ void CTransform::finaltick()
 
 	Matrix matScale = XMMatrixScaling(m_vRelativeScale.x, m_vRelativeScale.y, m_vRelativeScale.z);
 	
-	Matrix matRotX = XMMatrixRotationX(m_vRealtiveRotation.x);
-	Matrix matRotY = XMMatrixRotationY(m_vRealtiveRotation.y);
-	Matrix matRotZ = XMMatrixRotationZ(m_vRealtiveRotation.z);
+	Matrix matRotX = XMMatrixRotationX(m_vRelativeRotation.x);
+	Matrix matRotY = XMMatrixRotationY(m_vRelativeRotation.y);
+	Matrix matRotZ = XMMatrixRotationZ(m_vRelativeRotation.z);
 
 	Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
 
@@ -113,7 +113,7 @@ void CTransform::SaveToFile(FILE* _File)
 {
 	fwrite(&m_vRelativePos, sizeof(Vec3), 1, _File);
 	fwrite(&m_vRelativeScale, sizeof(Vec3), 1, _File);
-	fwrite(&m_vRealtiveRotation, sizeof(Vec3), 1, _File);
+	fwrite(&m_vRelativeRotation, sizeof(Vec3), 1, _File);
 	fwrite(&m_bAbsolute, sizeof(bool), 1, _File);	
 }
 
@@ -124,7 +124,7 @@ void CTransform::SaveToFile(ofstream& fout)
 	fout << "[Scale]" << endl;
 	fout << m_vRelativeScale << endl;
 	fout << "[Rotation]" << endl;
-	fout << m_vRealtiveRotation << endl;
+	fout << m_vRelativeRotation << endl;
 	fout << "[Absolute]" << endl;
 	fout << m_bAbsolute << endl;
 }
@@ -133,6 +133,18 @@ void CTransform::LoadFromFile(FILE* _File)
 {
 	fread(&m_vRelativePos, sizeof(Vec3), 1, _File);
 	fread(&m_vRelativeScale, sizeof(Vec3), 1, _File);
-	fread(&m_vRealtiveRotation, sizeof(Vec3), 1, _File);
+	fread(&m_vRelativeRotation, sizeof(Vec3), 1, _File);
 	fread(&m_bAbsolute, sizeof(bool), 1, _File);
+}
+
+void CTransform::LoadFromFile(ifstream& fin)
+{
+	string tag;
+	getline(fin, tag); // [Pos]
+	fin >> m_vRelativePos;
+	getline(fin, tag); // [Scale]
+	fin >> m_vRelativeScale;
+	getline(fin, tag); // [Rotation]
+	fin >> m_vRelativeRotation;
+
 }
