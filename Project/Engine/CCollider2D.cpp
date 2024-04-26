@@ -63,7 +63,9 @@ void CCollider2D::finaltick()
 			}
 			else
 			{
-				GamePlayStatic::DrawDebugCircle(m_matColWorld, Vec3(0.f, 1.f, 0.f), false);
+				Vec3 vPos = GetOwner()->Transform()->GetWorldPos();
+				Vec2 vRadius = GetOwner()->Collider2D()->GetOffsetScale();
+				GamePlayStatic::DrawDebugCircle(vPos, vRadius.x, Vec3(0.f, 1.f, 0.f), false);
 			}
 		}
 		else
@@ -76,8 +78,7 @@ void CCollider2D::finaltick()
 			{
 				Vec3 vPos = GetOwner()->Transform()->GetWorldPos();
 				Vec2 vRadius = GetOwner()->Collider2D()->GetOffsetScale();
-				Vec2 vOffsetPos = GetOwner()->Collider2D()->GetOffsetPos();
-				GamePlayStatic::DrawDebugCircle(vPos, vOffsetPos, vRadius.x, Vec3(1.f, 0.f, 0.f), false);
+				GamePlayStatic::DrawDebugCircle(vPos, vRadius.x, Vec3(1.f, 0.f, 0.f), false);
 			}
 		}
 	}

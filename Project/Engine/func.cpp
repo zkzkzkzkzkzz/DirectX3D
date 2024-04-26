@@ -73,16 +73,13 @@ void GamePlayStatic::DrawDebugCircle(const Matrix& _WorldMat, Vec3 _Color, bool 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
-void GamePlayStatic::DrawDebugCircle(Vec3 _vWorldPos, Vec2 _vOffsetPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration)
+void GamePlayStatic::DrawDebugCircle(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration)
 {
 	tDebugShapeInfo info = {};
 	info.eShape = DEBUG_SHAPE::CIRCLE;
 
 	info.vWorldPos = _vWorldPos;
-	info.vWorldPos.x += _vOffsetPos.x;
-	info.vWorldPos.y += _vOffsetPos.y;
-
-	info.vWorldScale = Vec3(_fRadius, _fRadius, 1.f);
+	info.vWorldScale = Vec3(_fRadius * 2.f, _fRadius * 2.f, 1.f);
 	info.vWorldRot = Vec3(0.f, 0.f, 0.f);
 
 	info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z)
