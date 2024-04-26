@@ -46,9 +46,22 @@ void CKeyMgr::tick()
 {
 	// GetFocus()는 현재 포커싱 되어있는 윈도우를 반환한다.
 	// 메인 윈도우와 비교해서 메인 윈도우가 포커싱 되어있는지 판단한다.
-	bool IsFocus = GetFocus() == CEngine::GetInst()->GetMainWind();
 
-	if (!IsFocus)
+	if (GetFocus() == nullptr)
+	{
+		m_FocusState = FOCUS_STATE::NONE;
+	}
+	else if (GetFocus() == CEngine::GetInst()->GetMainWind())
+	{
+		m_FocusState = FOCUS_STATE::ENGINE;
+	}
+	else
+	{
+		m_FocusState = FOCUS_STATE::CLIENT;
+	}
+
+	// 1. 포커싱 되어있는 창이 없을 경우
+	if (FOCUS_STATE::NONE == m_FocusState)
 	{
 		for (size_t i = 0; i < m_vecKeyData.size(); ++i)
 		{
@@ -66,6 +79,7 @@ void CKeyMgr::tick()
 			}
 		}
 	}
+	// 2. 포커싱 되어있는 창이 있을 경우
 	else
 	{
 		for (size_t i = 0; i < m_vecKeyData.size(); ++i)

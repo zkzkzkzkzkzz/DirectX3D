@@ -48,10 +48,14 @@ private:
 
 	Vec2				m_vMouseDrag;
 
+	FOCUS_STATE			m_FocusState;
+
 public:
 	KEY_STATE GetKeyState(KEY _Key) { return m_vecKeyData[_Key].eState; }
-	Vec2 GetMousePos() { return m_vMousePos; }
-	Vec2 GetMouseDrag() { return m_vMouseDrag; }
+	Vec2 GetMousePos() const { return m_vMousePos; }
+	Vec2 GetMouseDrag() const { return m_vMouseDrag; }
+
+	FOCUS_STATE GetFocusState() const { return m_FocusState; }
 
 public:
 	void init();
