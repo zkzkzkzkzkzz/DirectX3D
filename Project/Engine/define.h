@@ -247,3 +247,10 @@ enum class LEVEL_STATE
 	STOP,
 	NONE,
 };
+
+enum class FOCUS_STATE
+{
+	CLIENT,
+	ENGINE,
+	NONE,
+};
