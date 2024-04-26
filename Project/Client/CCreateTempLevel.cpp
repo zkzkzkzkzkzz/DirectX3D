@@ -118,20 +118,20 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->Light3D()->SetSpecular(Vec3(0.3f, 0.3f, 0.3f));
 	pObj->Light3D()->SetRadius(1000.f);
 
-	pTempLevel->AddObject(pObj, L"Default", false);
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 	pObj = pObj->Clone();
 	pObj->SetName(L"Light3D_Clone");
 	pObj->Transform()->SetRelativePos(Vec3(500.f, 0.f, 500.f));
 	pObj->Light3D()->SetLightColor(Vec3(0.3f, 0.3f, 1.f));
-	pTempLevel->AddObject(pObj, L"Default", false);
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 
 	pObj = pObj->Clone();
 	pObj->SetName(L"Light3D_Clone2");
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	pObj->Light3D()->SetLightColor(Vec3(0.3f, 1.f, 0.3f));
-	pTempLevel->AddObject(pObj, L"Default", false);
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 
 	// Player Object »ý¼º
