@@ -116,6 +116,35 @@ void CAnimator2D::SaveToFile(FILE* _File)
 	fwrite(&m_bRepeat, sizeof(bool), 1, _File);
 }
 
+void CAnimator2D::SaveToFile(ofstream& fout)
+{
+	// 애니메이션 개수 저장
+	size_t AnimCount = m_mapAnim.size();
+	fout << "[AnimCount]" << endl;
+	fout << AnimCount << endl;
+	if (AnimCount == 0) return;
+
+	fout << "[AnimNames]" << endl;
+	for (const auto& pair : m_mapAnim)
+	{
+		fout << ToString(pair.first) << endl;
+	}
+
+	// 플레이 중이던 애니메이션의 키를 저장한다.
+	wstring PlayAnimName;
+	fout << "[PlayingAnimName]" << endl;
+
+	if (nullptr != m_CurAnim)
+	{
+		PlayAnimName = m_CurAnim->GetName();
+	}
+
+	fout << ToString(PlayAnimName) << endl;
+
+	fout << "[IsRepeat]" << endl;
+	fout << m_bRepeat << endl;
+}
+
 void CAnimator2D::LoadFromFile(FILE* _File)
 {
 	// 애니메이션 개수 로드
