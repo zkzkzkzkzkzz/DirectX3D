@@ -17,6 +17,8 @@ public:
 
 	static CLevel* LoadLevel(const wstring& _strLevelPath);
 	static void LoadLayer(CLayer* _Layer, FILE* _File);
+	static void LoadLayer(CLayer* _Layer, ifstream& fin);
 	static CGameObject* LoadGameObject(FILE* _File);
+	static CGameObject* LoadGameObject(ifstream& fin);
 };
 

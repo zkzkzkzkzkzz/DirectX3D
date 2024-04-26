@@ -181,29 +181,26 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _strLevelPath)
 	wstring strLevelPath = CPathMgr::GetContentPath();
 	strLevelPath += _strLevelPath;
 
-	if (!exists(strLevelPath))
+	ifstream fin(strLevelPath);
+
+	if (!fin.is_open())
 	{
 		MessageBox(nullptr, L"레벨 경로가 올바르지 않거나, 레벨이 없음", L"레벨 로드 실패", MB_OK);
 		return nullptr;
 	}
 
-	FILE* pFile = nullptr;
-	_wfopen_s(&pFile, strLevelPath.c_str(), L"rb");
-			
-
 	// 레벨의 이름을 읽는다.
 	pLevel = new CLevel;
-	wstring strLevelName;
-	LoadWString(strLevelName, pFile);
+	string strLevelName;
+	getline(fin, strLevelName); // [LevelName]
+	getline(fin, strLevelName); 
 	pLevel->SetName(strLevelName);
 
 	// Layer 로드
 	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
-		LoadLayer(pLevel->GetLayer(i), pFile);		
+		LoadLayer(pLevel->GetLayer(i), fin);
 	}
-
-	fclose(pFile);
 
 	return pLevel;
 }
@@ -223,6 +220,26 @@ void CLevelSaveLoad::LoadLayer(CLayer* _Layer, FILE* _File)
 	for (size_t i = 0; i < ObjCount; ++i)
 	{
 		CGameObject* pObject = LoadGameObject(_File);
+		_Layer->AddObject(pObject, false);
+	}
+}
+
+void CLevelSaveLoad::LoadLayer(CLayer* _Layer, ifstream& fin)
+{
+	string tag;
+	string str;
+	getline(fin, tag); // [LayerName]
+	getline(fin, str);
+	_Layer->SetName(str);
+
+	int objCnt;
+	getline(fin, tag); // [ObjCount]
+	getline(fin, str);
+	objCnt = stoi(str);
+
+	for (size_t i = 0; i < objCnt; i++)
+	{
+		CGameObject* pObject = LoadGameObject(fin);
 		_Layer->AddObject(pObject, false);
 	}
 }
@@ -306,6 +323,107 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 	for (size_t i = 0; i < childcount; ++i)
 	{
 		pObject->AddChild(LoadGameObject(_File));
+	}
+
+	return pObject;
+}
+
+CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
+{
+	CGameObject* pObject = new CGameObject;
+
+	string tag, str;
+	getline(fin, tag); // [ObjectName]
+	getline(fin, str);
+
+	pObject->SetName(str);
+
+	while (true) {
+		getline(fin, tag); // [ComponentType] or [Component_End]
+		if (tag == "[Component_End]") break;
+
+		getline(fin, str);
+		auto num = magic_enum::enum_cast<COMPONENT_TYPE>(str);
+		if (num.has_value()) {
+			auto type = num.value();
+			CComponent* pComponent = nullptr;
+
+			switch (type)
+			{
+			case COMPONENT_TYPE::TRANSFORM:
+				pComponent = new CTransform;
+				break;
+			case COMPONENT_TYPE::COLLIDER2D:
+				pComponent = new CCollider2D;
+				break;
+			case COMPONENT_TYPE::COLLIDER3D:
+				MessageBox(nullptr, L"Collider3D", L"미구현된 컴포넌트 로드", 0);
+				break;
+			case COMPONENT_TYPE::ANIMATOR2D:
+				pComponent = new CAnimator2D;
+				break;
+			case COMPONENT_TYPE::ANIMATOR3D:
+				MessageBox(nullptr, L"Animator3D", L"미구현된 컴포넌트 로드", 0);
+				break;
+			case COMPONENT_TYPE::LIGHT2D:
+				pComponent = new CLight2D;
+				break;
+			case COMPONENT_TYPE::LIGHT3D:
+				pComponent = new CLight3D;
+				break;
+			case COMPONENT_TYPE::CAMERA:
+				pComponent = new CCamera;
+				break;
+			case COMPONENT_TYPE::STATEMACHINE:
+				pComponent = new CStateMachine;
+				break;
+			case COMPONENT_TYPE::MESHRENDER:
+				pComponent = new CMeshRender;
+				break;
+			case COMPONENT_TYPE::TILEMAP:
+				pComponent = new CTileMap;
+				break;
+			case COMPONENT_TYPE::PARTICLESYSTEM:
+				pComponent = new CParticleSystem;
+				break;
+			default:
+				assert(nullptr);
+				break;
+			}
+
+			// 해당 컴포넌트가 저장한 데이터를 로드
+			pObject->AddComponent(pComponent);
+			//pComponent->LoadFromFile(fin);
+		}
+		else {
+			MessageBox(nullptr, L"컴포넌트 타입 오류", L"게임 오브젝트 불러오기", 0);
+		}
+
+	}
+
+	size_t scriptCnt;
+	getline(fin, tag); // [ScriptCount]
+	getline(fin, str);
+	scriptCnt = stoul(str);
+
+	for (size_t i = 0; i < scriptCnt; i++)
+	{
+		getline(fin, tag); // [ScriptName]
+		getline(fin, str);
+		CScript* pScript = CScriptMgr::GetScript(ToWString(str));
+		//pScript->LoadFromFile(fin);
+		pObject->AddComponent(pScript);
+	}
+
+	size_t childCnt;
+	getline(fin, tag); // [name's ChildCount]
+	getline(fin, str);
+	childCnt = stoul(str);
+	fin >> childCnt;
+
+	for (size_t i = 0; i < childCnt; i++)
+	{
+		pObject->AddChild(LoadGameObject(fin));
 	}
 
 	return pObject;
