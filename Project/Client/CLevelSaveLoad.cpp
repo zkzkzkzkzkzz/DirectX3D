@@ -22,19 +22,20 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _strLevelPath)
 	wstring strLevelPath = CPathMgr::GetContentPath();
 	strLevelPath += _strLevelPath;
 
-	FILE* pFile = nullptr;
-	_wfopen_s(&pFile, strLevelPath.c_str(), L"wb");
+	ofstream fout(strLevelPath, ofstream::out | ofstream::trunc);
+	if (!fout.is_open()) {
+		MessageBox(nullptr, L"레벨 저장 실패!", L"레벨 저장", 0);
+	}
 
-	// 레벨의 이름
-	SaveWString(_Level->GetName(), pFile);
+	fout << "[LevelName]" << endl;
+	fout << ToString(_Level->GetName()) << endl;
 
 	// 레벨의 레이어 저장
 	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
-		SaveLayer(_Level->GetLayer(i), pFile);
+		SaveLayer(_Level->GetLayer(i), fout);
 	}
 
-	fclose(pFile);
 }
 
 void CLevelSaveLoad::SaveLayer(CLayer* _Layer, FILE* _File)
@@ -52,6 +53,25 @@ void CLevelSaveLoad::SaveLayer(CLayer* _Layer, FILE* _File)
 	{
 		SaveGameObject(vecObject[i], _File);
 	}	
+}
+
+void CLevelSaveLoad::SaveLayer(CLayer* _Layer, ofstream& fout)
+{
+	// Layer 의 이름 저장
+	fout << "[LayerName]" << endl;
+	fout << ToString(_Layer->GetName()) << endl;
+
+	// Layer 가 보유하고 있는 GameObject 들을 저장
+	const vector<CGameObject*>& vecObject = _Layer->GetParentObjects();
+
+	size_t ObjCount = vecObject.size();
+	fout << "[ObjCount]" << endl;
+	fout << ObjCount << endl;
+
+	for (size_t i = 0; i < vecObject.size(); ++i)
+	{
+		SaveGameObject(vecObject[i], fout);
+	}
 }
 
 void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
@@ -96,6 +116,60 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
 	for (size_t i = 0; i < childcount; ++i)
 	{
 		SaveGameObject(vecChild[i], _File);
+	}
+}
+
+void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, ofstream& fout)
+{
+	// GameObject 의 이름을 저장
+	fout << "[ObjectName]" << endl;
+	fout << ToString(_Obj->GetName()) << endl;
+
+	// 컴포넌트 정보를 저장
+	UINT i = 0;
+	for (; i < (UINT)COMPONENT_TYPE::END; ++i)
+	{
+		CComponent* pCom = _Obj->GetComponent((COMPONENT_TYPE)i);
+		if (nullptr == pCom)
+			continue;
+
+		// 컴포넌트 타입 정보 저장
+		fout << "[ComponentType]" << endl;
+		auto type = magic_enum::enum_name((COMPONENT_TYPE)i);
+		fout << ToString(type) << endl;
+
+		// 해당 컴포넌트가 저장할 데이터 저장
+		//pCom->SaveToFile(_File);
+	}
+	fout << "[Component_End]" << endl;
+
+	// 스크립트 정보 저장
+	const vector<CScript*>& vecScripts = _Obj->GetScripts();
+	size_t ScriptCount = vecScripts.size();
+
+	// 스크립트 개수 저장
+	fout << "[ScriptCount]" << endl;
+	fout << ScriptCount << endl;
+
+	for (size_t i = 0; i < vecScripts.size(); ++i)
+	{
+		fout << "[ScriptName]" << endl;
+		fout << ToString(wstring(CScriptMgr::GetScriptName(vecScripts[i]))) << endl;
+		//vecScripts[i]->SaveToFile(_File);
+	}
+
+	// 자식 오브젝트가 있으면 자식 오브젝트 정보 저장
+	const vector<CGameObject*>& vecChild = _Obj->GetChild();
+	size_t childcount = vecChild.size();
+
+	string strChildCount;
+	strChildCount = "[" + ToString(_Obj->GetName()) + "'s ChildCount]";
+	fout << strChildCount << endl;
+	fout << childcount << endl;
+
+	for (size_t i = 0; i < childcount; ++i)
+	{
+		SaveGameObject(vecChild[i], fout);
 	}
 }
 
