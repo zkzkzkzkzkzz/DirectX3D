@@ -40,7 +40,7 @@ void CameraUI::render_update()
     //auto& CColor = CRenderMgr::GetInst()->GetClearColorRef();
     //ImGui::ColorEdit4("Clear Color", CColor);
 
-    // Åõ¿µ ¹æ½Ä
+    // íˆ¬ì˜ ë°©ì‹
     PROJ_TYPE ProjType = pCamera->GetProjType();
 
     PROJ_TYPE::ORTHOGRAPHIC;
@@ -65,11 +65,11 @@ void CameraUI::render_update()
     ImGui::DragFloat("Far", &ffar, 0.01f, 0.01f, 1.f);
     pCamera->SetFar(ffar);
 
-    //Á÷±³
+    //ì§êµ
     if (PROJ_TYPE::ORTHOGRAPHIC == ProjType)
     {
-        ImGui::PushStyleColor(ImGuiCol_Button, Red); // ±âº» ¹è°æ»ö
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Red); // È£¹ö ¹è°æ»öµµ ±âº» ¹è°æ»ö°ú µ¿ÀÏÇÏ°Ô ¼³Á¤
+        ImGui::PushStyleColor(ImGuiCol_Button, Red); // ê¸°ë³¸ ë°°ê²½ìƒ‰
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Red); // í˜¸ë²„ ë°°ê²½ìƒ‰ë„ ê¸°ë³¸ ë°°ê²½ìƒ‰ê³¼ ë™ì¼í•˜ê²Œ ì„¤ì •
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, Red);
         if (ImGui::Button("ORTHOGRAPHIC"))
         {
@@ -79,8 +79,8 @@ void CameraUI::render_update()
 
         ImGui::SameLine();
 
-        ImGui::PushStyleColor(ImGuiCol_Button, Gray); // ±âº» ¹è°æ»ö
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Red); // È£¹ö ¹è°æ»öµµ ±âº» ¹è°æ»ö°ú µ¿ÀÏÇÏ°Ô ¼³Á¤
+        ImGui::PushStyleColor(ImGuiCol_Button, Gray); // ê¸°ë³¸ ë°°ê²½ìƒ‰
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Red); // í˜¸ë²„ ë°°ê²½ìƒ‰ë„ ê¸°ë³¸ ë°°ê²½ìƒ‰ê³¼ ë™ì¼í•˜ê²Œ ì„¤ì •
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, Red);
         if (ImGui::Button("PERSPECTIVE"))
         {
@@ -91,7 +91,7 @@ void CameraUI::render_update()
 
         const static float min = 0.00001f;
 
-        //scale Á¶Àı
+        //scale ì¡°ì ˆ
         float scale = pCamera->GetScale();
         ImGui::Text("Scale:");
         ImGui::SameLine();
@@ -104,11 +104,11 @@ void CameraUI::render_update()
         pCamera->SetScale(scale);
 
     }
-    //¿ø±Ù
+    //ì›ê·¼
     else
     {
-        ImGui::PushStyleColor(ImGuiCol_Button, Gray); // ±âº» ¹è°æ»ö
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Red); // È£¹ö ¹è°æ»öµµ ±âº» ¹è°æ»ö°ú µ¿ÀÏÇÏ°Ô ¼³Á¤
+        ImGui::PushStyleColor(ImGuiCol_Button, Gray); // ê¸°ë³¸ ë°°ê²½ìƒ‰
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Red); // í˜¸ë²„ ë°°ê²½ìƒ‰ë„ ê¸°ë³¸ ë°°ê²½ìƒ‰ê³¼ ë™ì¼í•˜ê²Œ ì„¤ì •
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, Red);
         if (ImGui::Button("ORTHOGRAPHIC"))
         {
@@ -118,8 +118,8 @@ void CameraUI::render_update()
 
         ImGui::SameLine();
 
-        ImGui::PushStyleColor(ImGuiCol_Button, Red); // ±âº» ¹è°æ»ö
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Red); // È£¹ö ¹è°æ»öµµ ±âº» ¹è°æ»ö°ú µ¿ÀÏÇÏ°Ô ¼³Á¤
+        ImGui::PushStyleColor(ImGuiCol_Button, Red); // ê¸°ë³¸ ë°°ê²½ìƒ‰
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Red); // í˜¸ë²„ ë°°ê²½ìƒ‰ë„ ê¸°ë³¸ ë°°ê²½ìƒ‰ê³¼ ë™ì¼í•˜ê²Œ ì„¤ì •
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, Red);
         if (ImGui::Button("PERSPECTIVE"))
         {
@@ -127,7 +127,7 @@ void CameraUI::render_update()
         }
         ImGui::PopStyleColor(3);
 
-        //FOVÁ¶Àı
+        //FOVì¡°ì ˆ
         float FOV = pCamera->GetFOV();
         ImGui::Text("FOV:");
         ImGui::SameLine();
@@ -153,7 +153,7 @@ void CameraUI::render_update()
 
     ImGui::NewLine();
 
-    //========== Ä«¸Ş¶ó visibility¼³Á¤ =============
+    //========== ì¹´ë©”ë¼ visibilityì„¤ì • =============
     ImGui::Text("<Layer Visibility>");
     ImGui::BeginChild("Layer Veiw", winsize, true);
     auto CurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
@@ -164,8 +164,8 @@ void CameraUI::render_update()
     //int = layer idx
     vector<std::pair<int, string>> ButtonName;
 
-    //ÀÌÁß for¹®ÀÌ µé¾î°£ button À» ¿ìÈ¸Ã³¸®
-    //(Á¶°Ç¿¡ ¸Â´Â ¿ø¼Ò¸¦ vector¿¡ ÇÑ¹ø´õ ´ã¾ÆÁØ´Ù)
+    //ì´ì¤‘ forë¬¸ì´ ë“¤ì–´ê°„ button ì„ ìš°íšŒì²˜ë¦¬
+    //(ì¡°ê±´ì— ë§ëŠ” ì›ì†Œë¥¼ vectorì— í•œë²ˆë” ë‹´ì•„ì¤€ë‹¤)
     for (int i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
     {
         auto Layer = CurLevel->GetLayer(i);
