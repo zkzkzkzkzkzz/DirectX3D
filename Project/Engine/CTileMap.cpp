@@ -154,6 +154,44 @@ void CTileMap::SaveToFile(FILE* _File)
 	fwrite(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
 }
 
+void CTileMap::SaveToFile(ofstream& fout)
+{
+	fout << "[FaceX]" << endl;
+	fout << m_FaceX << endl;
+
+	fout << "[FaceY]" << endl;
+	fout << m_FaceY << endl;
+
+	fout << "[RenderSize]" << endl;
+	fout << m_vTileRenderSize << endl;
+
+	fout << "[Atlas]" << endl;
+	SaveAssetRef(m_TileAtlas, fout);
+
+	fout << "[PixelSize]" << endl;
+	fout << m_vTilePixelSize << endl;
+	
+	fout << "[SliceSize]" << endl;
+	fout << m_vSliceSizeUV << endl;
+
+	fout << "[MaxCol]" << endl;
+	fout << m_MaxCol << endl;
+
+	fout << "[MaxRow]" << endl;
+	fout << m_MaxRow << endl;
+
+	size_t InfoCount = m_vecTileInfo.size();
+	fout << "[InfoCount]" << endl;
+	fout << InfoCount << endl;
+
+	if (InfoCount == 0) return;
+
+	fout << "[Info]" << endl;
+	for (int i = 0; i < m_vecTileInfo.size(); i++) {
+		fout << m_vecTileInfo[i] << endl;
+	}
+}
+
 void CTileMap::LoadFromFile(FILE* _File)
 {
 	// TileMap 정보 저장
@@ -174,4 +212,15 @@ void CTileMap::LoadFromFile(FILE* _File)
 	fread(&InfoCount, sizeof(size_t), 1, _File);
 	m_vecTileInfo.reserve(InfoCount);
 	fread(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
+}
+
+ofstream& operator<<(ofstream& fout, const tTileInfo& info)
+{
+	fout << "[LeftTop]" << endl;
+	fout << info.vLeftTopUV << endl;
+
+	fout << "[IsRender]" << endl;
+	fout << info.bRender;
+
+	return fout;
 }
