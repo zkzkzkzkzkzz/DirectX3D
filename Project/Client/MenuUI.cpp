@@ -176,6 +176,10 @@ void MenuUI::Level()
             CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(L"Level//temp.lv");
             CLevelMgr::GetInst()->ChangeLevel(pLoadedLevel, LEVEL_STATE::STOP);
 
+            Outliner* pOutliner = (Outliner*)CImGuiMgr::GetInst()->FindUI("##Outliner");
+            auto m_Tree = pOutliner->GetTree()->GetSelectedNode();
+            m_Tree = nullptr;
+
             // Inspector 의 타겟정보를 nullptr 로 되돌리기
             Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
             pInspector->SetTargetObject(nullptr);
