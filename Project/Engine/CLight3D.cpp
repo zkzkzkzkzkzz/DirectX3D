@@ -20,6 +20,13 @@ void CLight3D::finaltick()
 	m_Info.vWorldPos = Transform()->GetWorldPos();
 
 	CRenderMgr::GetInst()->RegisterLight3D(this);
+
+	// 현재 광원의 위치에 DebugRender 요청
+	if (m_Info.LightType == (int)LIGHT_TYPE::POINT)
+	{
+		GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fRadius, Vec3(0.f, 1.f, 0.1f), true);
+		//GamePlayStatic::DrawDebugCube(m_Info.vWorldPos, Vec3(m_Info.fRadius, m_Info.fRadius, m_Info.fRadius), Vec3(0.f, 0.f, 0.f),   Vec3(0.f, 1.f, 0.1f), true);
+	}
 }
 
 void CLight3D::SetLightType(LIGHT_TYPE _type)

@@ -326,6 +326,35 @@ void CAssetMgr::CreateDefaultMesh()
 	AddAsset(L"CubeMesh", pMesh);
 	vecIdx.clear();
 
+	// ========================
+	// Cube Mesh
+	// Topology Line Strip 용도
+	// ========================
+	vecIdx.push_back(0);
+	vecIdx.push_back(1);
+	vecIdx.push_back(2);
+	vecIdx.push_back(3);
+	vecIdx.push_back(0);
+
+	vecIdx.push_back(7);
+	vecIdx.push_back(6);
+	vecIdx.push_back(5);
+	vecIdx.push_back(4);
+	vecIdx.push_back(7);
+
+	vecIdx.push_back(6);
+	vecIdx.push_back(1);
+	vecIdx.push_back(2);
+	vecIdx.push_back(5);
+	vecIdx.push_back(4);
+	vecIdx.push_back(3);
+
+	pMesh = new CMesh(true);
+	pMesh->Create(arrCube, 24, vecIdx.data(), (UINT)vecIdx.size());
+	AddAsset(L"CubeMesh_Debug", pMesh);
+	vecIdx.clear();
+
+
 	// ===========
 	// Sphere Mesh
 	// ===========
@@ -573,7 +602,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
-	pShader->SetBSType(BS_TYPE::DEFAULT);
+	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEBUG);

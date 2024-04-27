@@ -74,7 +74,7 @@ float4 PS_Std3D(VTX_OUT _in) : SV_Target
     float3 vViewNormal = _in.vViewNormal;
     
     // 노말 텍스쳐가 바인딩 되어있다면, 노말맵핑을 진행
-    if (g_btex_1 && g_int_0)
+    if (g_btex_1)
     {
         // 색상의 범위는 0~1 이지만, 저장된 값은 방향벡터를 뜻하기 때문에 원래 의도한 값으로 바꾸기 위해서
         // 값의 0 ~ 1 범위를 -1.f ~ 1.f 로 변경
