@@ -196,3 +196,12 @@ void LoadWString(wstring& _str, FILE* _FILE)
 	_str = szBuff;
 }
 
+
+// 유지보수 4/4 . 컬러변수 값할당
+const Vec4 GamePlayStatic::COLOR::WHITE = Vec4(1.f, 1.f, 1.f, 1.f);
+const Vec4 GamePlayStatic::COLOR::BLACK = Vec4(0.f, 0.f, 0.f, 1.f);
+const Vec4 GamePlayStatic::COLOR::RED = Vec4(1.f, 1.f, 1.f, 1.f);
+const Vec4 GamePlayStatic::COLOR::GREEN = Vec4(0.f, 1.f, 0.f, 1.f);
+const Vec4 GamePlayStatic::COLOR::BLUE = Vec4(0.f, 0.f, 1.f, 1.f);
+const Vec4 GamePlayStatic::COLOR::YELLOW = Vec4(1.f, 1.f, 0.f, 1.f);
+const Vec4 GamePlayStatic::COLOR::MAZENTA = Vec4(1.f, 0.f, 1.f, 1.f);
