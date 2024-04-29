@@ -30,6 +30,52 @@ ofstream& operator<<(ofstream& fout, const tLightInfo& info)
     return fout;
 }
 
+ifstream& operator>>(ifstream& fin, tLightInfo& info)
+{
+	string tag, str;
+	getline(fin, tag); // [LightType]
+	getline(fin, str);
+
+	auto type = magic_enum::enum_cast<LIGHT_TYPE>(str);
+
+	if (!type.has_value())
+	{
+		MessageBox(nullptr, L"없는 Enum 타입입니다.", L"Light 3D Load", 0);
+		assert(0);
+	}
+	info.LightType = (int)type.value();
+
+	getline(fin, tag); // [LightColor]
+	fin >> info.vColor;
+	getline(fin, str); // 공백 처리
+
+	getline(fin, tag); // [Specular]
+	fin >> info.vSpecular;
+	getline(fin, str); // 공백 처리
+
+	getline(fin, tag); // [Ambient]
+	fin >> info.vAmbient;
+	getline(fin, str); // 공백 처리
+
+	getline(fin, tag); // [WorldPos]
+	fin >> info.vWorldPos;
+	getline(fin, str); // 공백 처리
+
+	getline(fin, tag); // [WorldDir]
+	fin >> info.vWorldDir;
+	getline(fin, str); // 공백 처리
+
+	getline(fin, tag); // [Radius]
+	fin >> info.fRadius;
+	getline(fin, str); // 공백 처리
+
+	getline(fin, tag); // [Angle]
+	fin >> info.fAngle;
+	getline(fin, str); // 공백 처리
+
+	return fin;
+}
+
 ofstream& operator<<(ofstream& fout, const tParticleModule& module)
 {
 	// Sapwn 모듈

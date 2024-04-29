@@ -45,6 +45,7 @@ struct tLightInfo
 	Vec3	vPadding;
 
 	friend ofstream& operator<<(ofstream& fout, const tLightInfo& info);
+	friend ifstream& operator>>(ifstream& fin, tLightInfo& info);
 };
 
 struct tPixel
