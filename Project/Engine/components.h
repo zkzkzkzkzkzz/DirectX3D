@@ -10,11 +10,10 @@
 #include "CLight2D.h"
 #include "CTileMap.h"
 #include "CParticleSystem.h"
+#include "CSkybox.h"
 
 //#include "CCollider3D.h"
 //#include "CAnimator3D.h"
 
-//
-//#include "Skybox.h"
 //#include "Decal.h"
 //#include "Landscape.h"
