@@ -27,6 +27,7 @@ private:
 
     AssetUI*            m_arrAssetUI[(UINT)ASSET_TYPE::END];
 
+
 public:
     virtual void tick() override;
     virtual void render_update() override;
@@ -36,6 +37,8 @@ public:
     void SetTargetAsset(Ptr<CAsset> _Asset);
 
     CGameObject* GetTargetObject() { return m_TargetObject; }
+
+    void RefreshScriptUI();
 
 private:
     void CreateChildUI();

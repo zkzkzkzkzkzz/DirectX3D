@@ -3,6 +3,8 @@
 
 #include "ScriptUI.h"
 
+
+
 void Inspector::CreateChildUI()
 {
 	CreateComponentUI();
@@ -84,25 +86,32 @@ void Inspector::CreateAssetUI()
 
 void Inspector::ResizeScriptUI(UINT _Size)
 {
-	//기존 scriptui 비활성화
-	for (int i = 0; i < m_vecScriptUI.size(); ++i)
-	{
-		m_vecScriptUI[i]->Deactivate();
-	}
+	int AddSize = _Size - m_vecScriptUI.size();
 
-	//새로 선택된 obj의 script size크기의 vector swap	  
-	int iNewSize = _Size;
-	vector<ScriptUI*> vecSwap;
-
-	vecSwap.reserve(iNewSize);
-
-	m_vecScriptUI.swap(vecSwap);
-
-	//swap된 vector로 다시 추가
-	for (int i = 0; i < _Size; ++i)
+	for (int i = 0; i < AddSize; ++i)
 	{
 		ScriptUI* pScriptUI = new ScriptUI;
 		AddChildUI(pScriptUI);
 		m_vecScriptUI.push_back(pScriptUI);
+	}
+}
+
+
+void Inspector::RefreshScriptUI()
+{
+	for (size_t i = 0; i < m_vecScriptUI.size(); ++i)
+	{
+		m_vecScriptUI[i]->Deactivate();
+	}
+
+	if (m_vecScriptUI.size() < m_TargetObject->GetScripts().size())
+	{
+		ResizeScriptUI(m_TargetObject->GetScripts().size());
+	}
+
+	const vector<CScript*>& vecScripts = m_TargetObject->GetScripts();
+	for (size_t i = 0; i < vecScripts.size(); ++i)
+	{
+		m_vecScriptUI[i]->SetScript(vecScripts[i]);
 	}
 }
