@@ -34,7 +34,7 @@
 
 void CCreateTempLevel::Init()
 {
-	// Missile Prefab ╩Щ╪╨
+	// Missile Prefab Л┐²Л└╠
 	/*CGameObject* pObj = nullptr;
 
 	pObj = new CGameObject;
@@ -55,7 +55,7 @@ void CCreateTempLevel::Init()
 	//pMissilePrefab->Save(L"prefab\\missile.pref");
 	*/
 
-	// юс╫ц FSM ╟╢ц╪ ©║╪б гоЁ╙ ╩Щ╪╨го╠Б
+	// Л·└Л▀° FSM Й╟²Л╡╢ Л≈░Л┘▀ М∙≤К┌≤ Л┐²Л└╠М∙≤Й╦╟
 	Ptr<CFSM>	pFSM = new CFSM(true);
 
 	pFSM->AddState(L"IdleState", new CIdleState);
@@ -70,7 +70,7 @@ void CCreateTempLevel::CreateTempLevel()
 	CLevel* pTempLevel = new CLevel;
 
 
-	// Main Camera Object ╩Щ╪╨
+	// Main Camera Object Л┐²Л└╠
 	CGameObject* pCamObj = new CGameObject;
 	pCamObj->SetName(L"MainCamera");
 	pCamObj->AddComponent(new CTransform);
@@ -86,7 +86,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pCamObj, (UINT)LAYER::LAYER_DEFAULT);
 
-	// UI д╚╦ч╤С ╩Щ╪╨
+	// UI Л╧╢К╘■К²╪ Л┐²Л└╠
 	pCamObj = new CGameObject;
 	pCamObj->SetName(L"UICamera");
 	pCamObj->AddComponent(new CTransform);
@@ -104,37 +104,42 @@ void CCreateTempLevel::CreateTempLevel()
 	CGameObject* pObj = nullptr;
 
 
-	// 3D Light цъ╟║
+	// 3D Light Л╤■Й╟─
 	pObj = new CGameObject;
 	pObj->SetName(L"Light3D");
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CLight3D);
 
 	pObj->Transform()->SetRelativePos(Vec3(-500.f, 0.f, 500.f));
+	pObj->Transform()->SetRelativeRotation(Vec3(XM_PI / 4.f, XM_PI / 4.f, 0.f));
 
-	pObj->Light3D()->SetLightType(LIGHT_TYPE::POINT);
-	pObj->Light3D()->SetLightColor(Vec3(1.f, 0.3f, 0.3f));
+	pObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+	pObj->Light3D()->SetLightColor(Vec3(1.f, 1.f, 1.f));
 	pObj->Light3D()->SetAmbient(Vec3(0.1f, 0.1f, 0.1f));
 	pObj->Light3D()->SetSpecular(Vec3(0.3f, 0.3f, 0.3f));
 	pObj->Light3D()->SetRadius(1000.f);
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
-	pObj = pObj->Clone();
-	pObj->SetName(L"Light3D_Clone");
-	pObj->Transform()->SetRelativePos(Vec3(500.f, 0.f, 500.f));
-	pObj->Light3D()->SetLightColor(Vec3(0.3f, 0.3f, 1.f));
+	// SkyBox Л ╘ Л≤╓К╦▄Л═²М┼╦ Л╤■Й╟─
+	pObj = new CGameObject;
+	pObj->SetName(L"SkyBox");
+
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CSkyBox);
+
+	pObj->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 500.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
+
+	pObj->SkyBox()->SetSkyBoxType(SKYBOX_TYPE::SPHERE);
+	pObj->SkyBox()->SetSphereTexture(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\skybox\\Sky02.jpg", L"texture\\skybox\\Sky02.jpg"));
+
+	//pObj->SkyBox()->SetSkyBoxType(SKYBOX_TYPE::CUBE);
+	//pObj->SkyBox()->SetCubeTexture(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\skybox\\SkyWater.dds", L"texture\\skybox\\SkyWater.dds"));
+
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
-
-	pObj = pObj->Clone();
-	pObj->SetName(L"Light3D_Clone2");
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-	pObj->Light3D()->SetLightColor(Vec3(0.3f, 1.f, 0.3f));
-	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
-
-
-	// Player Object ╩Щ╪╨
+	// Player Object Л┐²Л└╠
 	pObj = new CGameObject;
 	pObj->SetName(L"Player");
 
@@ -161,7 +166,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_PLAYER, false);
 
 
-	// TimeMgr Object ╩Щ╪╨
+	// TimeMgr Object Л┐²Л└╠
 	pObj = new CGameObject;
 	pObj->SetName(L"Manager Object");
 
@@ -170,7 +175,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->AddObject(pObj, 0);
 
 
-	// цФ╣╧ ╪Ёа╓
+	// Л╤╘К▐▄ Л└╓Л═∙
 	CCollisionMgr::GetInst()->LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_MONSTER);
 	CCollisionMgr::GetInst()->LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_MONSTER);
 
