@@ -224,6 +224,10 @@ void MenuUI::GameObject()
                     if (nullptr != inspector->GetTargetObject())
                     {                     
                         inspector->GetTargetObject()->AddComponent(CScriptMgr::GetScript(vecScriptName[i]));
+
+                        inspector->SetTargetObject(inspector->GetTargetObject());
+
+                       
                     }
                 }
             }
