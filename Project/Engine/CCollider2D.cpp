@@ -141,3 +141,24 @@ void CCollider2D::LoadFromFile(FILE* _File)
 	fread(&m_bAbsolute, sizeof(bool), 1, _File);
 	fread(&m_Type, sizeof(UINT), 1, _File);
 }
+
+void CCollider2D::LoadFromFile(ifstream& fin)
+{
+	string tag, str;
+	getline(fin, tag); // [OffsetPos]
+	fin >> m_vOffsetPos;
+	getline(fin, str);
+
+	getline(fin, tag); // [OffsetScale]
+	fin >> m_vOffsetScale;
+	getline(fin, str);
+
+	getline(fin, tag); // [Absolute]
+	fin >> m_bAbsolute;
+	getline(fin, str);
+
+	getline(fin, tag); // [Collider_Type]
+	getline(fin, str);
+
+	m_Type = magic_enum::enum_cast<COLLIDER2D_TYPE>(str).value();
+}
