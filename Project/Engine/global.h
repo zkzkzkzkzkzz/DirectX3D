@@ -24,9 +24,7 @@ using namespace Microsoft::WRL;
 
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #include <experimental/filesystem>
-using namespace std::experimental;
-using namespace std::experimental::filesystem;
-using std::experimental::filesystem::path;
+#include <filesystem>
 
 #include <fstream>
 using std::ofstream;

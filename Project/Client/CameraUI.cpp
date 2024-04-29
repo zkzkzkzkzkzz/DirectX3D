@@ -174,7 +174,7 @@ void CameraUI::render_update()
 
         string LayerNameStr;
 
-        if ("" != LayerName)
+        if (L"" != LayerName)
         {
             LayerNameStr.assign(LayerName.begin(), LayerName.end());
         }

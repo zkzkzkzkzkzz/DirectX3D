@@ -26,6 +26,23 @@ namespace GamePlayStatic
 	//void DrawDebugSphere();
 }
 
+namespace Utils
+{
+	/// <summary>
+	/// 경로의 모든 파일의 확장자를 포함한 파일 이름을 추출해줍니다. 하위 폴더도 포함됩니다.
+	/// </summary>
+	void LoadAllFileNames(const wstring& _path, vector<string>& vec);
+
+	/// <summary>
+	/// 경로의 모든 파일의 경로를 추출해줍니다. 하위폴더도 포함됩니다.
+	/// </summary>
+	void LoadAllFilePaths(const wstring& _path, vector<string>& vec);
+	/// <summary>
+	/// 경로를 갖고 있는 파일들을 경로를 제외하고 추출해줍니다. 해당 경로를 갖고있지 않는다면 제외시킵니다.
+	/// </summary>
+	void SlicePath(const wstring& _path, vector<string>& vec);
+}
+
 string ToString(const wstring& _str);
 wstring ToWString(const string& _str);
 string ToString(const std::string_view& _sv);
@@ -90,7 +107,28 @@ void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
 	}
 }
 
+template<typename T>
+void LoadAssetRef(Ptr<T>& _Asset, ifstream& fin)
+{
+	string tag, str;
 
+	bool exist;
+	getline(fin, tag); // [Asset Exist]
+	fin >> exist;
+	getline(fin, str); // 공백 처리
+
+	if (exist) 
+	{
+		string key, path;
+		getline(fin, tag); // [Key]
+		getline(fin, key);
+
+		getline(fin, tag); // [Path]
+		getline(fin, path);
+
+		_Asset = CAssetMgr::GetInst()->Load<T>(key, path);
+	}
+}
 
 template<typename T, UINT SIZE>
 void Delete_Array(T* (&Arr)[SIZE])

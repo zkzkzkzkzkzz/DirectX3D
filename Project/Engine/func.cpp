@@ -193,3 +193,42 @@ void LoadWString(wstring& _str, FILE* _FILE)
 	_str = szBuff;
 }
 
+#include "CPathMgr.h"
+#include <filesystem>
+void Utils::LoadAllFileNames(const wstring& _path, vector<string>& vec)
+{
+	namespace fs = std::filesystem;
+	for (const fs::directory_entry& entry : fs::directory_iterator(_path)) {
+		if (entry.is_directory()) {
+			LoadAllFileNames(entry.path().wstring(), vec);
+		}
+		else {
+			string str = entry.path().filename().string();
+			vec.push_back(str);
+		}
+	}
+}
+
+void Utils::LoadAllFilePaths(const wstring& _path, vector<string>& vec)
+{
+	namespace fs = std::filesystem;
+	for (const fs::directory_entry& entry : fs::directory_iterator(_path)) {
+		if (entry.is_directory()) {
+			LoadAllFilePaths(entry.path().wstring(), vec);
+		}
+		else {
+			string str = entry.path().string();
+			vec.push_back(str);
+		}
+	}
+}
+
+void Utils::SlicePath(const wstring& _path, vector<string>& vec)
+{
+	vector<string> paths;
+	for (const auto& str : vec) {
+		if (str.find(ToString(_path)) == string::npos) continue;
+		paths.push_back(str.substr(_path.length()));
+	}
+	vec.swap(paths);
+}
