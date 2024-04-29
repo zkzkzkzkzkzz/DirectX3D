@@ -341,11 +341,13 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 	while (true) {
 		getline(fin, tag); // [ComponentType] or [Component_End]
 		if (tag == "[Component_End]") break;
-
+		string strComponent;
+		strComponent = str;
 		getline(fin, str);
 		auto num = magic_enum::enum_cast<COMPONENT_TYPE>(str);
 		if (num.has_value()) {
 			auto type = num.value();
+			num.value();
 			CComponent* pComponent = nullptr;
 
 			switch (type)
@@ -396,9 +398,11 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 			pComponent->LoadFromFile(fin);
 		}
 		else {
-			MessageBox(nullptr, L"컴포넌트 타입 오류", L"게임 오브젝트 불러오기", 0);
+			wstring msg = L"컴포넌트 타입 오류";
+			num = magic_enum::enum_cast<COMPONENT_TYPE>(strComponent);
+			msg = ToWString(magic_enum::enum_name(num.value())) + L" " + msg;
+			MessageBox(nullptr, msg.c_str(), L"게임 오브젝트 불러오기", 0);
 		}
-
 	}
 
 	size_t scriptCnt;
