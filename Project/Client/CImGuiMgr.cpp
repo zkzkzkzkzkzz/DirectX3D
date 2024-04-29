@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "CImGuiMgr.h"
 
+#include <Engine/CEngine.h>
+#include <Engine/define.h>
+
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
 #include <Engine/CGameObject.h>
@@ -108,6 +111,47 @@ void CImGuiMgr::progress()
     render();
 
     observe_content();
+}
+
+FOCUS_STATE CImGuiMgr::GetFocus_debug()
+{
+    // 뷰포트 생성 시, 
+    // 1. 주석 풀고 코드 제거
+    // 2. "뷰포트 UI 쪽 tick()"에
+    //      CImGuiMgr::isViewportFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_None); 구문 추가
+
+    if (GetFocus() == CEngine::GetInst()->GetMainWind())
+    {
+        if (isViewportFocused)
+        {
+            return FOCUS_STATE::MAIN;
+        }
+        else
+        {
+            return FOCUS_STATE::MAIN;   // 뷰포트 생성 시 코드 제거
+            //return FOCUS_STATE::OTHER;// 뷰포트 생성 시 주석 해제
+        }
+    }
+    else  if (ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
+    {
+        return FOCUS_STATE::OTHER;
+    }
+    else
+    {
+        return FOCUS_STATE::NONE;
+    }
+}
+
+FOCUS_STATE CImGuiMgr::GetFocus_release()
+{
+    if (GetFocus() == CEngine::GetInst()->GetMainWind())
+    {
+        return FOCUS_STATE::MAIN;
+    }
+    else
+    {
+        return FOCUS_STATE::NONE;
+    }
 }
 
 void CImGuiMgr::tick()

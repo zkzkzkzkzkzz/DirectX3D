@@ -3,6 +3,8 @@
 
 class UI;
 
+enum class FOCUS_STATE;
+
 typedef void(UI::* Delegate_0)();
 typedef void(UI::* Delegate_1)(DWORD_PTR);
 typedef void(UI::* Delegate_2)(DWORD_PTR, DWORD_PTR);
@@ -21,10 +23,15 @@ private:
 
     HANDLE              m_hNotify;
 
+    static bool         isViewportFocused;
 
 public:
     void init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device, ComPtr <ID3D11DeviceContext> _Context);
     void progress();
+
+public: // Callback
+    static FOCUS_STATE GetFocus_debug();
+    static FOCUS_STATE GetFocus_release();
 
 private:
     void tick();
