@@ -33,9 +33,9 @@ void UI::render()
 		// Modal
 		if (!m_bModal)
 		{
-			ImGui::Begin(string(m_strName + m_strID).c_str(), &Active);
+			ImGui::Begin(string(m_strName + m_strID).c_str(), &Active, ImGuiWindowFlags_AlwaysAutoResize);
 
-			// È°¼ºÈ­, ºñÈ°¼ºÈ­ ÀüÈ¯ÀÌ ¹ß»ıÇÑ °æ¿ì¿¡´Â Activate or Deactivate ¸¦ È£Ãâ½ÃÅ²´Ù.
+			// í™œì„±í™”, ë¹„í™œì„±í™” ì „í™˜ì´ ë°œìƒí•œ ê²½ìš°ì—ëŠ” Activate or Deactivate ë¥¼ í˜¸ì¶œì‹œí‚¨ë‹¤.
 			if (Active != m_bActive)
 			{
 				m_bActive = Active;
@@ -74,7 +74,7 @@ void UI::render()
 
 			else
 			{
-				// È°¼ºÈ­, ºñÈ°¼ºÈ­ ÀüÈ¯ÀÌ ¹ß»ıÇÑ °æ¿ì¿¡´Â Activate or Deactivate ¸¦ È£Ãâ½ÃÅ²´Ù.
+				// í™œì„±í™”, ë¹„í™œì„±í™” ì „í™˜ì´ ë°œìƒí•œ ê²½ìš°ì—ëŠ” Activate or Deactivate ë¥¼ í˜¸ì¶œì‹œí‚¨ë‹¤.
 				if (Active != m_bActive)
 				{
 					m_bActive = Active;
@@ -88,10 +88,10 @@ void UI::render()
 		}		
 	}
 
-	// Child UI ÀÎ °æ¿ì
+	// Child UI ì¸ ê²½ìš°
 	else
 	{
-		ImGui::BeginChild(string(m_strName + m_strID).c_str(), m_vSize);
+		ImGui::BeginChild(string(m_strName + m_strID).c_str(), ImVec2(0,0), ImGuiChildFlags_AutoResizeY);
 
 		render_update();
 
