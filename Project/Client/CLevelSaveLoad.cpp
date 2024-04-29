@@ -18,18 +18,18 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _strLevelPath)
 	assert(_Level);
 	assert(LEVEL_STATE::STOP == _Level->GetState() || LEVEL_STATE::NONE == _Level->GetState());
 
-	// Level À» ÀúÀåÇÒ °æ·Î
+	// Level ì„ ì €ì¥í•  ê²½ë¡œ
 	wstring strLevelPath = CPathMgr::GetContentPath();
 	strLevelPath += _strLevelPath;
 
 	FILE* pFile = nullptr;
 	_wfopen_s(&pFile, strLevelPath.c_str(), L"wb");
 
-	// ·¹º§ÀÇ ÀÌ¸§
+	// ë ˆë²¨ì˜ ì´ë¦„
 	SaveWString(_Level->GetName(), pFile);
 
-	// ·¹º§ÀÇ ·¹ÀÌ¾î ÀúÀå
-	for (UINT i = 0; i < LAYER_MAX; ++i)
+	// ë ˆë²¨ì˜ ë ˆì´ì–´ ì €ì¥
+	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		SaveLayer(_Level->GetLayer(i), pFile);
 	}
@@ -39,10 +39,10 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _strLevelPath)
 
 void CLevelSaveLoad::SaveLayer(CLayer* _Layer, FILE* _File)
 {
-	// Layer ÀÇ ÀÌ¸§ ÀúÀå
+	// Layer ì˜ ì´ë¦„ ì €ì¥
 	SaveWString(_Layer->GetName(), _File);
 
-	// Layer °¡ º¸À¯ÇÏ°í ÀÖ´Â GameObject µéÀ» ÀúÀå
+	// Layer ê°€ ë³´ìœ í•˜ê³  ìˆëŠ” GameObject ë“¤ì„ ì €ì¥
 	const vector<CGameObject*>& vecObject = _Layer->GetParentObjects();
 
 	size_t ObjCount = vecObject.size();
@@ -56,10 +56,10 @@ void CLevelSaveLoad::SaveLayer(CLayer* _Layer, FILE* _File)
 
 void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
 {
-	// GameObject ÀÇ ÀÌ¸§À» ÀúÀå
+	// GameObject ì˜ ì´ë¦„ì„ ì €ì¥
 	SaveWString(_Obj->GetName(), _File);
 	
-	// ÄÄÆ÷³ÍÆ® Á¤º¸¸¦ ÀúÀå
+	// ì»´í¬ë„ŒíŠ¸ ì •ë³´ë¥¼ ì €ì¥
 	UINT i = 0;
 	for ( ; i < (UINT)COMPONENT_TYPE::END; ++i)
 	{
@@ -67,19 +67,19 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
 		if (nullptr == pCom)
 			continue;
 
-		// ÄÄÆ÷³ÍÆ® Å¸ÀÔ Á¤º¸ ÀúÀå
+		// ì»´í¬ë„ŒíŠ¸ íƒ€ì… ì •ë³´ ì €ì¥
 		fwrite(&i, sizeof(UINT), 1, _File);
 
-		// ÇØ´ç ÄÄÆ÷³ÍÆ®°¡ ÀúÀåÇÒ µ¥ÀÌÅÍ ÀúÀå
+		// í•´ë‹¹ ì»´í¬ë„ŒíŠ¸ê°€ ì €ì¥í•  ë°ì´í„° ì €ì¥
 		pCom->SaveToFile(_File);
 	}
 	fwrite(&i, sizeof(UINT), 1, _File);
 
-	// ½ºÅ©¸³Æ® Á¤º¸ ÀúÀå
+	// ìŠ¤í¬ë¦½íŠ¸ ì •ë³´ ì €ì¥
 	const vector<CScript*>& vecScripts = _Obj->GetScripts();
 	size_t ScriptCount = vecScripts.size();
 
-	// ½ºÅ©¸³Æ® °³¼ö ÀúÀå
+	// ìŠ¤í¬ë¦½íŠ¸ ê°œìˆ˜ ì €ì¥
 	fwrite(&ScriptCount, sizeof(size_t), 1, _File);
 
 	for (size_t i = 0; i < vecScripts.size(); ++i)
@@ -88,7 +88,7 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
 		vecScripts[i]->SaveToFile(_File);
 	}
 
-	// ÀÚ½Ä ¿ÀºêÁ§Æ®°¡ ÀÖÀ¸¸é ÀÚ½Ä ¿ÀºêÁ§Æ® Á¤º¸ ÀúÀå
+	// ìì‹ ì˜¤ë¸Œì íŠ¸ê°€ ìˆìœ¼ë©´ ìì‹ ì˜¤ë¸Œì íŠ¸ ì •ë³´ ì €ì¥
 	const vector<CGameObject*>& vecChild = _Obj->GetChild();
 	size_t childcount = vecChild.size();
 	fwrite(&childcount, sizeof(size_t), 1, _File);
@@ -103,13 +103,13 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _strLevelPath)
 {
 	CLevel* pLevel = nullptr;
 
-	// Level À» ºÒ·¯¿Ã °æ·Î
+	// Level ì„ ë¶ˆëŸ¬ì˜¬ ê²½ë¡œ
 	wstring strLevelPath = CPathMgr::GetContentPath();
 	strLevelPath += _strLevelPath;
 
 	if (!exists(strLevelPath))
 	{
-		MessageBox(nullptr, L"·¹º§ °æ·Î°¡ ¿Ã¹Ù¸£Áö ¾Ê°Å³ª, ·¹º§ÀÌ ¾øÀ½", L"·¹º§ ·Îµå ½ÇÆĞ", MB_OK);
+		MessageBox(nullptr, L"ë ˆë²¨ ê²½ë¡œê°€ ì˜¬ë°”ë¥´ì§€ ì•Šê±°ë‚˜, ë ˆë²¨ì´ ì—†ìŒ", L"ë ˆë²¨ ë¡œë“œ ì‹¤íŒ¨", MB_OK);
 		return nullptr;
 	}
 
@@ -117,14 +117,14 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _strLevelPath)
 	_wfopen_s(&pFile, strLevelPath.c_str(), L"rb");
 			
 
-	// ·¹º§ÀÇ ÀÌ¸§À» ÀĞ´Â´Ù.
+	// ë ˆë²¨ì˜ ì´ë¦„ì„ ì½ëŠ”ë‹¤.
 	pLevel = new CLevel;
 	wstring strLevelName;
 	LoadWString(strLevelName, pFile);
 	pLevel->SetName(strLevelName);
 
-	// Layer ·Îµå
-	for (UINT i = 0; i < LAYER_MAX; ++i)
+	// Layer ë¡œë“œ
+	for (UINT i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		LoadLayer(pLevel->GetLayer(i), pFile);		
 	}
@@ -136,13 +136,13 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _strLevelPath)
 
 void CLevelSaveLoad::LoadLayer(CLayer* _Layer, FILE* _File)
 {
-	// Layer ÀÇ ÀÌ¸§ ÀúÀå
+	// Layer ì˜ ì´ë¦„ ì €ì¥
 	wstring strLayerName;
 	LoadWString(strLayerName, _File);
 	_Layer->SetName(strLayerName);
 
 
-	// Layer °¡ º¸À¯ÇÏ´ø GameObject µéÀ» ºÒ·¯¿Â´Ù.
+	// Layer ê°€ ë³´ìœ í•˜ë˜ GameObject ë“¤ì„ ë¶ˆëŸ¬ì˜¨ë‹¤.
 	size_t ObjCount = 0;
 	fread(&ObjCount, sizeof(size_t), 1, _File);
 
@@ -157,12 +157,12 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 {
 	CGameObject* pObject = new CGameObject;
 	
-	// GameObject ÀÇ ÀÌ¸§À» ·Îµå
+	// GameObject ì˜ ì´ë¦„ì„ ë¡œë“œ
 	wstring strName;
 	LoadWString(strName, _File);
 	pObject->SetName(strName);
 
-	// ÄÄÆ÷³ÍÆ® Á¤º¸¸¦ ºÒ·¯¿À±â
+	// ì»´í¬ë„ŒíŠ¸ ì •ë³´ë¥¼ ë¶ˆëŸ¬ì˜¤ê¸°
 	COMPONENT_TYPE type = COMPONENT_TYPE::END;
 	while(true)
 	{
@@ -186,6 +186,9 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 		case COMPONENT_TYPE::LIGHT2D:
 			pComponent = new CLight2D;
 			break;		
+		case COMPONENT_TYPE::LIGHT3D:
+			pComponent = new CLight3D;
+			break;
 		case COMPONENT_TYPE::CAMERA:
 			pComponent = new CCamera;
 			break;
@@ -206,12 +209,12 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 			break;
 		}
 
-		// ÇØ´ç ÄÄÆ÷³ÍÆ®°¡ ÀúÀåÇÑ µ¥ÀÌÅÍ¸¦ ·Îµå
+		// í•´ë‹¹ ì»´í¬ë„ŒíŠ¸ê°€ ì €ì¥í•œ ë°ì´í„°ë¥¼ ë¡œë“œ
 		pObject->AddComponent(pComponent);
 		pComponent->LoadFromFile(_File);
 	}
 
-	// ½ºÅ©¸³Æ® °³¼ö ÀĞ±â
+	// ìŠ¤í¬ë¦½íŠ¸ ê°œìˆ˜ ì½ê¸°
 	size_t ScriptCount = 0;
 	fread(&ScriptCount, sizeof(size_t), 1, _File);
 
@@ -225,7 +228,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 		pScript->LoadFromFile(_File);
 	}
 
-	// ÀÚ½Ä ¿ÀºêÁ§Æ®°¡ ÀÖÀ¸¸é ÀÚ½Ä ¿ÀºêÁ§Æ® Á¤º¸ ÀúÀå	
+	// ìì‹ ì˜¤ë¸Œì íŠ¸ê°€ ìˆìœ¼ë©´ ìì‹ ì˜¤ë¸Œì íŠ¸ ì •ë³´ ì €ì¥	
 	size_t childcount = 0;
 	fread(&childcount, sizeof(size_t), 1, _File);
 

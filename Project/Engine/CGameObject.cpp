@@ -16,7 +16,7 @@ CGameObject::CGameObject()
 	: m_arrCom{}
 	, m_RenderCom(nullptr)
 	, m_Parent(nullptr)
-	, m_iLayerIdx(-1) // ¾î¶°ÇÑ ·¹º§(·¹ÀÌ¾î) ¼Ò¼ÓµÇ¾îÀÖÁö ¾Ê´Ù.
+	, m_iLayerIdx(-1) // ì–´ë– í•œ ë ˆë²¨(ë ˆì´ì–´) ì†Œì†ë˜ì–´ìˆì§€ ì•Šë‹¤.
 	, m_bDead(false)
 {
 }
@@ -43,8 +43,8 @@ CGameObject::CGameObject(const CGameObject& _OriginObject)
 	}
 	
 
-	// º¹»çµÇ´Â GameObject ´Â ºÎ¸ğ¸¸ ·¹ÀÌ¾î¼Ò¼ÓÀ» -1 ·Î ÇÏ°í, 
-	// ÀÚ½ÄµéÀº ¿øº»°´Ã¼¶û µ¿ÀÏÇÑ ·¹ÀÌ¾î¼Ò¼ÓÀ» À¯ÁöÇÑ´Ù.
+	// ë³µì‚¬ë˜ëŠ” GameObject ëŠ” ë¶€ëª¨ë§Œ ë ˆì´ì–´ì†Œì†ì„ -1 ë¡œ í•˜ê³ , 
+	// ìì‹ë“¤ì€ ì›ë³¸ê°ì²´ë‘ ë™ì¼í•œ ë ˆì´ì–´ì†Œì†ì„ ìœ ì§€í•œë‹¤.
 	for (size_t i = 0; i < _OriginObject.m_vecChild.size(); ++i)
 	{
 		CGameObject* ChildClone = _OriginObject.m_vecChild[i]->Clone();						
@@ -146,7 +146,7 @@ void CGameObject::AddComponent(CComponent* _Comonent)
 
 	if (type == COMPONENT_TYPE::SCRIPT)
 	{		
-		// Script Å¸ÀÔ Component °¡ ½ÇÁ¦·Î Script Å¬·¡½º°¡ ¾Æ´Ñ °æ¿ì
+		// Script íƒ€ì… Component ê°€ ì‹¤ì œë¡œ Script í´ë˜ìŠ¤ê°€ ì•„ë‹Œ ê²½ìš°
 		assert(dynamic_cast<CScript*>(_Comonent));
 
 		m_vecScript.push_back((CScript*)_Comonent);
@@ -154,7 +154,7 @@ void CGameObject::AddComponent(CComponent* _Comonent)
 	}
 	else
 	{
-		// ÀÌ¹Ì ÇØ´ç Å¸ÀÔÀÇ ÄÄÆ÷³ÍÆ®¸¦ º¸À¯ÇÏ°í ÀÖ´Â °æ¿ì 
+		// ì´ë¯¸ í•´ë‹¹ íƒ€ì…ì˜ ì»´í¬ë„ŒíŠ¸ë¥¼ ë³´ìœ í•˜ê³  ìˆëŠ” ê²½ìš° 
 		assert(!m_arrCom[(UINT)type]);
 
 		m_arrCom[(UINT)type] = _Comonent;
@@ -163,7 +163,7 @@ void CGameObject::AddComponent(CComponent* _Comonent)
 		CRenderComponent* pRenderCom = dynamic_cast<CRenderComponent*>(_Comonent);
 		if (nullptr != pRenderCom)
 		{
-			// ÀÌ¹Ì ÇÑ Á¾·ù ÀÌ»óÀÇ RenderComponent ¸¦ º¸À¯ÇÏ°í ÀÖ´Â °æ¿ì
+			// ì´ë¯¸ í•œ ì¢…ë¥˜ ì´ìƒì˜ RenderComponent ë¥¼ ë³´ìœ í•˜ê³  ìˆëŠ” ê²½ìš°
 			assert(!m_RenderCom);
 
 			m_RenderCom = pRenderCom;
@@ -174,7 +174,7 @@ void CGameObject::AddComponent(CComponent* _Comonent)
 
 int CGameObject::DisconnectWithParent()
 {	
-	// ºÎ¸ğ°¡ ¾ø´Â ¿ÀºêÁ§Æ®¿¡ DisconnectWithParent ÇÔ¼ö¸¦ È£ÃâÇßÀ¸¸é
+	// ë¶€ëª¨ê°€ ì—†ëŠ” ì˜¤ë¸Œì íŠ¸ì— DisconnectWithParent í•¨ìˆ˜ë¥¼ í˜¸ì¶œí–ˆìœ¼ë©´
 	if (nullptr == m_Parent)
 		return -1;
 
@@ -191,7 +191,7 @@ int CGameObject::DisconnectWithParent()
 		}
 	}
 
-	// ºÎ¸ğ´Â ÀÚ½ÄÀ» °¡¸®Å°±âÁö ¾Ê°í ÀÖ´Âµ¥, ÀÚ½ÄÀº ºÎ¸ğ¸¦ °¡¸®Å°°í ÀÖ´Â °æ¿ì
+	// ë¶€ëª¨ëŠ” ìì‹ì„ ê°€ë¦¬í‚¤ê¸°ì§€ ì•Šê³  ìˆëŠ”ë°, ìì‹ì€ ë¶€ëª¨ë¥¼ ê°€ë¦¬í‚¤ê³  ìˆëŠ” ê²½ìš°
 	if (!bSuccess)
 	{
 		assert(nullptr);
@@ -221,26 +221,26 @@ void CGameObject::AddChild(CGameObject* _Child)
 {
 	if (-1 == _Child->m_iLayerIdx)
 	{
-		// ·¹º§¿¡ ¼ÓÇÏÁö ¾Ê¾Ò´ø ¿ÀºêÁ§Æ®°¡ ÀÚ½ÄÀ¸·Î µé¾î¿Ã¶§´Â ºÎ¸ğÀÇ ·¹ÀÌ¾î¸¦ µû¶ó°£´Ù.
+		// ë ˆë²¨ì— ì†í•˜ì§€ ì•Šì•˜ë˜ ì˜¤ë¸Œì íŠ¸ê°€ ìì‹ìœ¼ë¡œ ë“¤ì–´ì˜¬ë•ŒëŠ” ë¶€ëª¨ì˜ ë ˆì´ì–´ë¥¼ ë”°ë¼ê°„ë‹¤.
 		_Child->m_iLayerIdx = m_iLayerIdx;
 	}
 	else if (_Child->m_Parent)
 	{
-		// ÀÌÀü ºÎ¸ğ ¿ÀºêÁ§Æ®¶û ¿¬°á ÇØÁ¦
-		// ¿ø·¡ ·¹ÀÌ¾î¸¦ À¯ÁöÇÑ´Ù.
+		// ì´ì „ ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸ë‘ ì—°ê²° í•´ì œ
+		// ì›ë˜ ë ˆì´ì–´ë¥¼ ìœ ì§€í•œë‹¤.
 		int LayerIdx = _Child->DisconnectWithParent();
 		_Child->m_iLayerIdx = LayerIdx;
 	}
 	else
 	{
-		// ÀÚ½ÄÀ¸·Î µé¾î¿À´Â ¿ÀºêÁ§Æ®°¡ ÃÖ»óÀ§ ºÎ¸ğÅ¸ÀÔÀÌ¸é,
-		// ¼Ò¼Ó ·¹ÀÌ¾îÀÇ Parent ¿ÀºêÁ§Æ® ¸ñ·Ï¿¡¼­ Á¦°ÅµÇ¾î¾ß ÇÑ´Ù.
-		// Á¦°ÅµÇ±â ÀüÀÇ ·¹ÀÌ¾î¸¦ À¯ÁöÇÑ´Ù.
+		// ìì‹ìœ¼ë¡œ ë“¤ì–´ì˜¤ëŠ” ì˜¤ë¸Œì íŠ¸ê°€ ìµœìƒìœ„ ë¶€ëª¨íƒ€ì…ì´ë©´,
+		// ì†Œì† ë ˆì´ì–´ì˜ Parent ì˜¤ë¸Œì íŠ¸ ëª©ë¡ì—ì„œ ì œê±°ë˜ì–´ì•¼ í•œë‹¤.
+		// ì œê±°ë˜ê¸° ì „ì˜ ë ˆì´ì–´ë¥¼ ìœ ì§€í•œë‹¤.
 		int LayerIdx = _Child->DisconnectWithLayer();
 		_Child->m_iLayerIdx = LayerIdx;
 	}
 
-	// ºÎ¸ğ ÀÚ½Ä ¿¬°á
+	// ë¶€ëª¨ ìì‹ ì—°ê²°
 	_Child->m_Parent = this;
 	m_vecChild.push_back(_Child);
 }

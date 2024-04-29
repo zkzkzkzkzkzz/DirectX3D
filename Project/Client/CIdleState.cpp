@@ -15,7 +15,7 @@ CIdleState::~CIdleState()
 
 void CIdleState::finaltick()
 {
-	// ÇÃ·¹ÀÌ¾î°¡ ±ÙÃ³¿¡ ÀÖÀ¸¸é, Trace »óÅÂ·Î º¯°æÇÑ´Ù.
+	// í”Œë ˆì´ì–´ê°€ ê·¼ì²˜ì— ìžˆìœ¼ë©´, Trace ìƒíƒœë¡œ ë³€ê²½í•œë‹¤.
 	float DetectRange = *((float*)GetBlackboardData(L"DetectRange"));
 	CGameObject * pTarget = ((CGameObject*)GetBlackboardData(L"TargetObject"));
 
@@ -23,11 +23,11 @@ void CIdleState::finaltick()
 
 	Vec3 vDist = pTarget->Transform()->GetWorldPos() - pSelf->Transform()->GetWorldPos();
 
-	GamePlayStatic::DrawDebugCircle(pSelf->Transform()->GetWorldPos(), DetectRange, Vec3(0.1f, 1.f, 0.1f), 0.f);
+	//GamePlayStatic::DrawDebugCircle(pSelf->Transform()->GetWorldPos(), DetectRange, Vec3(0.1f, 1.f, 0.1f), 0.f);
 
 	if (vDist.Length() <= DetectRange)
 	{
-		// ÃßÀû»óÅÂ·Î º¯°æÇÑ´Ù.
+		// ì¶”ì ìƒíƒœë¡œ ë³€ê²½í•œë‹¤.
 		ChangeState(L"TraceState");
 	}
 }

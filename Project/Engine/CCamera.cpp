@@ -114,7 +114,7 @@ void CCamera::SortObject()
 {
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 
-	for (int i = 0; i < LAYER_MAX; ++i)
+	for (int i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
 		// 카메라가 찍도록 설정된 Layer 가 아니면 무시
 		if (false == (m_LayerCheck & (1 << i)))

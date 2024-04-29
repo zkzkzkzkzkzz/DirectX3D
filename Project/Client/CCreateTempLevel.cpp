@@ -34,7 +34,7 @@
 
 void CCreateTempLevel::Init()
 {
-	// Missile Prefab »ı¼º
+	// Missile Prefab ìƒì„±
 	/*CGameObject* pObj = nullptr;
 
 	pObj = new CGameObject;
@@ -55,7 +55,7 @@ void CCreateTempLevel::Init()
 	//pMissilePrefab->Save(L"prefab\\missile.pref");
 	*/
 
-	// ÀÓ½Ã FSM °´Ã¼ ¿¡¼Â ÇÏ³ª »ı¼ºÇÏ±â
+	// ì„ì‹œ FSM ê°ì²´ ì—ì…‹ í•˜ë‚˜ ìƒì„±í•˜ê¸°
 	Ptr<CFSM>	pFSM = new CFSM(true);
 
 	pFSM->AddState(L"IdleState", new CIdleState);
@@ -69,16 +69,8 @@ void CCreateTempLevel::CreateTempLevel()
 
 	CLevel* pTempLevel = new CLevel;
 
-	pTempLevel->GetLayer(0)->SetName(L"Default");
-	pTempLevel->GetLayer(1)->SetName(L"Background");
-	pTempLevel->GetLayer(2)->SetName(L"Tile");
-	pTempLevel->GetLayer(3)->SetName(L"Player");
-	pTempLevel->GetLayer(4)->SetName(L"Monster");
-	pTempLevel->GetLayer(5)->SetName(L"Light");
-	pTempLevel->GetLayer(6)->SetName(L"Tile");
-	pTempLevel->GetLayer(31)->SetName(L"UI");
 
-	// Main Camera Object »ı¼º
+	// Main Camera Object ìƒì„±
 	CGameObject* pCamObj = new CGameObject;
 	pCamObj->SetName(L"MainCamera");
 	pCamObj->AddComponent(new CTransform);
@@ -92,9 +84,9 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->Camera()->LayerCheckAll();
 	pCamObj->Camera()->LayerCheck(31, false);
 
-	pTempLevel->AddObject(pCamObj, 0);
+	pTempLevel->AddObject(pCamObj, (UINT)LAYER::LAYER_DEFAULT);
 
-	// UI Ä«¸Ş¶ó »ı¼º
+	// UI ì¹´ë©”ë¼ ìƒì„±
 	pCamObj = new CGameObject;
 	pCamObj->SetName(L"UICamera");
 	pCamObj->AddComponent(new CTransform);
@@ -106,43 +98,48 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->Camera()->SetCameraPriority(1);
 	pCamObj->Camera()->LayerCheck(31, true);
 
-	pTempLevel->AddObject(pCamObj, 0);
+	pTempLevel->AddObject(pCamObj, (UINT)LAYER::LAYER_DEFAULT);
 
 
 	CGameObject* pObj = nullptr;
 
 
-	// 3D Light Ãß°¡
+	// 3D Light ì¶”ê°€
 	pObj = new CGameObject;
 	pObj->SetName(L"Light3D");
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CLight3D);
 
 	pObj->Transform()->SetRelativePos(Vec3(-500.f, 0.f, 500.f));
+	pObj->Transform()->SetRelativeRotation(Vec3(XM_PI / 4.f, XM_PI / 4.f, 0.f));
 
-	pObj->Light3D()->SetLightType(LIGHT_TYPE::POINT);
-	pObj->Light3D()->SetLightColor(Vec3(1.f, 0.3f, 0.3f));
+	pObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+	pObj->Light3D()->SetLightColor(Vec3(1.f, 1.f, 1.f));
 	pObj->Light3D()->SetAmbient(Vec3(0.1f, 0.1f, 0.1f));
 	pObj->Light3D()->SetSpecular(Vec3(0.3f, 0.3f, 0.3f));
 	pObj->Light3D()->SetRadius(1000.f);
 
-	pTempLevel->AddObject(pObj, L"Default", false);
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
-	pObj = pObj->Clone();
-	pObj->SetName(L"Light3D_Clone");
-	pObj->Transform()->SetRelativePos(Vec3(500.f, 0.f, 500.f));
-	pObj->Light3D()->SetLightColor(Vec3(0.3f, 0.3f, 1.f));
-	pTempLevel->AddObject(pObj, L"Default", false);
+	// SkyBox ìš© ì˜¤ë¸Œì íŠ¸ ì¶”ê°€
+	pObj = new CGameObject;
+	pObj->SetName(L"SkyBox");
 
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CSkyBox);
 
-	pObj = pObj->Clone();
-	pObj->SetName(L"Light3D_Clone2");
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-	pObj->Light3D()->SetLightColor(Vec3(0.3f, 1.f, 0.3f));
-	pTempLevel->AddObject(pObj, L"Default", false);
+	pObj->Transform()->SetRelativeScale(Vec3(500.f, 500.f, 500.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
 
+	pObj->SkyBox()->SetSkyBoxType(SKYBOX_TYPE::SPHERE);
+	pObj->SkyBox()->SetSphereTexture(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\skybox\\Sky02.jpg", L"texture\\skybox\\Sky02.jpg"));
 
-	// Player Object »ı¼º
+	//pObj->SkyBox()->SetSkyBoxType(SKYBOX_TYPE::CUBE);
+	//pObj->SkyBox()->SetCubeTexture(CAssetMgr::GetInst()->Load<CTexture>(L"texture\\skybox\\SkyWater.dds", L"texture\\skybox\\SkyWater.dds"));
+
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
+
+	// Player Object ìƒì„±
 	pObj = new CGameObject;
 	pObj->SetName(L"Player");
 
@@ -166,10 +163,10 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01.tga", L"texture\\tile\\TILE_01.tga"));
 	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_01_N.tga", L"texture\\tile\\TILE_01_N.tga"));
 
-	pTempLevel->AddObject(pObj, L"Player", false);
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_PLAYER, false);
 
 
-	// TimeMgr Object »ı¼º
+	// TimeMgr Object ìƒì„±
 	pObj = new CGameObject;
 	pObj->SetName(L"Manager Object");
 
@@ -178,10 +175,9 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->AddObject(pObj, 0);
 
 
-
-	// Ãæµ¹ ¼³Á¤
-	CCollisionMgr::GetInst()->LayerCheck(3, 4);
-	CCollisionMgr::GetInst()->LayerCheck(4, 4);
+	// ì¶©ëŒ ì„¤ì •
+	CCollisionMgr::GetInst()->LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_MONSTER);
+	CCollisionMgr::GetInst()->LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_MONSTER);
 
 	CLevelMgr::GetInst()->ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 

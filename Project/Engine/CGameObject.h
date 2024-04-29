@@ -1,30 +1,22 @@
 #pragma once
 #include "CEntity.h"
 
-#define GET_COMPONENT(Type, TYPE) class C##Type* Type() { return (C##Type*)m_arrCom[(UINT)COMPONENT_TYPE::##TYPE]; }
-
-
 class CComponent;
-class CRenderComponent;
 class CScript;
-class CCamera;
-class CCollider2D;
-class CLight2D;
-class CStateMachine;
 
 class CGameObject :
     public CEntity
 {
 private:
     CComponent* m_arrCom[(UINT)COMPONENT_TYPE::END];
-    CRenderComponent* m_RenderCom;
+    class CRenderComponent* m_RenderCom;
 
     vector<CScript*>        m_vecScript;
     vector<CGameObject*>    m_vecChild;
 
     CGameObject* m_Parent;
 
-    int                     m_iLayerIdx;    // ø¿∫Í¡ß∆Æ∞° º“º”µ«æÓ¿÷¥¬ Layer ¿« Index
+    int                     m_iLayerIdx;    // Ïò§Î∏åÏ†ùÌä∏Í∞Ä ÏÜåÏÜçÎêòÏñ¥ÏûàÎäî Layer Ïùò Index
 
     bool                    m_bDead;
 
@@ -37,19 +29,18 @@ public:
 public:
     void AddComponent(CComponent* _Comonent);
     CComponent* GetComponent(COMPONENT_TYPE _Type) { return m_arrCom[(UINT)_Type]; }
-    CRenderComponent* GetRenderComponent() { return m_RenderCom; }
+    class CRenderComponent* GetRenderComponent() { return m_RenderCom; }
 
-    GET_COMPONENT(Transform, TRANSFORM);
-    GET_COMPONENT(MeshRender, MESHRENDER);
-    GET_COMPONENT(Camera, CAMERA);
-    GET_COMPONENT(StateMachine, STATEMACHINE);
-    GET_COMPONENT(Collider2D, COLLIDER2D);
-    GET_COMPONENT(Animator2D, ANIMATOR2D);
-    GET_COMPONENT(Light2D, LIGHT2D);
-    GET_COMPONENT(Light3D, LIGHT3D);
-    GET_COMPONENT(TileMap, TILEMAP);
-
-
+    inline class CTransform* Transform() { return (CTransform*)m_arrCom[(UINT)COMPONENT_TYPE::TRANSFORM]; }
+    inline class CMeshRender* MeshRender() { return (CMeshRender*)m_arrCom[(UINT)COMPONENT_TYPE::MESHRENDER]; }
+    inline class CCamera* Camera() { return (CCamera*)m_arrCom[(UINT)COMPONENT_TYPE::CAMERA]; }
+    inline class CStateMachine* StateMachine() { return (CStateMachine*)m_arrCom[(UINT)COMPONENT_TYPE::STATEMACHINE]; }
+    inline class CCollider2D* Collider2D() { return (CCollider2D*)m_arrCom[(UINT)COMPONENT_TYPE::COLLIDER2D]; }
+    inline class CAnimator2D* Animator2D() { return (CAnimator2D*)m_arrCom[(UINT)COMPONENT_TYPE::ANIMATOR2D]; }
+    inline class CLight2D* Light2D() { return (CLight2D*)m_arrCom[(UINT)COMPONENT_TYPE::LIGHT2D]; }
+    inline class CLight3D* Light3D() { return (CLight3D*)m_arrCom[(UINT)COMPONENT_TYPE::LIGHT3D]; }
+    inline class CTileMap* TileMap() { return (CTileMap*)m_arrCom[(UINT)COMPONENT_TYPE::TILEMAP]; }
+    inline class CSkyBox* SkyBox() { return (CSkyBox*)m_arrCom[(UINT)COMPONENT_TYPE::SKYBOX]; }
 
     int GetLayerIdx() { return m_iLayerIdx; }
 

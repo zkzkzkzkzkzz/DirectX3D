@@ -27,11 +27,23 @@
 #define KEY_NONE_EDITOR(Key)		KEY_CHECK(Key, NONE, FOCUS_STATE::OTHER)
 
 
-#define LAYER_MAX 32
+//#define LAYER_MAX 32
 
 #define CLONE(TYPE) virtual TYPE* Clone() { return new TYPE(*this); }
 #define CLONE_DISABLE(TYPE) TYPE* Clone() { return nullptr; assert(nullptr); }\
 							TYPE(const TYPE& _OriginBuffer) = delete;
+
+enum class LAYER
+{
+	LAYER_DEFAULT,
+	LAYER_BACKGROUND,
+	LAYER_TILE,
+	LAYER_PLAYER,
+	LAYER_MONSTER,
+	LAYER_LIGHT,
+	LAYER_UI,
+	LAYER_MAX = 32,
+};
 
 enum class DIR_TYPE
 {

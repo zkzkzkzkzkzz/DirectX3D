@@ -30,21 +30,21 @@ CCollider2D::~CCollider2D()
 
 void CCollider2D::finaltick()
 {
-	// Ãæµ¹Ã¼ÀÇ ·ÎÄÃ Çà·Ä °è»ê
+	// ì¶©ëŒì²´ì˜ ë¡œì»¬ í–‰ë ¬ ê³„ì‚°
 	m_matColWorld = XMMatrixScaling(m_vOffsetScale.x, m_vOffsetScale.y, m_vOffsetScale.z);
 	m_matColWorld *= XMMatrixTranslation(m_vOffsetPos.x, m_vOffsetPos.y, m_vOffsetPos.z);
 
-	// Ãæµ¹Ã¼¿¡ Àû¿ë½ÃÅ³ GameObject ÀÇ ¿ùµåÇà·Ä
+	// ì¶©ëŒì²´ì— ì ìš©ì‹œí‚¬ GameObject ì˜ ì›”ë“œí–‰ë ¬
 	const Matrix& matObjWorld = Transform()->GetWorldMat();
 
-	// GameObject ÀÇ Scale ¿¡ ¿µÇâÀ» ¹ÞÁö ¾ÊÀ¸·Á´Â °æ¿ì
+	// GameObject ì˜ Scale ì— ì˜í–¥ì„ ë°›ì§€ ì•Šìœ¼ë ¤ëŠ” ê²½ìš°
 	if (m_bAbsolute)
 	{
 		Vec3 vWorldScale = Transform()->GetWorldScale();
 		Matrix matScaleInv = XMMatrixScaling(vWorldScale.x, vWorldScale.y, vWorldScale.z);
 		matScaleInv = XMMatrixInverse(nullptr, matScaleInv);
 
-		// Object ÀÇ Scale ÀÇ ¿ªÇà·ÄÀ» »çÀÌ¿¡ ¹èÄ¡ÇØ¼­ ¹«È¿È­ ½ÃÅ´
+		// Object ì˜ Scale ì˜ ì—­í–‰ë ¬ì„ ì‚¬ì´ì— ë°°ì¹˜í•´ì„œ ë¬´íš¨í™” ì‹œí‚´
 		m_matColWorld = m_matColWorld * matScaleInv *  matObjWorld;
 	}
 	else
@@ -54,7 +54,7 @@ void CCollider2D::finaltick()
 	
 	if (m_bDebug)
 	{
-		// Ãæµ¹ÁßÀÌ¸é Red, Ãæµ¹ÇÏ°í ÀÖÁö ¾ÊÀ¸¸é Green
+		// ì¶©ëŒì¤‘ì´ë©´ Red, ì¶©ëŒí•˜ê³  ìžˆì§€ ì•Šìœ¼ë©´ Green
 		if (0 == m_CollisionCount)
 		{
 			if (m_Type == COLLIDER2D_TYPE::RECT)
@@ -63,7 +63,9 @@ void CCollider2D::finaltick()
 			}
 			else
 			{
-				GamePlayStatic::DrawDebugCircle(m_matColWorld, Vec3(0.f, 1.f, 0.f), false);
+				Vec3 vPos = GetOwner()->Transform()->GetWorldPos();
+				Vec2 vRadius = GetOwner()->Collider2D()->GetOffsetScale();
+				GamePlayStatic::DrawDebugCircle(vPos, vRadius.x, Vec3(0.f, 1.f, 0.f), false);
 			}
 		}
 		else
