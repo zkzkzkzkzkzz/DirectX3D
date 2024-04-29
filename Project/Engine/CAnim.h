@@ -10,6 +10,9 @@ struct tAnimFrm
     Vec2    vOffset;
     Vec2    vBackground;
     float   Duration;
+
+    friend ofstream& operator<<(ofstream& fout, const tAnimFrm& frm);
+    friend ifstream& operator>>(ifstream& fin, tAnimFrm& frm);
 };
 
 class CAnimator2D;
@@ -46,7 +49,9 @@ public:
 
 
     void SaveToFile(FILE* _File);
+    void SaveToFile(ofstream& fout);
     void LoadFromFile(FILE* _File);
+    void LoadFromFile(ifstream& fin);
     CLONE(CAnim);
 public:
     CAnim();

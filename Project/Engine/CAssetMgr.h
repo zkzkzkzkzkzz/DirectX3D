@@ -51,6 +51,8 @@ public:
 
     template<typename T>
     Ptr<T> Load(const wstring& _strKey, const wstring& _strRelativePath);
+    template<typename T>
+    Ptr<T> Load(string& _strKey, string& _strRelativePath);
 
     // _Flag : D3D11_BIND_FLAG
     Ptr<CTexture> CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _Format, UINT _Flag, D3D11_USAGE _Usage = D3D11_USAGE_DEFAULT);
@@ -158,6 +160,12 @@ Ptr<T> CAssetMgr::Load(const wstring& _strKey, const wstring& _strRelativePath)
     AddAsset<T>(_strKey, (T*)pAsset.Get());
 
     return (T*)pAsset.Get();
+}
+
+template<typename T>
+Ptr<T> CAssetMgr::Load(string& _strKey,string& _strRelativePath)
+{
+    return Load<T>(ToWString(_strKey), ToWString(_strRelativePath));
 }
 
 template<typename T>
