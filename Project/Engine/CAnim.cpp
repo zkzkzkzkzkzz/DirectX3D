@@ -110,6 +110,26 @@ void CAnim::SaveToFile(FILE* _File)
 	SaveAssetRef(m_AtlasTex, _File);
 }
 
+void CAnim::SaveToFile(ofstream& fout)
+{
+	// 애니메이션 이름 저장
+	fout << "[AnimName]" << endl;
+	fout << ToString(GetName()) << endl;
+
+	// 모든 프레임 정보 저장
+	fout << "[FrmCount]" << endl;
+	fout << m_vecFrm.size() << endl;
+
+	if (m_vecFrm.size() == 0) return;
+	
+	fout << "[FrmInfo]" << endl;
+	for (size_t i = 0; i < m_vecFrm.size(); ++i) {
+		fout << m_vecFrm[i] << endl;
+	}
+
+	SaveAssetRef(m_AtlasTex, fout);
+}
+
 void CAnim::LoadFromFile(FILE* _File)
 {
 	// 애니메이션 이름 로드
@@ -125,4 +145,76 @@ void CAnim::LoadFromFile(FILE* _File)
 
 	// 애니메이션이 참조하던 텍스쳐 정보 로드
 	LoadAssetRef(m_AtlasTex, _File);
+}
+
+void CAnim::LoadFromFile(ifstream& fin)
+{
+	string tag, str;
+
+	getline(fin, tag); // [AnimName]
+	getline(fin, str);
+	SetName(str);
+
+	size_t frmCnt;
+	getline(fin, tag); // [FrmCount]
+	fin >> frmCnt;
+	getline(fin, str); // 공백처리
+
+	if (frmCnt == 0) return;
+
+	getline(fin, tag); // [FrmInfo]
+	for (size_t i = 0; i < frmCnt; ++i) {
+		tAnimFrm frm;
+		fin >> frm;
+		m_vecFrm.push_back(frm);
+	}
+
+	LoadAssetRef(m_AtlasTex, fin);
+}
+
+ofstream& operator<<(ofstream& fout, const tAnimFrm& frm)
+{
+	fout << "[LeftTop]" << endl;
+	fout << frm.vLeftTop << endl;
+
+	fout << "[Slice]" << endl;
+	fout << frm.vSlice << endl;
+
+	fout << "[Offset]" << endl;
+	fout << frm.vOffset << endl;
+
+	fout << "[Background]" << endl;
+	fout << frm.vBackground << endl;
+
+	fout << "[Duration]" << endl;
+	fout << frm.Duration;
+
+	return fout;
+}
+
+ifstream& operator>>(ifstream& fin, tAnimFrm& frm)
+{
+	string tag, str;
+
+	getline(fin, tag); // [LeftTop]
+	fin >> frm.vLeftTop;
+	getline(fin, str); // 공백 처리
+
+	getline(fin, tag); // [Slice]
+	fin >> frm.vSlice;
+	getline(fin, str); // 공백 처리
+
+	getline(fin, tag); // [Offset]
+	fin >> frm.vOffset;
+	getline(fin, str); // 공백 처리
+
+	getline(fin, tag); // [Background]
+	fin >> frm.vBackground;
+	getline(fin, str); // 공백 처리
+
+	getline(fin, tag); // [Duration]
+	fin >> frm.Duration;
+	getline(fin, str); // 공백 처리
+
+	return fin;
 }
