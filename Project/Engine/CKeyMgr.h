@@ -36,6 +36,8 @@ struct FKeyData
 	bool		bPressed;
 };
 
+typedef FOCUS_STATE(*FOCUS_CALLBACK)(void);
+
 class CKeyMgr
 	: public CSingleton<CKeyMgr>
 {
@@ -49,6 +51,9 @@ private:
 	Vec2				m_vMouseDrag;
 
 	FOCUS_STATE			m_FocusState;
+
+public:
+	FOCUS_CALLBACK		m_FocusCallback;
 
 public:
 	KEY_STATE GetKeyState(KEY _Key) { return m_vecKeyData[_Key].eState; }
