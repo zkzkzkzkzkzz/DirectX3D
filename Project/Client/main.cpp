@@ -8,6 +8,7 @@
 #include <Engine\CEngine.h>
 #include <Engine\CDevice.h>
 #include <Engine/CPrefab.h>
+#include <Engine/CKeyMgr.h>
 
 #include "CLevelSaveLoad.h"
 
@@ -74,6 +75,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         
     CPrefab::GAMEOBJECT_SAVE = &CLevelSaveLoad::SaveGameObject;
     CPrefab::GAMEOBJECT_LOAD = &CLevelSaveLoad::LoadGameObject;    
+
     
 #ifndef _RELEASE_GAME
     // 임시 레벨 생성
@@ -85,6 +87,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // ImGui 초기화
     CImGuiMgr::GetInst()->init(hWnd, DEVICE, CONTEXT);
+
+
+    CKeyMgr::GetInst()->m_FocusCallback = &CImGuiMgr::GetFocus_debug;
+#else
+    CKeyMgr::GetInst()->m_FocusCallback = &CImGuiMgr::GetFocus_release;
 #endif
 
 
