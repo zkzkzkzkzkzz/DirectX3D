@@ -30,11 +30,12 @@
 
 #include "CIdleState.h"
 #include "CTraceState.h"
+#include <Scripts/CRenderMgrScript.h>
 
 
 void CCreateTempLevel::Init()
 {
-	// Missile Prefab »ı¼º
+	// Missile Prefab ìƒì„±
 	/*CGameObject* pObj = nullptr;
 
 	pObj = new CGameObject;
@@ -55,7 +56,7 @@ void CCreateTempLevel::Init()
 	//pMissilePrefab->Save(L"prefab\\missile.pref");
 	*/
 
-	// ÀÓ½Ã FSM °´Ã¼ ¿¡¼Â ÇÏ³ª »ı¼ºÇÏ±â
+	// ì„ì‹œ FSM ê°ì²´ ì—ì…‹ í•˜ë‚˜ ìƒì„±í•˜ê¸°
 	Ptr<CFSM>	pFSM = new CFSM(true);
 
 	pFSM->AddState(L"IdleState", new CIdleState);
@@ -70,7 +71,7 @@ void CCreateTempLevel::CreateTempLevel()
 	CLevel* pTempLevel = new CLevel;
 
 
-	// Main Camera Object »ı¼º
+	// Main Camera Object ìƒì„±
 	CGameObject* pCamObj = new CGameObject;
 	pCamObj->SetName(L"MainCamera");
 	pCamObj->AddComponent(new CTransform);
@@ -86,7 +87,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pCamObj, (UINT)LAYER::LAYER_DEFAULT);
 
-	// UI Ä«¸Ş¶ó »ı¼º
+	// UI ì¹´ë©”ë¼ ìƒì„±
 	pCamObj = new CGameObject;
 	pCamObj->SetName(L"UICamera");
 	pCamObj->AddComponent(new CTransform);
@@ -104,7 +105,7 @@ void CCreateTempLevel::CreateTempLevel()
 	CGameObject* pObj = nullptr;
 
 
-	// 3D Light Ãß°¡
+	// 3D Light ì¶”ê°€
 	pObj = new CGameObject;
 	pObj->SetName(L"Light3D");
 	pObj->AddComponent(new CTransform);
@@ -134,7 +135,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
 
-	// Player Object »ı¼º
+	// Player Object ìƒì„±
 	pObj = new CGameObject;
 	pObj->SetName(L"Player");
 
@@ -161,16 +162,17 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_PLAYER, false);
 
 
-	// TimeMgr Object »ı¼º
+	// TimeMgr Object ìƒì„±
 	pObj = new CGameObject;
 	pObj->SetName(L"Manager Object");
 
 	pObj->AddComponent(new CTimeMgrScript);
+	pObj->AddComponent(new CRenderMgrScript);
 
 	pTempLevel->AddObject(pObj, 0);
 
 
-	// Ãæµ¹ ¼³Á¤
+	// ì¶©ëŒ ì„¤ì •
 	CCollisionMgr::GetInst()->LayerCheck((UINT)LAYER::LAYER_PLAYER, (UINT)LAYER::LAYER_MONSTER);
 	CCollisionMgr::GetInst()->LayerCheck((UINT)LAYER::LAYER_MONSTER, (UINT)LAYER::LAYER_MONSTER);
 
