@@ -30,6 +30,7 @@
 
 #include "CIdleState.h"
 #include "CTraceState.h"
+#include <Scripts/CRenderMgrScript.h>
 
 
 void CCreateTempLevel::Init()
@@ -139,6 +140,14 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
+
+	pObj = pObj->Clone();
+	pObj->SetName(L"Light3D_Clone2");
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	pObj->Light3D()->SetLightColor(Vec3(0.3f, 1.f, 0.3f));
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
+
+
 	// Player Object 생성
 	pObj = new CGameObject;
 	pObj->SetName(L"Player");
@@ -171,6 +180,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->SetName(L"Manager Object");
 
 	pObj->AddComponent(new CTimeMgrScript);
+	pObj->AddComponent(new CRenderMgrScript);
 
 	pTempLevel->AddObject(pObj, 0);
 

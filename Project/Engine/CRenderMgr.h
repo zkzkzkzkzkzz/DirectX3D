@@ -38,6 +38,8 @@ private:
     typedef void(CRenderMgr::* RENDER_FUNC)(void);
     RENDER_FUNC             m_RenderFunc;
 
+    Vec4 m_vClearColor;
+
 public:
     void RegisterCamera(CCamera* _Cam, int _Idx);
     void AddDebugShapeInfo(const tDebugShapeInfo& _info) { m_DbgShapeInfo.push_back(_info); }
@@ -62,7 +64,8 @@ public:
             m_RenderFunc = &CRenderMgr::render_play;
     }
 
-
+    void SetClearColor(const Vec4& _ClearColor) { m_vClearColor = _ClearColor; }
+    Vec4 GetClearColor() { return m_vClearColor;}
 public:
     void init();
     void tick();
@@ -73,10 +76,12 @@ private:
 
     void render_debug();
 
-    // ¸®¼Ò½º ¹ÙÀÎµù
+    // ë¦¬ì†ŒìŠ¤ ë°”ì¸ë”©
     void UpdateData();
 
-    // ¸®¼Ò½º Å¬¸®¾î
+    // ë¦¬ì†ŒìŠ¤ í´ë¦¬ì–´
     void Clear();
+
+    friend class CRenderMgrScript;
 };
 

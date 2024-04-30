@@ -69,11 +69,11 @@ bool ParamUI::Param_VEC4(Vec4* _Data, const string& _Desc)
 
 bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _Inst, Delegate_1 _Func)
 {
-	// ÆÄ¶ó¹ÌÅÍÀÇ Description Á¤º¸ Ãâ·Â
+	// íŒŒë¼ë¯¸í„°ì˜ Description ì •ë³´ ì¶œë ¥
 	ImGui::Text(_Desc.c_str());
 	ImGui::SameLine();
 
-	// Texture ÀÌ¸§ Ãâ·Â InputText ÀÇ ID ¸¸µé±â
+	// Texture ì´ë¦„ ì¶œë ¥ InputText ì˜ ID ë§Œë“¤ê¸°
 	char szID[256] = {};
 	sprintf_s(szID, "##Texture%d", g_ID++);
 	
@@ -87,7 +87,7 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 
 	ImGui::InputText(szID, (char*)strTexKey.c_str(), strTexKey.length(), ImGuiInputTextFlags_ReadOnly);
 
-	// Texture Drop Ã¼Å©
+	// Texture Drop ì²´í¬
 	if (ImGui::BeginDragDropTarget())
 	{
 		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
@@ -106,7 +106,7 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 	}
 
 
-	// ÅØ½ºÃÄ ÀÌ¹ÌÁö Ãâ·Â
+	// í…ìŠ¤ì³ ì´ë¯¸ì§€ ì¶œë ¥
 	static bool use_text_color_for_tint = false;
 	ImVec2 uv_min = ImVec2(0.0f, 0.0f);
 	ImVec2 uv_max = ImVec2(1.0f, 1.0f);
@@ -114,14 +114,14 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 	ImVec4 border_col = ImGui::GetStyleColorVec4(ImGuiCol_Border);		
 	ImGui::Image(texid, ImVec2(150, 150), uv_min, uv_max, tint_col, border_col);
 	
-	// ÀÔ·ÂµÈ µ¨¸®°ÔÀÌÆ®°¡ ÀÖ´Ù¸é
+	// ì…ë ¥ëœ ë¸ë¦¬ê²Œì´íŠ¸ê°€ ìˆë‹¤ë©´
 	if (_Inst && _Func)
 	{
 		ImGui::SameLine();
 		sprintf_s(szID, "##TexBtn%d", g_ID++);
 		if (ImGui::Button(szID, ImVec2(20, 20)))
 		{
-			// ¸®½ºÆ® UI
+			// ë¦¬ìŠ¤íŠ¸ UI
 			ListUI* pListUI = (ListUI*)CImGuiMgr::GetInst()->FindUI("##List");
 
 			vector<string> vecTexName;
@@ -136,4 +136,14 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 	}
 
 	return false;
+}
+
+bool ParamUI::Param_COLOR(Vec4* _Data, const string& _Desc)
+{
+	ImGui::Text(_Desc.c_str());
+	ImGui::SameLine();
+
+	char szID[256] = {};
+	sprintf_s(szID, "##Vec4%d", g_ID++);
+	return UI::ColorSelector(szID, _Data);
 }
