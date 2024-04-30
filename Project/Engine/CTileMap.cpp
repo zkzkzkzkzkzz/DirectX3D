@@ -214,6 +214,54 @@ void CTileMap::LoadFromFile(FILE* _File)
 	fread(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
 }
 
+void CTileMap::LoadFromFile(ifstream& fin)
+{
+	string tag, str;
+
+	getline(fin, tag); // [FaceX]
+	fin >> m_FaceX;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [FaceY]
+	fin >> m_FaceY;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [RenderSize]
+	fin >> m_vTileRenderSize;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [Atlas]
+	LoadAssetRef(m_TileAtlas, fin);
+
+	getline(fin, tag); // [PixelSize]
+	fin >> m_vTilePixelSize;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [SliceSize]
+	fin >> m_vSliceSizeUV;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [MaxCol]
+	fin >> m_MaxCol;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [MaxRow]
+	fin >> m_MaxRow;
+	getline(fin, str); // 傍归 贸府
+
+	size_t infoCnt;
+	getline(fin, tag); // [InfoCount]
+	fin >> infoCnt;
+	getline(fin, str); // 傍归 贸府
+
+	if (infoCnt == 0) return;
+
+	getline(fin, tag); // [Info]
+	for (int i = 0; i < m_vecTileInfo.size(); i++) {
+		fin >> m_vecTileInfo[i];
+	}
+}
+
 ofstream& operator<<(ofstream& fout, const tTileInfo& info)
 {
 	fout << "[LeftTop]" << endl;
@@ -223,4 +271,18 @@ ofstream& operator<<(ofstream& fout, const tTileInfo& info)
 	fout << info.bRender;
 
 	return fout;
+}
+
+ifstream& operator>>(ifstream& fin, tTileInfo& info)
+{
+	string tag, str;
+	getline(fin, tag); // [LeftTop]
+	fin >> info.vLeftTopUV;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [IsRender]
+	fin >> info.bRender;
+	getline(fin, str); // 傍归 贸府
+	
+	return fin;
 }
