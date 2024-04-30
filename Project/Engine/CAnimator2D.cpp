@@ -239,7 +239,7 @@ void CAnimator2D::SaveAllAnim(const wstring& path)
 {
 	for (auto iter : m_mapAnim) {
 		string animPath = ToString(path + iter.second->GetName());
-		animPath += ".anim";
+		animPath += ExtensionAnim;
 		ofstream fout(animPath);
 		iter.second->SaveToFile(fout);
 	}

@@ -249,6 +249,64 @@ void MenuUI::Asset()
             GamePlayStatic::AddAsset(pMtrl);
         }
 
+        if (ImGui::MenuItem("Content Save All"))
+        {
+            ContentSaveAll();
+        }
+
         ImGui::EndMenu();
+    }
+}
+
+#include <Engine/CAnim.h>
+
+void MenuUI::ContentSaveAll()
+{
+    CPathMgr::GetContentPath();
+
+    vector<string> vecNames;
+    vector<string> vecPaths;
+    vector<string> vecRelativePaths;
+    Utils::LoadAllFileNames(CPathMgr::GetContentPath(), vecNames);
+    Utils::LoadAllFilePaths(CPathMgr::GetContentPath(), vecPaths);
+    vecRelativePaths = vecPaths;
+    Utils::SlicePath(CPathMgr::GetContentPath(), vecRelativePaths);
+
+    Ptr<CPrefab> pPref;
+    Ptr<CMaterial> pMtrl;
+
+    for (int i = 0; i < vecNames.size();i++) {
+        string name = vecNames[i];
+        string strPath = vecPaths[i];
+        string strRelativePath = vecRelativePaths[i];
+        auto extension = filesystem::path(name).extension();
+
+        if (extension == ExtensionAnim) 
+        {
+            CAnim* pAnim = new CAnim;
+            ifstream fin(strPath);
+            pAnim->LoadFromFile(fin);
+
+            ofstream fout(strPath);
+            pAnim->SaveToFile(fout);
+            delete pAnim;
+        }
+        else if (extension == ExtensionPref)
+        {
+            pPref->Load(strPath);
+            pPref->Save(strRelativePath);
+        }
+        else if (extension == ExtensionMtrl)
+        {
+            pMtrl->Load(strPath);
+            pMtrl->Save(strRelativePath);
+        }
+        else if (extension == ExtensionLevel)
+        {
+            CLevel* pLevel;
+            pLevel = CLevelSaveLoad::LoadLevel(strRelativePath);
+            CLevelSaveLoad::SaveLevel(pLevel, strRelativePath);
+            delete pLevel;
+        }
     }
 }

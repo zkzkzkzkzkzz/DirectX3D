@@ -145,6 +145,14 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CPlayerScript);
 	pObj->AddComponent(new CMissileScript);
 
+
+	Ptr<CTexture> pAltasTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\link.png", L"texture\\link.png");
+	pObj->Animator2D()->Create(L"IDLE_UP", pAltasTex, Vec2(0.f, 260.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 1, 10);
+	pObj->Animator2D()->Create(L"IDLE_DOWN", pAltasTex, Vec2(0.f, 0.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 3, 10);
+	wstring str = CPathMgr::GetContentPath();
+	str += L"anim\\";
+	pObj->Animator2D()->SaveAllAnim(str);
+
 	pObj->Transform()->SetRelativePos(Vec3(0.f, -500.f, 500.f));
 	pObj->Transform()->SetRelativeScale(Vec3(3000.f, 3000.f, 3000.f));
 	pObj->Transform()->SetRelativeRotation(Vec3(XM_PI / 2.f, 0.f, 0.f));

@@ -33,7 +33,7 @@ IDLE_DOWN
 0.166667 0.192308
 [Duration]
 0.1
-[Asset Exist]
+[AssetExist]
 1
 [Key]
 texture\link.png
