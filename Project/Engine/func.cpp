@@ -232,3 +232,65 @@ void Utils::SlicePath(const wstring& _path, vector<string>& vec)
 	}
 	vec.swap(paths);
 }
+
+string Utils::GetLineUntilString(ifstream& fin, const std::initializer_list<string>& strings)
+{
+	string s;
+
+	while (getline(fin, s)) {
+
+		for (const string& str : strings) {
+			if (s == str) {
+				return str;
+			}
+		}
+	}
+
+	wstring wstr;
+	for (const string& str : strings) {
+		wstr += ToWString(str) + L", ";
+	}
+	wstr.pop_back();
+	wstr.pop_back();
+	MessageBox(nullptr, wstr.c_str(), L"파일 읽기 실패", 0);
+	return string();
+}
+
+string Utils::GetLineUntilString(ifstream& fin, const string& str)
+{
+	string s;
+
+	while (getline(fin, s)) {
+
+		if (s == str) {
+			return str;
+		}
+	}
+
+	wstring wstr = ToWString(str);
+	MessageBox(nullptr, wstr.c_str(), L"파일 읽기 실패", 0);
+	return string();
+}
+
+string Utils::GetLineUntilString(ifstream& fin, const std::initializer_list<const char*> strings)
+{
+	string s;
+
+	while (getline(fin, s)) {
+
+		for (const char* str : strings) {
+			if (s == str) {
+				return str;
+			}
+		}
+	}
+
+	wstring wstr;
+	for (const string& str : strings) {
+		wstr += ToWString(str) + L", ";
+	}
+	wstr.pop_back();
+	wstr.pop_back();
+	MessageBox(nullptr, wstr.c_str(), L"파일 읽기 실패", 0);
+	return string();
+}

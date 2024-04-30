@@ -13,6 +13,18 @@
 #include <Engine/CScript.h>
 
 
+#define TagLevelName "[LevelName]"
+#define TagLayerName "[LayerName]"
+#define TagObjCount "[ObjCount]"
+#define TagObjectName "[ObjectName]"
+#define TagComponentType "[ComponentType]"
+#define TagComponentEnd "[ComponentEnd]"
+#define TagScriptCount "[ScriptCount]"
+#define TagScriptName "[ScriptName]"
+#define TagScriptName "[ScriptName]"
+#define TagObjectChildCountS "[" + ToString(_Obj->GetName()) + "'s ChildCount]"
+#define TagObjectChildCountL "[" + ToString(pObject->GetName()) + "'s ChildCount]"
+
 void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _strLevelPath)
 {
 	assert(_Level);
@@ -27,7 +39,7 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _strLevelPath)
 		MessageBox(nullptr, L"레벨 저장 실패!", L"레벨 저장", 0);
 	}
 
-	fout << "[LevelName]" << endl;
+	fout << TagLevelName << endl;
 	fout << ToString(_Level->GetName()) << endl;
 
 	// 레벨의 레이어 저장
@@ -58,14 +70,14 @@ void CLevelSaveLoad::SaveLayer(CLayer* _Layer, FILE* _File)
 void CLevelSaveLoad::SaveLayer(CLayer* _Layer, ofstream& fout)
 {
 	// Layer 의 이름 저장
-	fout << "[LayerName]" << endl;
+	fout << TagLayerName << endl;
 	fout << ToString(_Layer->GetName()) << endl;
 
 	// Layer 가 보유하고 있는 GameObject 들을 저장
 	const vector<CGameObject*>& vecObject = _Layer->GetParentObjects();
 
 	size_t ObjCount = vecObject.size();
-	fout << "[ObjCount]" << endl;
+	fout << TagObjCount << endl;
 	fout << ObjCount << endl;
 
 	for (size_t i = 0; i < vecObject.size(); ++i)
@@ -122,7 +134,7 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
 void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, ofstream& fout)
 {
 	// GameObject 의 이름을 저장
-	fout << "[ObjectName]" << endl;
+	fout << TagObjectName << endl;
 	fout << ToString(_Obj->GetName()) << endl;
 
 	// 컴포넌트 정보를 저장
@@ -134,26 +146,26 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, ofstream& fout)
 			continue;
 
 		// 컴포넌트 타입 정보 저장
-		fout << "[ComponentType]" << endl;
+		fout << TagComponentType << endl;
 		auto type = magic_enum::enum_name((COMPONENT_TYPE)i);
 		fout << ToString(type) << endl;
 
 		// 해당 컴포넌트가 저장할 데이터 저장
 		pCom->SaveToFile(fout);
 	}
-	fout << "[Component_End]" << endl;
+	fout << TagComponentEnd << endl;
 
 	// 스크립트 정보 저장
 	const vector<CScript*>& vecScripts = _Obj->GetScripts();
 	size_t ScriptCount = vecScripts.size();
 
 	// 스크립트 개수 저장
-	fout << "[ScriptCount]" << endl;
+	fout << TagScriptCount << endl;
 	fout << ScriptCount << endl;
 
 	for (size_t i = 0; i < vecScripts.size(); ++i)
 	{
-		fout << "[ScriptName]" << endl;
+		fout << TagScriptName << endl;
 		fout << ToString(wstring(CScriptMgr::GetScriptName(vecScripts[i]))) << endl;
 		//vecScripts[i]->SaveToFile(_File);
 	}
@@ -163,7 +175,7 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, ofstream& fout)
 	size_t childcount = vecChild.size();
 
 	string strChildCount;
-	strChildCount = "[" + ToString(_Obj->GetName()) + "'s ChildCount]";
+	strChildCount = TagObjectChildCountS;
 	fout << strChildCount << endl;
 	fout << childcount << endl;
 
@@ -192,7 +204,8 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _strLevelPath)
 	// 레벨의 이름을 읽는다.
 	pLevel = new CLevel;
 	string strLevelName;
-	getline(fin, strLevelName); // [LevelName]
+
+	Utils::GetLineUntilString(fin, TagLevelName);
 	getline(fin, strLevelName); 
 	pLevel->SetName(strLevelName);
 
@@ -228,14 +241,13 @@ void CLevelSaveLoad::LoadLayer(CLayer* _Layer, ifstream& fin)
 {
 	string tag;
 	string str;
-	getline(fin, tag); // [LayerName]
+	Utils::GetLineUntilString(fin, TagLayerName);
 	getline(fin, str);
 	_Layer->SetName(str);
 
 	int objCnt;
-	getline(fin, tag); // [ObjCount]
-	getline(fin, str);
-	objCnt = stoi(str);
+	Utils::GetLineUntilString(fin, TagObjCount);
+	fin >> objCnt;
 
 	for (size_t i = 0; i < objCnt; i++)
 	{
@@ -333,21 +345,20 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 	CGameObject* pObject = new CGameObject;
 
 	string tag, str;
-	getline(fin, tag); // [ObjectName]
+	Utils::GetLineUntilString(fin, TagObjectName);
 	getline(fin, str);
-
 	pObject->SetName(str);
 
 	while (true) {
-		getline(fin, tag); // [ComponentType] or [Component_End]
-		if (tag == "[Component_End]") break;
+		tag = Utils::GetLineUntilString(fin, { TagComponentType, TagComponentEnd });
+		if (tag == TagComponentEnd) break;
+
 		string strComponent;
 		strComponent = str;
 		getline(fin, str);
 		auto num = magic_enum::enum_cast<COMPONENT_TYPE>(str);
 		if (num.has_value()) {
 			auto type = num.value();
-			num.value();
 			CComponent* pComponent = nullptr;
 
 			switch (type)
@@ -397,32 +408,24 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 			pObject->AddComponent(pComponent);
 			pComponent->LoadFromFile(fin);
 		}
-		else {
-			wstring msg = L"컴포넌트 타입 오류";
-			num = magic_enum::enum_cast<COMPONENT_TYPE>(strComponent);
-			msg = ToWString(magic_enum::enum_name(num.value())) + L" " + msg;
-			MessageBox(nullptr, msg.c_str(), L"게임 오브젝트 불러오기", 0);
-		}
 	}
 
 	size_t scriptCnt;
-	getline(fin, tag); // [ScriptCount]
-	getline(fin, str);
-	scriptCnt = stoul(str);
+	Utils::GetLineUntilString(fin, TagScriptCount);
+	fin >> scriptCnt;
 
 	for (size_t i = 0; i < scriptCnt; i++)
 	{
-		getline(fin, tag); // [ScriptName]
+		Utils::GetLineUntilString(fin, TagScriptName);
 		getline(fin, str);
 		CScript* pScript = CScriptMgr::GetScript(ToWString(str));
-		//pScript->LoadFromFile(fin);
+		pScript->LoadFromFile(fin);
 		pObject->AddComponent(pScript);
 	}
 
 	size_t childCnt;
-	getline(fin, tag); // [name's ChildCount]
-	getline(fin, str);
-	childCnt = stoul(str);
+	Utils::GetLineUntilString(fin, TagObjectChildCountL);
+	fin >> childCnt;
 
 	for (size_t i = 0; i < childCnt; i++)
 	{

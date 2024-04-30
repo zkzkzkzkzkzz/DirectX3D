@@ -110,19 +110,23 @@ void CAnim::SaveToFile(FILE* _File)
 	SaveAssetRef(m_AtlasTex, _File);
 }
 
+#define TagAnimName "[AnimName]"
+#define TagFrmCount "[FrmCount]"
+#define TagFrmInfo "[FrmInfo]"
+
 void CAnim::SaveToFile(ofstream& fout)
 {
 	// 애니메이션 이름 저장
-	fout << "[AnimName]" << endl;
+	fout << TagAnimName << endl;
 	fout << ToString(GetName()) << endl;
 
 	// 모든 프레임 정보 저장
-	fout << "[FrmCount]" << endl;
+	fout << TagFrmCount << endl;
 	fout << m_vecFrm.size() << endl;
 
 	if (m_vecFrm.size() == 0) return;
 	
-	fout << "[FrmInfo]" << endl;
+	fout << TagFrmInfo << endl;
 	for (size_t i = 0; i < m_vecFrm.size(); ++i) {
 		fout << m_vecFrm[i] << endl;
 	}
@@ -149,20 +153,19 @@ void CAnim::LoadFromFile(FILE* _File)
 
 void CAnim::LoadFromFile(ifstream& fin)
 {
-	string tag, str;
+	string str;
 
-	getline(fin, tag); // [AnimName]
+	Utils::GetLineUntilString(fin, TagAnimName);
 	getline(fin, str);
 	SetName(str);
 
 	size_t frmCnt;
-	getline(fin, tag); // [FrmCount]
+	Utils::GetLineUntilString(fin, TagFrmCount);
 	fin >> frmCnt;
-	getline(fin, str); // 공백처리
 
 	if (frmCnt == 0) return;
 
-	getline(fin, tag); // [FrmInfo]
+	Utils::GetLineUntilString(fin, TagFrmInfo);
 	for (size_t i = 0; i < frmCnt; ++i) {
 		tAnimFrm frm;
 		fin >> frm;
@@ -172,21 +175,27 @@ void CAnim::LoadFromFile(ifstream& fin)
 	LoadAssetRef(m_AtlasTex, fin);
 }
 
+#define TagLeftTop "[LeftTop]"
+#define TagSlice "[Slice]"
+#define TagOffset "[Offset]"
+#define TagBackground "[Background]"
+#define TagDuration "[Duration]"
+
 ofstream& operator<<(ofstream& fout, const tAnimFrm& frm)
 {
-	fout << "[LeftTop]" << endl;
+	fout << TagLeftTop << endl;
 	fout << frm.vLeftTop << endl;
 
-	fout << "[Slice]" << endl;
+	fout << TagSlice << endl;
 	fout << frm.vSlice << endl;
 
-	fout << "[Offset]" << endl;
+	fout << TagOffset << endl;
 	fout << frm.vOffset << endl;
 
-	fout << "[Background]" << endl;
+	fout << TagBackground << endl;
 	fout << frm.vBackground << endl;
 
-	fout << "[Duration]" << endl;
+	fout << TagDuration << endl;
 	fout << frm.Duration;
 
 	return fout;
@@ -194,27 +203,20 @@ ofstream& operator<<(ofstream& fout, const tAnimFrm& frm)
 
 ifstream& operator>>(ifstream& fin, tAnimFrm& frm)
 {
-	string tag, str;
-
-	getline(fin, tag); // [LeftTop]
+	Utils::GetLineUntilString(fin, TagLeftTop);
 	fin >> frm.vLeftTop;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [Slice]
+	Utils::GetLineUntilString(fin, TagSlice);
 	fin >> frm.vSlice;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [Offset]
+	Utils::GetLineUntilString(fin, TagOffset);
 	fin >> frm.vOffset;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [Background]
+	Utils::GetLineUntilString(fin, TagBackground);
 	fin >> frm.vBackground;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [Duration]
+	Utils::GetLineUntilString(fin, TagDuration);
 	fin >> frm.Duration;
-	getline(fin, str); // 공백 처리
 
 	return fin;
 }

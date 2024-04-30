@@ -1,30 +1,39 @@
 #include "pch.h"
 
+#define TagLightType "[LightType]"
+#define TagLightColor "[LightColor]"
+#define TagSpecular "[Specular]"
+#define TagAmbient "[Ambient]"
+#define TagWorldPos "[WorldPos]"
+#define TagWorldDir "[WorldDir]"
+#define TagRadius "[Radius]"
+#define TagAngle "[Angle]"
+
 ofstream& operator<<(ofstream& fout, const tLightInfo& info)
 {
-	fout << "[LightType]" << endl;
+	fout << TagLightType << endl;
 	auto str = magic_enum::enum_name((LIGHT_TYPE)info.LightType);
 	fout << ToString(str) << endl;
 
-	fout << "[LightColor]" << endl;
+	fout << TagLightColor << endl;
 	fout << info.vColor << endl;
 
-	fout << "[Specular]" << endl;
+	fout << TagSpecular << endl;
 	fout << info.vSpecular << endl;
 
-	fout << "[Ambient]" << endl;
+	fout << TagAmbient << endl;
 	fout << info.vAmbient << endl;
 
-	fout << "[WorldPos]" << endl;
+	fout << TagWorldPos << endl;
 	fout << info.vWorldPos << endl;
 
-	fout << "[WorldDir]" << endl;
+	fout << TagWorldDir << endl;
 	fout << info.vWorldDir << endl;
 
-	fout << "[Radius]" << endl;
+	fout << TagRadius << endl;
 	fout << info.fRadius << endl;
 
-	fout << "[Angle]" << endl;
+	fout << TagAngle << endl;
 	fout << info.fAngle;
 
     return fout;
@@ -32,12 +41,10 @@ ofstream& operator<<(ofstream& fout, const tLightInfo& info)
 
 ifstream& operator>>(ifstream& fin, tLightInfo& info)
 {
-	string tag, str;
-	getline(fin, tag); // [LightType]
+	string str;
+	Utils::GetLineUntilString(fin, TagLightType);
 	getline(fin, str);
-
 	auto type = magic_enum::enum_cast<LIGHT_TYPE>(str);
-
 	if (!type.has_value())
 	{
 		MessageBox(nullptr, L"없는 Enum 타입입니다.", L"Light 3D Load", 0);
@@ -45,127 +52,151 @@ ifstream& operator>>(ifstream& fin, tLightInfo& info)
 	}
 	info.LightType = (int)type.value();
 
-	getline(fin, tag); // [LightColor]
+	Utils::GetLineUntilString(fin, TagLightColor);
 	fin >> info.vColor;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [Specular]
+	Utils::GetLineUntilString(fin, TagSpecular);
 	fin >> info.vSpecular;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [Ambient]
+	Utils::GetLineUntilString(fin, TagAmbient);
 	fin >> info.vAmbient;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [WorldPos]
+	Utils::GetLineUntilString(fin, TagWorldPos);
 	fin >> info.vWorldPos;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [WorldDir]
+	Utils::GetLineUntilString(fin, TagWorldDir);
 	fin >> info.vWorldDir;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [Radius]
+	Utils::GetLineUntilString(fin, TagRadius);
 	fin >> info.fRadius;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [Angle]
+	Utils::GetLineUntilString(fin, TagAngle);
 	fin >> info.fAngle;
-	getline(fin, str); // 공백 처리
 
 	return fin;
 }
 
+#define TagModuleName(moduleNum) "[" + ToString(magic_enum::enum_name(PARTICLE_MODULE::moduleNum)) + "]"
+#define TagSpawnColor "[SpawnColor]"
+#define TagSpawnMinScale "[SpawnMinScale]"
+#define TagSpawnMaxScale "[SpawnMaxScale]"
+#define TagMinLife "[MinLife]"
+#define TagMaxLife "[MaxLife]"
+#define TagMinMass "[MinMass]"
+#define TagMaxMass "[MaxMass]"
+#define TagSpawnRate "[SpawnRate]"
+#define TagSpaceType "[SpaceType] (0 : LocalSpace, 1 : WorldSpace)"
+#define TagSpawnShape "[SpawnShape] (0 : Sphere, 1 : Box)"
+#define TagRadius "[Radius]"
+#define TagSpawnBoxScale "[SpawnBoxScale]"
+
+#define TagAddVelocityType "[AddVelocityType] (0 : From Center, 1: To Center, 2: Fix Direction)"
+#define TagMinSpeed "[MinSpeed]"
+#define TagMaxSpeed "[MaxSpeed]"
+#define TagFixedAngle "[FixedAngle]"
+#define TagFixedDirection "[FixedDirection]"
+
+#define TagScaleRatio "[ScaleRatio]"
+
+#define TagNoiseForceScale "[NoiseForceScale]"
+#define TagNoiseForceTerm "[NoiseForceTerm]"
+
+#define TagDragTime "[DragTime]"
+
+#define TagVelocityAlignment "[VelocityAlignment]"
+#define TagAlphaBasedLife "[[AlphaBasedLife] (0 : off, 1 : NomrlizedAge, 2: Age)]"
+#define TagAlphaMaxAge "[AlphaMaxAge]"
+
 ofstream& operator<<(ofstream& fout, const tParticleModule& module)
 {
 	// Sapwn 모듈
-	fout << "[" << ToString(magic_enum::enum_name(PARTICLE_MODULE::SPAWN)) << "]" << endl;
+	fout << TagModuleName(SPAWN) << endl;
 	fout << module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] << endl;
 
-	fout << "[SpawnColor]" << endl;
+	fout << TagSpawnColor << endl;
 	fout << module.vSpawnColor << endl;
 
-	fout << "[SpawnMinScale]" << endl;
+	fout << TagSpawnMinScale << endl;
 	fout << module.vSpawnMinScale << endl;
-	fout << "[SpawnMaxScale]" << endl;
+	fout << TagSpawnMaxScale << endl;
 	fout << module.vSpawnMaxScale << endl;
 
-	fout << "[MinLife]" << endl;
+	fout << TagMinLife << endl;
 	fout << module.MinLife << endl;
-	fout << "[MaxLife]" << endl;
+	fout << TagMaxLife << endl;
 	fout << module.MaxLife << endl;
 
-	fout << "[MinMass]" << endl;
+	fout << TagMinMass << endl;
 	fout << module.MinMass << endl;
-	fout << "[MaxMass]" << endl;
+	fout << TagMaxMass << endl;
 	fout << module.MaxMass << endl;
 
-	fout << "[SpawnRate]" << endl;
+	fout << TagSpawnRate << endl;
 	fout << module.SpawnRate << endl;
 
-	fout << "[SpaceType] (0 : LocalSpace, 1 : WorldSpace)" << endl;
+	fout << TagSpaceType << endl;
 	fout << module.SpaceType << endl;
 
-	fout << "[SpawnShape] (0 : Sphere, 1 : Box)" << endl;
+	fout << TagSpawnShape << endl;
 	fout << module.SpawnShape << endl;
 
-	fout << "[Radius]" << endl;
+	fout << TagRadius << endl;
 	fout << module.Radius << endl;
 
-	fout << "[SpawnBoxScale]" << endl;
+	fout << TagSpawnBoxScale << endl;
 	fout << module.vSpawnBoxScale << endl;
 
 	// Add Velocity
-	fout << "[" << ToString(magic_enum::enum_name(PARTICLE_MODULE::ADD_VELOCITY)) << "]" << endl;
+	fout << TagModuleName(ADD_VELOCITY) << endl;
 	fout << module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] << endl;
 
-	fout << "[AddVelocityType] (0 : From Center, 1: To Center, 2: Fix Direction)" << endl;
+	fout << TagAddVelocityType << endl;
 	fout << module.AddVelocityType << endl;
 
-	fout << "[MinSpeed]" << endl;
+	fout << TagMinSpeed << endl;
 	fout << module.MinSpeed << endl;
-	fout << "[MaxSpeed]" << endl;
+	fout << TagMaxSpeed << endl;
 	fout << module.MaxSpeed << endl;
 	
-	fout << "[FixedAngle]" << endl;
+	fout << TagFixedAngle << endl;
 	fout << module.FixedAngle << endl;
 
-	fout << "[FixedDirection]" << endl;
+	fout << TagFixedDirection << endl;
 	fout << module.FixedDirection << endl;
 
 	// Scale
-	fout << "[" << ToString(magic_enum::enum_name(PARTICLE_MODULE::SCALE)) << "]" << endl;
+	fout << TagModuleName(SCALE) << endl;
 	fout << module.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE] << endl;
 
-	fout << "[ScaleRatio]" << endl;
+	fout << TagScaleRatio << endl;
 	fout << module.vScaleRatio << endl;
 
 	// Noise Force
-	fout << "[" << ToString(magic_enum::enum_name(PARTICLE_MODULE::NOISE_FORCE)) << "]" << endl;
+	fout << TagModuleName(NOISE_FORCE) << endl;
 	fout << module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] << endl;
 
-	fout << "[NoiseForceScale]" << endl;
+	fout << TagNoiseForceScale << endl;
 	fout << module.NoiseForceScale << endl;
 
-	fout << "[NoiseForceTerm]" << endl;
+	fout << TagNoiseForceTerm << endl;
 	fout << module.NoiseForceTerm << endl;
 
 	// Drag
-	fout << "[" << ToString(magic_enum::enum_name(PARTICLE_MODULE::DRAG)) << "]" << endl;
+	fout << TagModuleName(DRAG) << endl;
 	fout << module.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG] << endl;
 
-	fout << "[DragTime]" << endl;
+	fout << TagDragTime << endl;
 	fout << module.DragTime << endl;
 
 	// Render
-	fout << "[" << ToString(magic_enum::enum_name(PARTICLE_MODULE::RENDER)) << "]" << endl;
+	fout << TagModuleName(RENDER) << endl;
 	fout << module.arrModuleCheck[(UINT)PARTICLE_MODULE::RENDER] << endl;
 
-	fout << "[VelocityAlignment]" << endl;
+	fout << TagVelocityAlignment << endl;
 	fout << module.VelocityAlignment << endl;
-	fout << "[AlphaBasedLife] (0 : off, 1 : NomrlizedAge, 2: Age)" << endl;
+	fout << TagAlphaBasedLife << endl;
 	fout << module.AlphaBasedLife << endl;
-	fout << "[AlphaMaxAge]" << endl;
+	fout << TagAlphaMaxAge << endl;
 	fout << module.AlphaMaxAge << endl;
 
 	return fout;
@@ -173,141 +204,101 @@ ofstream& operator<<(ofstream& fout, const tParticleModule& module)
 
 ifstream& operator>>(ifstream& fin, tParticleModule& module)
 {
-	string tag, str;
-
 	// 스폰 모듈
-	getline(fin, tag); // [Module]
+	Utils::GetLineUntilString(fin, TagModuleName(SPAWN));
 	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN];
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [SpawnColor]
+	Utils::GetLineUntilString(fin, TagSpawnColor);
 	fin >> module.vSpawnColor;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [SpawnMinScale]
+	Utils::GetLineUntilString(fin, TagSpawnMinScale);
 	fin >> module.vSpawnMinScale;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [SpawnMaxScale]
+	Utils::GetLineUntilString(fin, TagSpawnMaxScale);
 	fin >> module.vSpawnMaxScale;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [MinLife]
+	Utils::GetLineUntilString(fin, TagMinLife);
 	fin >> module.MinLife;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [MinLife]
-	fin >> module.MinLife;
-	getline(fin, str); // 공백 처리
-
-	getline(fin, tag); // [MaxLife]
+	Utils::GetLineUntilString(fin, TagMaxLife);
 	fin >> module.MaxLife;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [MinMass]
+	Utils::GetLineUntilString(fin, TagMinMass);
 	fin >> module.MinMass;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [MaxMass]
+	Utils::GetLineUntilString(fin, TagMaxMass);
 	fin >> module.MaxMass;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [SpawnRate]
+	Utils::GetLineUntilString(fin, TagSpawnRate);
 	fin >> module.SpawnRate;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [SpaceType] (0 : LocalSpace, 1 : WorldSpace)
+	Utils::GetLineUntilString(fin, TagSpaceType);
 	fin >> module.SpaceType;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [SpawnShape] (0 : Sphere, 1 : Box)
+	Utils::GetLineUntilString(fin, TagSpawnShape);
 	fin >> module.SpawnShape;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [Radius]
+	Utils::GetLineUntilString(fin, TagRadius);
 	fin >> module.Radius;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [SpawnBoxScale]
+	Utils::GetLineUntilString(fin, TagSpawnBoxScale);
 	fin >> module.vSpawnBoxScale;
-	getline(fin, str); // 공백 처리
 
 	// Add Velocity
-	getline(fin, tag); // [Module]
+	Utils::GetLineUntilString(fin, TagModuleName(ADD_VELOCITY));
 	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY];
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [AddVelocityType] (0 : From Center, 1: To Center, 2: Fix Direction)
+	Utils::GetLineUntilString(fin, TagAddVelocityType);
 	fin >> module.AddVelocityType;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [MinSpeed]
+	Utils::GetLineUntilString(fin, TagMinSpeed);
 	fin >> module.MinSpeed;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [MaxSpeed]
+	Utils::GetLineUntilString(fin, TagMaxSpeed);
 	fin >> module.MaxSpeed;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [FixedAngle]
+	Utils::GetLineUntilString(fin, TagFixedAngle);
 	fin >> module.FixedAngle;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [FixedDirection]
+	Utils::GetLineUntilString(fin, TagFixedDirection);
 	fin >> module.FixedDirection;
-	getline(fin, str); // 공백 처리
 
 	// Scale Module
-	getline(fin, tag); // [Module]
+	Utils::GetLineUntilString(fin, TagModuleName(SCALE));
 	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE];
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [ScaleRatio]
+	Utils::GetLineUntilString(fin, TagScaleRatio);
 	fin >> module.vScaleRatio;
-	getline(fin, str); // 공백 처리
 
 	// Noise Force
-	getline(fin, tag); // [Module]
+	Utils::GetLineUntilString(fin, TagModuleName(NOISE_FORCE));
 	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE];
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [NoiseForceScale]
+	Utils::GetLineUntilString(fin, TagNoiseForceScale);
 	fin >> module.NoiseForceScale;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [NoiseForceTerm]
+	Utils::GetLineUntilString(fin, TagNoiseForceTerm);
 	fin >> module.NoiseForceTerm;
-	getline(fin, str); // 공백 처리
-
-	getline(fin, tag); // [ScaleRatio]
-	fin >> module.vScaleRatio;
-	getline(fin, str); // 공백 처리
 
 	// Drag
-	getline(fin, tag); // [Module]
+	Utils::GetLineUntilString(fin, TagModuleName(DRAG));
 	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG];
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [DragTime]
+	Utils::GetLineUntilString(fin, TagDragTime);
 	fin >> module.DragTime;
-	getline(fin, str); // 공백 처리
 
 	// Render
-	getline(fin, tag); // [Module]
+	Utils::GetLineUntilString(fin, TagModuleName(RENDER));
 	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::RENDER];
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [VelocityAlignment]
+	Utils::GetLineUntilString(fin, TagVelocityAlignment);
 	fin >> module.VelocityAlignment;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [AlphaBasedLife] (0 : off, 1 : NomrlizedAge, 2: Age)
+	Utils::GetLineUntilString(fin, TagAlphaBasedLife);
 	fin >> module.AlphaBasedLife;
-	getline(fin, str); // 공백 처리
 
-	getline(fin, tag); // [AlphaMaxAge]
+	Utils::GetLineUntilString(fin, TagAlphaMaxAge);
 	fin >> module.AlphaMaxAge;
-	getline(fin, str); // 공백 처리
 
 	return fin;
 }

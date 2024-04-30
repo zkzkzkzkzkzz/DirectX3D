@@ -117,15 +117,20 @@ void CTransform::SaveToFile(FILE* _File)
 	fwrite(&m_bAbsolute, sizeof(bool), 1, _File);	
 }
 
+#define TagPos "[Pos]"
+#define TagScale "[Scale]"
+#define TagRotation "[Rotation]"
+#define TagAbsolute "[Absolute]"
+
 void CTransform::SaveToFile(ofstream& fout)
 {
-	fout << "[Pos]" << endl;
+	fout << TagPos << endl;
 	fout << m_vRelativePos << endl;
-	fout << "[Scale]" << endl;
+	fout << TagScale << endl;
 	fout << m_vRelativeScale << endl;
-	fout << "[Rotation]" << endl;
+	fout << TagRotation << endl;
 	fout << m_vRelativeRotation << endl;
-	fout << "[Absolute]" << endl;
+	fout << TagAbsolute << endl;
 	fout << m_bAbsolute << endl;
 }
 
@@ -140,19 +145,16 @@ void CTransform::LoadFromFile(FILE* _File)
 void CTransform::LoadFromFile(ifstream& fin)
 {
 	string tag;
-	getline(fin, tag); // [Pos]
+
+	Utils::GetLineUntilString(fin, TagPos);
 	fin >> m_vRelativePos;
-	getline(fin, tag); // 
-
-	getline(fin, tag); // [Scale]
+	
+	Utils::GetLineUntilString(fin, TagScale);
 	fin >> m_vRelativeScale;
-	getline(fin, tag); // 
 
-	getline(fin, tag); // [Rotation]
+	Utils::GetLineUntilString(fin, TagRotation);
 	fin >> m_vRelativeRotation;
-	getline(fin, tag); // 
 
-	getline(fin, tag); // [Absolute]
+	Utils::GetLineUntilString(fin, TagAbsolute);
 	fin >> m_bAbsolute;
-	getline(fin, tag); // 
 }

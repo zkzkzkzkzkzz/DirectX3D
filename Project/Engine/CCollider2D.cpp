@@ -121,15 +121,23 @@ void CCollider2D::SaveToFile(FILE* _File)
 	fwrite(&m_Type, sizeof(UINT), 1, _File);	
 }
 
+#define TagOffsetPos "[OffsetPos]"
+#define TagOffsetScale "[OffsetScale]"
+#define TagAbsolute "[Absolute]"
+#define TagColliderType "[ColliderType]"
+
 void CCollider2D::SaveToFile(ofstream& fout)
 {
-	fout << "[OffsetPos]" << endl;
+	fout << TagOffsetPos << endl;
 	fout << m_vOffsetPos << endl;
-	fout << "[OffsetScale]" << endl;
+
+	fout << TagOffsetScale << endl;
 	fout << m_vOffsetScale << endl;
-	fout << "[Absolute]" << endl;
+
+	fout << TagAbsolute << endl;
 	fout << m_bAbsolute << endl;
-	fout << "[Collider_Type]" << endl;
+
+	fout << TagColliderType << endl;
 	auto type = magic_enum::enum_name(m_Type);
 	fout << ToString(type) << endl;
 }
@@ -145,19 +153,16 @@ void CCollider2D::LoadFromFile(FILE* _File)
 void CCollider2D::LoadFromFile(ifstream& fin)
 {
 	string tag, str;
-	getline(fin, tag); // [OffsetPos]
+	Utils::GetLineUntilString(fin, TagOffsetPos);
 	fin >> m_vOffsetPos;
-	getline(fin, str);
 
-	getline(fin, tag); // [OffsetScale]
+	Utils::GetLineUntilString(fin, TagOffsetScale);
 	fin >> m_vOffsetScale;
-	getline(fin, str);
 
-	getline(fin, tag); // [Absolute]
+	Utils::GetLineUntilString(fin, TagAbsolute);
 	fin >> m_bAbsolute;
-	getline(fin, str);
 
-	getline(fin, tag); // [Collider_Type]
+	Utils::GetLineUntilString(fin, TagColliderType);
 	getline(fin, str);
 
 	m_Type = magic_enum::enum_cast<COLLIDER2D_TYPE>(str).value();

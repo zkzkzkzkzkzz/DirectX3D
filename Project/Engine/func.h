@@ -41,6 +41,21 @@ namespace Utils
 	/// 경로를 갖고 있는 파일들을 경로를 제외하고 추출해줍니다. 해당 경로를 갖고있지 않는다면 제외시킵니다.
 	/// </summary>
 	void SlicePath(const wstring& _path, vector<string>& vec);
+
+	/// <summary>
+	/// 원하는 문자열중 하나가 나올 때 까지 파일을 끝까지 읽고 성공시 읽은 문자열을 반환합니다. 리딩 실패시 메시지를 띄웁니다.
+	/// </summary>
+	string GetLineUntilString(ifstream& fin, const std::initializer_list<string>& strings);
+
+	/// <summary>
+	/// 원하는 문자열중 하나가 나올 때 까지 파일을 끝까지 읽고 성공시 읽은 문자열을 반환합니다. 리딩 실패시 메시지를 띄웁니다.
+	/// </summary>
+	string GetLineUntilString(ifstream& fin, const string& strings);
+
+	/// <summary>
+	/// 원하는 문자열중 하나가 나올 때 까지 파일을 끝까지 읽고 성공시 읽은 문자열을 반환합니다. 리딩 실패시 메시지를 띄웁니다.
+	/// </summary>
+	string GetLineUntilString(ifstream& fin, const std::initializer_list<const char*> strings);
 }
 
 string ToString(const wstring& _str);
@@ -72,10 +87,14 @@ void SaveAssetRef(Ptr<T> _Asset, FILE* _File)
 	}
 }
 
+#define TagAssetExist "[AssetExist]"
+#define TagKey "[Key]"
+#define TagPath "[Path]"
+
 template<typename T>
 void SaveAssetRef(Ptr<T> _Asset, ofstream& fout)
 {
-	fout << "[Asset Exist]" << endl;
+	fout << TagAssetExist << endl;
 	bool bAssetExist = false;
 	_Asset == nullptr ? bAssetExist = false : bAssetExist = true;
 
@@ -83,9 +102,9 @@ void SaveAssetRef(Ptr<T> _Asset, ofstream& fout)
 
 	if (bAssetExist)
 	{
-		fout << "[Key]" << endl;
+		fout << TagKey << endl;
 		fout << ToString(_Asset->GetKey()) << endl;
-		fout << "[Path]" << endl;
+		fout << TagPath << endl;
 		fout << ToString(_Asset->GetRelativePath()) << endl;
 	}
 }
@@ -110,20 +129,18 @@ void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
 template<typename T>
 void LoadAssetRef(Ptr<T>& _Asset, ifstream& fin)
 {
-	string tag, str;
-
 	bool exist;
-	getline(fin, tag); // [Asset Exist]
+	Utils::GetLineUntilString(fin, TagAssetExist);
 	fin >> exist;
-	getline(fin, str); // 공백 처리
 
 	if (exist) 
 	{
 		string key, path;
-		getline(fin, tag); // [Key]
+
+		Utils::GetLineUntilString(fin, TagKey);
 		getline(fin, key);
 
-		getline(fin, tag); // [Path]
+		Utils::GetLineUntilString(fin, TagPath);
 		getline(fin, path);
 
 		_Asset = CAssetMgr::GetInst()->Load<T>(key, path);

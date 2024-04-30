@@ -118,15 +118,20 @@ void CAnimator2D::SaveToFile(FILE* _File)
 	fwrite(&m_bRepeat, sizeof(bool), 1, _File);
 }
 
+#define TagAnimCount "[AnimCount]"
+#define TagAnimNames "[AnimNames]"
+#define TagPlayingAnimName "[PlayingAnimName]"
+#define TagRepeat "[IsRepeat]"
+
 void CAnimator2D::SaveToFile(ofstream& fout)
 {
 	// 애니메이션 개수 저장
 	size_t AnimCount = m_mapAnim.size();
-	fout << "[AnimCount]" << endl;
+	fout << TagAnimCount << endl;
 	fout << AnimCount << endl;
 	if (AnimCount == 0) return;
 
-	fout << "[AnimNames]" << endl;
+	fout << TagAnimNames << endl;
 	for (const auto& pair : m_mapAnim)
 	{
 		fout << ToString(pair.first) << endl;
@@ -134,7 +139,7 @@ void CAnimator2D::SaveToFile(ofstream& fout)
 
 	// 플레이 중이던 애니메이션의 키를 저장한다.
 	wstring PlayAnimName;
-	fout << "[PlayingAnimName]" << endl;
+	fout << TagPlayingAnimName << endl;
 
 	if (nullptr != m_CurAnim)
 	{
@@ -143,7 +148,7 @@ void CAnimator2D::SaveToFile(ofstream& fout)
 
 	fout << ToString(PlayAnimName) << endl;
 
-	fout << "[IsRepeat]" << endl;
+	fout << TagRepeat << endl;
 	fout << m_bRepeat << endl;
 }
 
@@ -176,16 +181,13 @@ void CAnimator2D::LoadFromFile(FILE* _File)
 
 void CAnimator2D::LoadFromFile(ifstream& fin)
 {
-	string tag, str;
-
 	size_t animcount;
-	getline(fin, tag); // [AnimCount]
+	Utils::GetLineUntilString(fin, TagAnimCount);
 	fin >> animcount;
-	getline(fin, str); // 공백 처리
 
 	if (animcount == 0) return;
 
-	getline(fin, tag); // [AnimNames]
+	Utils::GetLineUntilString(fin, TagAnimNames);
 
 	wstring path = CPathMgr::GetContentPath();
 	path += L"anim\\";
@@ -222,14 +224,15 @@ void CAnimator2D::LoadFromFile(ifstream& fin)
 		}
 	}
 
-	getline(fin, tag); // [PlayingAnimName]
+	string str;
+	Utils::GetLineUntilString(fin, TagPlayingAnimName);
 	getline(fin, str);
 
 	bool repeat;
-	getline(fin, tag); // [IsRepeat]
+	Utils::GetLineUntilString(fin, TagRepeat);
 	fin >> repeat;
+
 	Play(ToWString(str), repeat);
-	getline(fin, str); // 공백 처리
 }
 
 void CAnimator2D::SaveAllAnim(const wstring& path)

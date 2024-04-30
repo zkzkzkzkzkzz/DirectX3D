@@ -129,10 +129,6 @@ void CTileMap::SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx)
 	m_vecTileInfo[idx].bRender = 1;
 }
 
-
-
-
-
 void CTileMap::SaveToFile(FILE* _File)
 {
 	// TileMap 沥焊 历厘
@@ -154,39 +150,50 @@ void CTileMap::SaveToFile(FILE* _File)
 	fwrite(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
 }
 
+#define TagFaceX "[FaceX]"
+#define TagFaceY "[FaceY]"
+#define TagRenderSize "[RenderSize]"
+#define TagAtlas "[Atlas]"
+#define TagPixelSize "[PixelSize]"
+#define TagSliceSize "[SliceSize]"
+#define TagMaxCol "[MaxCol]"
+#define TagMaxRow "[MaxRow]"
+#define TagInfoCount "[InfoCount]"
+#define TagTileInfo "[TileInfo]"
+
 void CTileMap::SaveToFile(ofstream& fout)
 {
-	fout << "[FaceX]" << endl;
+	fout << TagFaceX << endl;
 	fout << m_FaceX << endl;
 
-	fout << "[FaceY]" << endl;
+	fout << TagFaceY << endl;
 	fout << m_FaceY << endl;
 
-	fout << "[RenderSize]" << endl;
+	fout << TagRenderSize << endl;
 	fout << m_vTileRenderSize << endl;
 
-	fout << "[Atlas]" << endl;
+	fout << TagAtlas << endl;
 	SaveAssetRef(m_TileAtlas, fout);
 
-	fout << "[PixelSize]" << endl;
+	fout << TagPixelSize << endl;
 	fout << m_vTilePixelSize << endl;
 	
-	fout << "[SliceSize]" << endl;
+	fout << TagSliceSize << endl;
 	fout << m_vSliceSizeUV << endl;
 
-	fout << "[MaxCol]" << endl;
+	fout << TagMaxCol << endl;
 	fout << m_MaxCol << endl;
 
-	fout << "[MaxRow]" << endl;
+	fout << TagMaxRow << endl;
 	fout << m_MaxRow << endl;
 
 	size_t InfoCount = m_vecTileInfo.size();
-	fout << "[InfoCount]" << endl;
+	fout << TagInfoCount << endl;
 	fout << InfoCount << endl;
 
 	if (InfoCount == 0) return;
 
-	fout << "[Info]" << endl;
+	fout << TagTileInfo << endl;
 	for (int i = 0; i < m_vecTileInfo.size(); i++) {
 		fout << m_vecTileInfo[i] << endl;
 	}
@@ -216,58 +223,51 @@ void CTileMap::LoadFromFile(FILE* _File)
 
 void CTileMap::LoadFromFile(ifstream& fin)
 {
-	string tag, str;
-
-	getline(fin, tag); // [FaceX]
+	Utils::GetLineUntilString(fin, TagFaceX);
 	fin >> m_FaceX;
-	getline(fin, str); // 傍归 贸府
 
-	getline(fin, tag); // [FaceY]
+	Utils::GetLineUntilString(fin, TagFaceY);
 	fin >> m_FaceY;
-	getline(fin, str); // 傍归 贸府
 
-	getline(fin, tag); // [RenderSize]
+	Utils::GetLineUntilString(fin, TagRenderSize);
 	fin >> m_vTileRenderSize;
-	getline(fin, str); // 傍归 贸府
 
-	getline(fin, tag); // [Atlas]
+	Utils::GetLineUntilString(fin, TagAtlas);
 	LoadAssetRef(m_TileAtlas, fin);
 
-	getline(fin, tag); // [PixelSize]
+	Utils::GetLineUntilString(fin, TagPixelSize);
 	fin >> m_vTilePixelSize;
-	getline(fin, str); // 傍归 贸府
 
-	getline(fin, tag); // [SliceSize]
+	Utils::GetLineUntilString(fin, TagSliceSize);
 	fin >> m_vSliceSizeUV;
-	getline(fin, str); // 傍归 贸府
 
-	getline(fin, tag); // [MaxCol]
+	Utils::GetLineUntilString(fin, TagMaxCol);
 	fin >> m_MaxCol;
-	getline(fin, str); // 傍归 贸府
 
-	getline(fin, tag); // [MaxRow]
+	Utils::GetLineUntilString(fin, TagMaxRow);
 	fin >> m_MaxRow;
-	getline(fin, str); // 傍归 贸府
 
 	size_t infoCnt;
-	getline(fin, tag); // [InfoCount]
+	Utils::GetLineUntilString(fin, TagInfoCount);
 	fin >> infoCnt;
-	getline(fin, str); // 傍归 贸府
 
 	if (infoCnt == 0) return;
 
-	getline(fin, tag); // [Info]
+	Utils::GetLineUntilString(fin, TagTileInfo);
 	for (int i = 0; i < m_vecTileInfo.size(); i++) {
 		fin >> m_vecTileInfo[i];
 	}
 }
 
+#define TagLeftTop "[LeftTop]"
+#define TagRender "[IsRender]"
+
 ofstream& operator<<(ofstream& fout, const tTileInfo& info)
 {
-	fout << "[LeftTop]" << endl;
+	fout << TagLeftTop << endl;
 	fout << info.vLeftTopUV << endl;
 
-	fout << "[IsRender]" << endl;
+	fout << TagRender << endl;
 	fout << info.bRender;
 
 	return fout;
@@ -275,14 +275,11 @@ ofstream& operator<<(ofstream& fout, const tTileInfo& info)
 
 ifstream& operator>>(ifstream& fin, tTileInfo& info)
 {
-	string tag, str;
-	getline(fin, tag); // [LeftTop]
+	Utils::GetLineUntilString(fin, TagLeftTop);
 	fin >> info.vLeftTopUV;
-	getline(fin, str); // 傍归 贸府
 
-	getline(fin, tag); // [IsRender]
+	Utils::GetLineUntilString(fin, TagRender);
 	fin >> info.bRender;
-	getline(fin, str); // 傍归 贸府
 	
 	return fin;
 }

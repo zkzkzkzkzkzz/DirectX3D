@@ -78,11 +78,14 @@ void CRenderComponent::SaveToFile(FILE* _File)
 	SaveAssetRef(m_SharedMtrl, _File);	
 }
 
+#define TagMesh "[Mesh]"
+#define TagMtrl "[Material]"
+
 void CRenderComponent::SaveToFile(ofstream& fout)
 {
-	fout << "[Mesh]" << endl;
+	fout << TagMesh << endl;
 	SaveAssetRef(m_Mesh, fout);
-	fout << "[SharedMtrl]" << endl;
+	fout << TagMtrl << endl;
 	SaveAssetRef(m_SharedMtrl, fout);
 }
 
@@ -96,9 +99,8 @@ void CRenderComponent::LoadFromFile(FILE* _File)
 
 void CRenderComponent::LoadFromFile(ifstream& fin)
 {
-	string tag, str;
-	getline(fin, tag); // [Mesh]
+	Utils::GetLineUntilString(fin, TagMesh);
 	LoadAssetRef(m_Mesh, fin);
-	getline(fin, str); // [SharedMtrl]
+	Utils::GetLineUntilString(fin, TagMtrl);
 	LoadAssetRef(m_SharedMtrl, fin);
 }
