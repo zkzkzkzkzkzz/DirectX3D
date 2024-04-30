@@ -6,7 +6,6 @@
 TransformUI::TransformUI()
 	: ComponentUI("Transform", "##Transform", COMPONENT_TYPE::TRANSFORM)	
 {
-	SetSize(ImVec2(0.f, 120.f));
 	SetComponentTitle("Transform");
 }
 
@@ -17,9 +16,6 @@ TransformUI::~TransformUI()
 
 void TransformUI::render_update()
 {
-	if (nullptr == GetTargetObject())
-		return;
-
 	ComponentUI::render_update();
 
 	Vec3 vPos = GetTargetObject()->Transform()->GetRelativePos();
@@ -36,7 +32,7 @@ void TransformUI::render_update()
 	GetTargetObject()->Transform()->SetRelativeScale(vScale);
 	GetTargetObject()->Transform()->SetRelativeRotation(vRot);
 
-	// Absolute °ª 
+	// Absolute ê°’ 
 	bool bAbsolute = GetTargetObject()->Transform()->IsAbsolute();
 	ImGui::Text("Scale Absolute"); ImGui::SameLine(); ImGui::Checkbox("##TransformAbsolute", &bAbsolute);
 	GetTargetObject()->Transform()->SetAbsolute(bAbsolute);

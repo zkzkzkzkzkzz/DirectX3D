@@ -4,9 +4,6 @@
 
 #include "CGameObject.h"
 
-#define GET_OTHER_COMPONENT(Type) C##Type* Type() { return m_Owner->Type(); }
-
-
 class CGameObject;
 
 class CComponent :
@@ -15,7 +12,6 @@ class CComponent :
 private:
     const COMPONENT_TYPE    m_Type;
     CGameObject* m_Owner;
-
 
 public:
     virtual void begin() {}
@@ -27,17 +23,18 @@ public:
     COMPONENT_TYPE GetType() { return m_Type; }
     CGameObject* GetOwner() { return m_Owner; }
 
-    GET_OTHER_COMPONENT(Transform);
-    GET_OTHER_COMPONENT(MeshRender);
-    GET_OTHER_COMPONENT(Camera);
-    GET_OTHER_COMPONENT(Collider2D);
-    GET_OTHER_COMPONENT(Animator2D);
-    GET_OTHER_COMPONENT(Light2D);
-    GET_OTHER_COMPONENT(Light3D);
-    GET_OTHER_COMPONENT(TileMap);
-    GET_OTHER_COMPONENT(StateMachine);
+    inline class CTransform* Transform() { return GetOwner()->Transform();}
+    inline class CMeshRender* MeshRender() { return GetOwner()->MeshRender();}
+    inline class CCamera* Camera() { return GetOwner()->Camera();}
+    inline class CStateMachine* StateMachine() { return GetOwner()->StateMachine();}
+    inline class CCollider2D* Collider2D() { return GetOwner()->Collider2D();}
+    inline class CAnimator2D* Animator2D() { return GetOwner()->Animator2D();}
+    inline class CLight2D* Light2D() { return GetOwner()->Light2D();}
+    inline class CLight3D* Light3D() { return GetOwner()->Light3D();}
+    inline class CTileMap* TileMap() { return GetOwner()->TileMap();}
+    inline class CSkyBox* SkyBox() { return GetOwner()->SkyBox();}
 
-    CRenderComponent* GetRenderComponent() { return m_Owner->GetRenderComopnent(); }
+    class CRenderComponent* GetRenderComponent() { return m_Owner->GetRenderComopnent(); }
 
 
     virtual void SaveToFile(FILE* _File) = 0;

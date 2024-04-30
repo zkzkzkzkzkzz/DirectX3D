@@ -169,6 +169,9 @@
     <ClInclude Include="CLight3D.h">
       <Filter>08. Component\07. Light3D</Filter>
     </ClInclude>
+    <ClInclude Include="CSkyBox.h">
+      <Filter>08. Component\RenderComponent\04. SkyBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -285,7 +288,7 @@
     <ClCompile Include="CLight2D.cpp">
       <Filter>08. Component\06. Light2D</Filter>
     </ClCompile>
-    <ClCompile Include="CAsssetMgr_init.cpp">
+    <ClCompile Include="CAssetMgr_init.cpp">
       <Filter>04. Manager\AssetMgr</Filter>
     </ClCompile>
     <ClCompile Include="CTileMap.cpp">
@@ -329,6 +332,9 @@
     </ClCompile>
     <ClCompile Include="SimpleMath.cpp" />
     <ClCompile Include="struct.cpp" />
+    <ClCompile Include="CSkyBox.cpp">
+      <Filter>08. Component\RenderComponent\04. SkyBox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -499,6 +505,9 @@
     <Filter Include="08. Component\07. Light3D">
       <UniqueIdentifier>{4cf79288-1170-46dd-8fc4-f98df703c0db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08. Component\RenderComponent\04. SkyBox">
+      <UniqueIdentifier>{5af869a4-c07e-4398-8a9a-c9a0916d4e36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -537,6 +546,9 @@
       <Filter>ShaderCode\02. Render\2DShader</Filter>
     </FxCompile>
     <FxCompile Include="std3d.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="skybox.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
   </ItemGroup>

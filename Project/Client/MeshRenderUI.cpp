@@ -12,7 +12,6 @@
 MeshRenderUI::MeshRenderUI()
 	: ComponentUI("MeshRender", "##MeshRender", COMPONENT_TYPE::MESHRENDER)
 {
-	SetSize(ImVec2(0.f, 100.f));
 	SetComponentTitle("MeshRender");
 }
 
@@ -46,7 +45,7 @@ void MeshRenderUI::render_update()
 	ImGui::SameLine(); 
 	ImGui::InputText("##MeshName", (char*)meshname.c_str(), meshname.length(), ImGuiInputTextFlags_ReadOnly);
 
-	// Mesh Drop üũ
+	// Mesh Drop 체크
 	if (ImGui::BeginDragDropTarget())
 	{
 		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
@@ -67,7 +66,7 @@ void MeshRenderUI::render_update()
 	ImGui::SameLine();
 	if (ImGui::Button("##MeshBtn", ImVec2(20, 20)))
 	{
-		// ����Ʈ UI
+		// 리스트 UI
 		ListUI* pListUI = (ListUI*)CImGuiMgr::GetInst()->FindUI("##List");
 
 		vector<string> vecMeshName;
@@ -87,7 +86,7 @@ void MeshRenderUI::render_update()
 	ImGui::InputText("##MtrlName", (char*)mtrlname.c_str(), mtrlname.length(), ImGuiInputTextFlags_ReadOnly);
 	ImGui::SameLine();
 
-	// Material Drop üũ
+	// Material Drop 체크
 	if (ImGui::BeginDragDropTarget())
 	{
 		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
@@ -107,7 +106,7 @@ void MeshRenderUI::render_update()
 
 	if (ImGui::Button("##MtrlBtn", ImVec2(20, 20)))
 	{
-		// ����Ʈ UI
+		// 리스트 UI
 		ListUI* pListUI = (ListUI*)CImGuiMgr::GetInst()->FindUI("##List");
 
 		vector<string> vecMtrlName;

@@ -6,7 +6,6 @@
 Light2DUI::Light2DUI()
 	: ComponentUI("Light2D", "##Light2D", COMPONENT_TYPE::LIGHT2D)
 {
-	SetSize(ImVec2(0.f, 430.f));
 	SetComponentTitle("Light2D");
 }
 
@@ -36,55 +35,40 @@ void Light2DUI::render_update()
 	ImGui::SameLine(0, 20); ImGui::PushItemWidth(150);
 	ImGui::Combo("##LightType", &LightType, "DIRECTIONAL\0POINT\0SPOT\0\0");
 
-	if (LightType == 0)
-		ImGui::BeginDisabled();
+	if (0 == LightType)
+	{
+		ImGui::Text("Ambient");
+		ImGui::SameLine(0, 41); ImGui::PushItemWidth(250);
+		ImGui::ColorEdit3("##LightAmbient", vAmbient);
+	}
+	else if (1 == LightType)
+	{
+		ImGui::Text("Light Color");
+		ImGui::SameLine(0, 13); ImGui::PushItemWidth(200);
+		ImGui::ColorPicker3("##LightColor", vColor, ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
 
-	ImGui::Text("Light Color");
-	ImGui::SameLine(0, 13); ImGui::PushItemWidth(200);
-	ImGui::ColorPicker3("##LightColor", vColor, ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
+		ImGui::Text("Radius");
+		ImGui::SameLine(0, 48); ImGui::PushItemWidth(200);
+		ImGui::DragFloat("##LightRadius", &fRadius);
+	}
+	else
+	{
+		ImGui::Text("Light Color");
+		ImGui::SameLine(0, 13); ImGui::PushItemWidth(200);
+		ImGui::ColorPicker3("##LightColor", vColor, ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
 
-	if (LightType == 0)
-		ImGui::EndDisabled();
+		ImGui::Text("Radius");
+		ImGui::SameLine(0, 48); ImGui::PushItemWidth(200);
+		ImGui::DragFloat("##LightRadius", &fRadius);
 
-	// ==================================================
+		ImGui::Text("LightDir");
+		ImGui::SameLine(0, 34); ImGui::PushItemWidth(200);
+		ImGui::SliderAngle("##LightDir", &Dir, 0.f, 360.f);
 
-	if (LightType == 1 || LightType == 2)
-		ImGui::BeginDisabled();
-
-	ImGui::Text("Ambient");
-	ImGui::SameLine(0, 41); ImGui::PushItemWidth(250);
-	ImGui::ColorEdit3("##LightAmbient", vAmbient);
-
-	if (LightType == 1 || LightType == 2)
-		ImGui::EndDisabled();
-
-	// ==================================================
-
-	if (LightType == 0 || LightType == 1)
-		ImGui::BeginDisabled();
-
-	ImGui::Text("LightDir");
-	ImGui::SameLine(0, 34); ImGui::PushItemWidth(200);
-	ImGui::SliderAngle("##LightDir", &Dir, 0.f, 360.f);
-
-	ImGui::Text("Angle");
-	ImGui::SameLine(0, 55); ImGui::PushItemWidth(200);
-	ImGui::SliderAngle("##LightAngle", &fAngle, 0.f, 360.f);
-
-	if (LightType == 0 || LightType == 1)
-		ImGui::EndDisabled();
-
-	// ==================================================
-
-	if (LightType == 0)
-		ImGui::BeginDisabled();
-
-	ImGui::Text("Radius");
-	ImGui::SameLine(0, 48); ImGui::PushItemWidth(200);
-	ImGui::DragFloat("##LightRadius", &fRadius);
-
-	if (LightType == 0)
-		ImGui::EndDisabled();
+		ImGui::Text("Angle");
+		ImGui::SameLine(0, 55); ImGui::PushItemWidth(200);
+		ImGui::SliderAngle("##LightAngle", &fAngle, 0.f, 360.f);
+	}
 
 	GetTargetObject()->Light2D()->SetLightType((LIGHT_TYPE)LightType);
 	GetTargetObject()->Light2D()->SetLightColor(vColor);
