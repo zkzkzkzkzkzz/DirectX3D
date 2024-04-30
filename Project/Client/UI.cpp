@@ -35,7 +35,7 @@ void UI::render()
 		{
 			ImGui::Begin(string(m_strName + m_strID).c_str(), &Active);
 
-			// È°¼ºÈ­, ºñÈ°¼ºÈ­ ÀüÈ¯ÀÌ ¹ß»ıÇÑ °æ¿ì¿¡´Â Activate or Deactivate ¸¦ È£Ãâ½ÃÅ²´Ù.
+			// í™œì„±í™”, ë¹„í™œì„±í™” ì „í™˜ì´ ë°œìƒí•œ ê²½ìš°ì—ëŠ” Activate or Deactivate ë¥¼ í˜¸ì¶œì‹œí‚¨ë‹¤.
 			if (Active != m_bActive)
 			{
 				m_bActive = Active;
@@ -74,7 +74,7 @@ void UI::render()
 
 			else
 			{
-				// È°¼ºÈ­, ºñÈ°¼ºÈ­ ÀüÈ¯ÀÌ ¹ß»ıÇÑ °æ¿ì¿¡´Â Activate or Deactivate ¸¦ È£Ãâ½ÃÅ²´Ù.
+				// í™œì„±í™”, ë¹„í™œì„±í™” ì „í™˜ì´ ë°œìƒí•œ ê²½ìš°ì—ëŠ” Activate or Deactivate ë¥¼ í˜¸ì¶œì‹œí‚¨ë‹¤.
 				if (Active != m_bActive)
 				{
 					m_bActive = Active;
@@ -88,10 +88,10 @@ void UI::render()
 		}		
 	}
 
-	// Child UI ÀÎ °æ¿ì
+	// Child UI ì¸ ê²½ìš°
 	else
 	{
-		ImGui::BeginChild(string(m_strName + m_strID).c_str(), m_vSize);
+		ImGui::BeginChild(string(m_strName + m_strID).c_str(), ImVec2(0,0), ImGuiChildFlags_AutoResizeY);
 
 		render_update();
 
@@ -101,5 +101,41 @@ void UI::render()
 		}
 
 		ImGui::EndChild();
+	}
+}
+
+bool UI::ColorSelector(const char* _label, Vec4* _col)
+{
+	auto items = GamePlayStatic::COLOR::GetColors();
+	static int selectedidx = 0;
+
+	if (0 != items.size())
+	{
+		if (!(selectedidx < items.size()))
+		{
+			selectedidx = 0;
+		}
+		ImGui::SetNextItemWidth(150);
+		if (ImGui::BeginCombo("##comboColorPreset", items[selectedidx].first.c_str())) {
+			for (int i = 0; i < items.size(); i++) {
+				const bool isSelected = (selectedidx == i);
+				if (ImGui::Selectable(items[i].first.c_str(), isSelected)) {
+					*_col = items[i].second;
+					selectedidx = i;
+				}
+
+				// í•­ëª© ì„ íƒ ì‹œ ìë™ìœ¼ë¡œ ìŠ¤í¬ë¡¤
+				if (isSelected) {
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+
+	}
+
+	if (ImGui::ColorEdit4(_label, *_col))
+	{
+		return true;
 	}
 }

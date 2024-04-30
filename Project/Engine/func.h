@@ -56,6 +56,7 @@ namespace GamePlayStatic
 		static const Vec4 YELLOW;
 		static const Vec4 MAZENTA;
 
+	public:
 		// 유지보수 3/4 . 컬러변수 맵핑
 		static vector<std::pair<string, Vec4>> GetColors()
 		{

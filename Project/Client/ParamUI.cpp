@@ -145,8 +145,5 @@ bool ParamUI::Param_COLOR(Vec4* _Data, const string& _Desc)
 
 	char szID[256] = {};
 	sprintf_s(szID, "##Vec4%d", g_ID++);
-	if (ImGui::ColorEdit4(szID, *_Data))
-	{
-		return true;
-	}
+	return UI::ColorSelector(szID, _Data);
 }
