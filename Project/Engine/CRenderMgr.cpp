@@ -18,7 +18,7 @@ CRenderMgr::CRenderMgr()
 	, m_DebugPosition(true)
 	, m_EditorCam(nullptr)
 	, m_RenderFunc(nullptr)
-	, m_vClearColor(Vec4(1.f, 0.f, 0.f, 1.f))
+	, m_vClearColor(Vec4(0.f, 0.f, 0.f, 1.f))
 {
 	m_RenderFunc = &CRenderMgr::render_play;
 }
