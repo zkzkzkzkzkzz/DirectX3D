@@ -31,7 +31,7 @@ void CTransform::finaltick()
 
 	m_matWorld = matScale * matRotX * matRotY * matRotZ * matTranslation;
 
-	// ¹°Ã¼ÀÇ ¹æÇâ°ªÀ» ´Ù½Ã °è»êÇÑ´Ù.
+	// ë¬¼ì²´ì˜ ë°©í–¥ê°’ì„ ë‹¤ì‹œ ê³„ì‚°í•œë‹¤.
 	static const Vec3 arrAxis[3] =
 	{
 		Vec3(1.f, 0.f, 0.f),
@@ -39,19 +39,19 @@ void CTransform::finaltick()
 		Vec3(0.f, 0.f, 1.f)
 	};
 
-	// Vec3 ¸¦ Vec4 Å¸ÀÔÀ¸·Î È®ÀåÇØ¼­ Çà·ÄÀ» Àû¿ë½ÃÄÑ¾ß ÇÔ
-	// XMVector3TransformCoord	- w ¸¦ 1·Î È®Àå
-	// XMVector3TransformNormal - w ¸¦ 0À¸·Î È®Àå
+	// Vec3 ë¥¼ Vec4 íƒ€ì…ìœ¼ë¡œ í™•ì¥í•´ì„œ í–‰ë ¬ì„ ì ìš©ì‹œì¼œì•¼ í•¨
+	// XMVector3TransformCoord	- w ë¥¼ 1ë¡œ í™•ì¥
+	// XMVector3TransformNormal - w ë¥¼ 0ìœ¼ë¡œ í™•ì¥
 	// mul(float4(_in.vPos, 1 or 0), g_matWorld); 
-	// Àû¿ë ¹ŞÀ» »óÅÂÇà·ÄÀÇ ÀÌµ¿À» Àû¿ëÇÒÁö ¸»Áö °áÁ¤
+	// ì ìš© ë°›ì„ ìƒíƒœí–‰ë ¬ì˜ ì´ë™ì„ ì ìš©í• ì§€ ë§ì§€ ê²°ì •
 	for (int i = 0; i < 3; ++i)
 	{
-		// m_matWorld Çà·Ä¿¡ Å©±âÁ¤º¸°¡ ÀÖÀ» ¼ö ÀÖ±â ¶§¹®¿¡ ´Ù½Ã ±æÀÌ¸¦ 1·Î Á¤±ÔÈ­ ½ÃÅ²´Ù.
+		// m_matWorld í–‰ë ¬ì— í¬ê¸°ì •ë³´ê°€ ìˆì„ ìˆ˜ ìˆê¸° ë•Œë¬¸ì— ë‹¤ì‹œ ê¸¸ì´ë¥¼ 1ë¡œ ì •ê·œí™” ì‹œí‚¨ë‹¤.
 		m_arrLocalDir[i] = XMVector3TransformNormal(arrAxis[i], m_matWorld);
 		m_arrWorldDir[i] = m_arrLocalDir[i].Normalize();
 	}
 
-	// ºÎ¸ğ ¿ÀºêÁ§Æ®°¡ ÀÖ´Ù¸é
+	// ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸ê°€ ìˆë‹¤ë©´
 	if (GetOwner()->GetParent())
 	{
 		const Matrix& matParentWorld = GetOwner()->GetParent()->Transform()->GetWorldMat();
@@ -71,11 +71,14 @@ void CTransform::finaltick()
 
 		for (int i = 0; i < 3; ++i)
 		{
-			// m_matWorld Çà·Ä¿¡ Å©±âÁ¤º¸°¡ ÀÖÀ» ¼ö ÀÖ±â ¶§¹®¿¡ ´Ù½Ã ±æÀÌ¸¦ 1·Î Á¤±ÔÈ­ ½ÃÅ²´Ù.
+			// m_matWorld í–‰ë ¬ì— í¬ê¸°ì •ë³´ê°€ ìˆì„ ìˆ˜ ìˆê¸° ë•Œë¬¸ì— ë‹¤ì‹œ ê¸¸ì´ë¥¼ 1ë¡œ ì •ê·œí™” ì‹œí‚¨ë‹¤.
 			m_arrWorldDir[i] = XMVector3TransformNormal(arrAxis[i], m_matWorld);
 			m_arrWorldDir[i].Normalize();
 		}
 	}
+
+	// ì›”ë“œ ë·° í–‰ë ¬ì´ ê³„ì‚°ëœ ì¹´ë©”ë¼ ì‹œì ì—ì„œì˜ pos ê°’ ì„¸íŒ…
+	m_vWorldViewPos = TransformByWorldView(GetWorldPos());
 }
 
 void CTransform::UpdateData()
@@ -84,7 +87,7 @@ void CTransform::UpdateData()
 	g_Transform.matWV = g_Transform.matWorld * g_Transform.matView;
 	g_Transform.matWVP = g_Transform.matWV * g_Transform.matProj;
 		
-	// À§Ä¡Á¤º¸¸¦ Transform »ó¼ö¹öÆÛ¿¡ º¸³»°í, B0 ·¹Áö½ºÅÍ¿¡ ¹ÙÀÎµù ÇØµÒ
+	// ìœ„ì¹˜ì •ë³´ë¥¼ Transform ìƒìˆ˜ë²„í¼ì— ë³´ë‚´ê³ , B0 ë ˆì§€ìŠ¤í„°ì— ë°”ì¸ë”© í•´ë‘ 
 	CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::TRANSFORM);
 	pCB->SetData(&g_Transform);
 	pCB->UpdateData();
@@ -123,4 +126,26 @@ void CTransform::LoadFromFile(FILE* _File)
 	fread(&m_vRelativeScale, sizeof(Vec3), 1, _File);
 	fread(&m_vRealtiveRotation, sizeof(Vec3), 1, _File);
 	fread(&m_bAbsolute, sizeof(bool), 1, _File);
+}
+
+Vec3 CTransform::TransformByWorldView(const Vec3& _vWorldpos)
+{
+	// ì¸ìë¡œ ì „ë‹¬ëœ ì›”ë“œ ìœ„ì¹˜ ì‚¬ìš©
+	XMFLOAT3 worldPos = _vWorldpos;
+
+	// ì›”ë“œ ë·° í–‰ë ¬ ê°€ì ¸ì˜¤ê¸°
+	Matrix matWorldView = GetWorldViewMatrix();
+
+	// íƒ€ì… ë³€í™˜ (Vec -> Float)
+	XMVECTOR worldPosVec = XMLoadFloat3(&worldPos);
+	XMMATRIX worldViewMat = XMLoadFloat4x4(&matWorldView);
+
+	XMVECTOR transformedPosVec = XMVector3TransformCoord(worldPosVec, worldViewMat);
+
+	// ê²°ê³¼ë¥¼ Vec3ë¡œ ë³€í™˜
+	Vec3 transformedPos;
+	XMStoreFloat3(&transformedPos, transformedPosVec);
+
+	// ë³€í™˜ëœ ìœ„ì¹˜ ë°˜í™˜
+	return transformedPos;
 }

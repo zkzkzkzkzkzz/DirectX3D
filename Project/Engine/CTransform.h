@@ -9,10 +9,12 @@ private:
     Vec3    m_vRelativeScale;
     Vec3    m_vRealtiveRotation;
 
+    Vec3    m_vWorldViewPos;
+
     Vec3    m_arrLocalDir[3]; // Right, Up, Front
     Vec3    m_arrWorldDir[3]; // Right, Up, Front
 
-    Matrix  m_matWorld; // ªÛ≈¬«‡∑ƒ
+    Matrix  m_matWorld; // ÏÉÅÌÉúÌñâÎ†¨
     bool    m_bAbsolute;
 
 public:
@@ -26,26 +28,33 @@ public:
 
     void SetWorldMat(const Matrix _matWorld) { m_matWorld = _matWorld; }
 
-    Vec3 GetRelativePos() { return m_vRelativePos; }
-    Vec3 GetRelativeScale() { return m_vRelativeScale; }
-    Vec3 GetRelativeRotation() { return m_vRealtiveRotation; }
+    Vec3 GetRelativePos() const { return m_vRelativePos; }
+    Vec3 GetRelativeScale() const { return m_vRelativeScale; }
+    Vec3 GetRelativeRotation() const { return m_vRealtiveRotation; }
 
     Vec3 GetWorldPos() { return m_matWorld.Translation(); }
     Vec3 GetWorldScale();
     //Vec3 GetWorldRot();
 
     void SetAbsolute(bool _bAbsolute) { m_bAbsolute = _bAbsolute; }
-    bool IsAbsolute() { return m_bAbsolute; }
+    bool IsAbsolute() const { return m_bAbsolute; }
 
     const Matrix& GetWorldMat() { return m_matWorld; }
 
-    Vec3 GetLocalDir(DIR_TYPE _type) { return m_arrLocalDir[(UINT)_type]; }
-    Vec3 GetWorldDir(DIR_TYPE _type) { return m_arrWorldDir[(UINT)_type]; }
+    Vec3 GetLocalDir(DIR_TYPE _type) const { return m_arrLocalDir[(UINT)_type]; }
+    Vec3 GetWorldDir(DIR_TYPE _type) const { return m_arrWorldDir[(UINT)_type]; }
+
+    Matrix GetWorldViewMatrix() { return g_Transform.matWV; }
+    Vec3 GetWorldViewPos() const { return m_vWorldViewPos; }
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
-    CLONE(CTransform);
+
+private:
+    Vec3 TransformByWorldView(const Vec3& _vWorldpos);
+
 public:
+    CLONE(CTransform);
     CTransform();    
     ~CTransform();
 };
