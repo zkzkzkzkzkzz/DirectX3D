@@ -3,28 +3,28 @@
 
 enum class PROJ_TYPE
 {
-    ORTHOGRAPHIC, // Á÷±³ Åõ¿µ
-    PERSPECTIVE,  // ¿ø±Ù Åõ¿µ
+    ORTHOGRAPHIC, // ì§êµ íˆ¬ì˜
+    PERSPECTIVE,  // ì›ê·¼ íˆ¬ì˜
 };
 
 class CCamera :
     public CComponent
 {
 private:
-    PROJ_TYPE               m_ProjType;     // Åõ¿µ ¹æ½Ä
+    PROJ_TYPE               m_ProjType;     // íˆ¬ì˜ ë°©ì‹
 
-    // ¿ø±ÙÅõ¿µ(Perspective)
-    float                   m_FOV;          // ½Ã¾ß °¢(Filed Of View)
+    // ì›ê·¼íˆ¬ì˜(Perspective)
+    float                   m_FOV;          // ì‹œì•¼ ê°(Filed Of View)
 
-    // Á÷±³Åõ¿µ(Orthographic)
-    float                   m_Width;        // Á÷±³Åõ¿µ °¡·Î ±æÀÌ
-    float                   m_Scale;        // Á÷±³Åõ¿µ ¹èÀ²
+    // ì§êµíˆ¬ì˜(Orthographic)
+    float                   m_Width;        // ì§êµíˆ¬ì˜ ê°€ë¡œ ê¸¸ì´
+    float                   m_Scale;        // ì§êµíˆ¬ì˜ ë°°ìœ¨
 
     // Both
-    float                   m_AspectRatio;  // Á¾È¾ºñ, Åõ¿µ °¡·Î¼¼·Î ºñÀ²
-    float                   m_Far;          // Åõ¿µ ÃÖ´ë °Å¸®
+    float                   m_AspectRatio;  // ì¢…íš¡ë¹„, íˆ¬ì˜ ê°€ë¡œì„¸ë¡œ ë¹„ìœ¨
+    float                   m_Far;          // íˆ¬ì˜ ìµœëŒ€ ê±°ë¦¬
     
-    // º¯È¯ Çà·Ä
+    // ë³€í™˜ í–‰ë ¬
     Matrix                  m_matView;
     Matrix                  m_matProj;
 
@@ -33,9 +33,9 @@ private:
     int                     m_CameraPriority;
 
 
-    // ¹°Ã¼ ºĞ·ù
+    // ë¬¼ì²´ ë¶„ë¥˜
     vector<CGameObject*>    m_vecOpaque;
-    vector<CGameObject*>    m_vecMaked;
+    vector<CGameObject*>    m_vecMasked;
     vector<CGameObject*>    m_vecTransparent;
     vector<CGameObject*>    m_vecPostProcess;
 
