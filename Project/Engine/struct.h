@@ -116,6 +116,7 @@ struct tParticleModule
 	int arrModuleCheck[(UINT)PARTICLE_MODULE::END];
 
 	friend ofstream& operator<< (ofstream& fout, const tParticleModule& module);
+	friend ifstream& operator>>(ifstream& fin, tParticleModule& module);
 };
 
 struct tSpawnCount

@@ -170,3 +170,144 @@ ofstream& operator<<(ofstream& fout, const tParticleModule& module)
 
 	return fout;
 }
+
+ifstream& operator>>(ifstream& fin, tParticleModule& module)
+{
+	string tag, str;
+
+	// 胶迄 葛碘
+	getline(fin, tag); // [Module]
+	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN];
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [SpawnColor]
+	fin >> module.vSpawnColor;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [SpawnMinScale]
+	fin >> module.vSpawnMinScale;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [SpawnMaxScale]
+	fin >> module.vSpawnMaxScale;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [MinLife]
+	fin >> module.MinLife;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [MinLife]
+	fin >> module.MinLife;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [MaxLife]
+	fin >> module.MaxLife;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [MinMass]
+	fin >> module.MinMass;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [MaxMass]
+	fin >> module.MaxMass;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [SpawnRate]
+	fin >> module.SpawnRate;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [SpaceType] (0 : LocalSpace, 1 : WorldSpace)
+	fin >> module.SpaceType;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [SpawnShape] (0 : Sphere, 1 : Box)
+	fin >> module.SpawnShape;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [Radius]
+	fin >> module.Radius;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [SpawnBoxScale]
+	fin >> module.vSpawnBoxScale;
+	getline(fin, str); // 傍归 贸府
+
+	// Add Velocity
+	getline(fin, tag); // [Module]
+	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY];
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [AddVelocityType] (0 : From Center, 1: To Center, 2: Fix Direction)
+	fin >> module.AddVelocityType;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [MinSpeed]
+	fin >> module.MinSpeed;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [MaxSpeed]
+	fin >> module.MaxSpeed;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [FixedAngle]
+	fin >> module.FixedAngle;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [FixedDirection]
+	fin >> module.FixedDirection;
+	getline(fin, str); // 傍归 贸府
+
+	// Scale Module
+	getline(fin, tag); // [Module]
+	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE];
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [ScaleRatio]
+	fin >> module.vScaleRatio;
+	getline(fin, str); // 傍归 贸府
+
+	// Noise Force
+	getline(fin, tag); // [Module]
+	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE];
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [NoiseForceScale]
+	fin >> module.NoiseForceScale;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [NoiseForceTerm]
+	fin >> module.NoiseForceTerm;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [ScaleRatio]
+	fin >> module.vScaleRatio;
+	getline(fin, str); // 傍归 贸府
+
+	// Drag
+	getline(fin, tag); // [Module]
+	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG];
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [DragTime]
+	fin >> module.DragTime;
+	getline(fin, str); // 傍归 贸府
+
+	// Render
+	getline(fin, tag); // [Module]
+	fin >> module.arrModuleCheck[(UINT)PARTICLE_MODULE::RENDER];
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [VelocityAlignment]
+	fin >> module.VelocityAlignment;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [AlphaBasedLife] (0 : off, 1 : NomrlizedAge, 2: Age)
+	fin >> module.AlphaBasedLife;
+	getline(fin, str); // 傍归 贸府
+
+	getline(fin, tag); // [AlphaMaxAge]
+	fin >> module.AlphaMaxAge;
+	getline(fin, str); // 傍归 贸府
+
+	return fin;
+}

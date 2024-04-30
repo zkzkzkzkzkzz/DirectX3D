@@ -231,3 +231,18 @@ void CParticleSystem::LoadFromFile(FILE* _File)
 	// 파티클 입자 텍스쳐 정보 로드
 	LoadAssetRef(m_ParticleTex, _File);
 }
+
+void CParticleSystem::LoadFromFile(ifstream& fin)
+{
+	string tag, str;
+
+	getline(fin, tag); // [MaxPartivcleCount]
+	fin >> m_MaxParticleCount;
+	getline(fin, str); // 공백 처리
+
+	getline(fin, tag); // [Modules]
+	fin >> m_Module;
+
+	getline(fin, tag); // [ParticleTexture]
+	LoadAssetRef(m_ParticleTex, fin);
+}

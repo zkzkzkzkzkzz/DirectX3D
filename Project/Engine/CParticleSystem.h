@@ -31,8 +31,10 @@ public:
     virtual void SaveToFile(FILE* _File) override;
     virtual void SaveToFile(ofstream& fout) override;
     virtual void LoadFromFile(FILE* _File) override;
-    CLONE(CParticleSystem);
+    virtual void LoadFromFile(ifstream& fin) override;
+
 public:
+    CLONE(CParticleSystem);
     CParticleSystem();
     CParticleSystem(const CParticleSystem& _OriginParticle);
     ~CParticleSystem();
