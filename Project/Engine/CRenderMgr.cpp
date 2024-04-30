@@ -18,6 +18,7 @@ CRenderMgr::CRenderMgr()
 	, m_DebugPosition(true)
 	, m_EditorCam(nullptr)
 	, m_RenderFunc(nullptr)
+	, m_vClearColor(Vec4(1.f, 0.f, 0.f, 1.f))
 {
 	m_RenderFunc = &CRenderMgr::render_play;
 }
@@ -36,13 +37,12 @@ CRenderMgr::~CRenderMgr()
 
 void CRenderMgr::tick()
 {
-	// ·»´õÅ¸°Ù ¹× ±íÀÌ Å¸°Ù ¼³Á¤
+	// ë Œë”íƒ€ê²Ÿ ë° ê¹Šì´ íƒ€ê²Ÿ ì„¤ì •
 	Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
 	Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 	CONTEXT->OMSetRenderTargets(1, pRTTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
 
-	Vec4 vClearColor = Vec4(0.f, 0.f, 0.f, 1.f);
-	CDevice::GetInst()->ClearRenderTarget(vClearColor);
+	CDevice::GetInst()->ClearRenderTarget(m_vClearColor);
 
 	UpdateData();
 
@@ -75,13 +75,13 @@ void CRenderMgr::render_debug()
 	if (m_vecCam.empty())
 		return;
 
-	//·¹º§ÀÌ ÇÃ·¹ÀÌ»óÅÂÀÏ°æ¿ì(·£´õFunc°¡ render_play ÀÏ °æ¿ì)
+	//ë ˆë²¨ì´ í”Œë ˆì´ìƒíƒœì¼ê²½ìš°(ëœë”Funcê°€ render_play ì¼ ê²½ìš°)
 	if (&CRenderMgr::render_play == m_RenderFunc)
 	{
 		g_Transform.matView = m_vecCam[0]->GetViewMat();
 		g_Transform.matProj = m_vecCam[0]->GetProjMat();
 	}
-	//·¹º§ÀÌ ÇÃ·¹ÀÌ»óÅÂ°¡ ¾Æ´Ò°æ¿ì
+	//ë ˆë²¨ì´ í”Œë ˆì´ìƒíƒœê°€ ì•„ë‹ê²½ìš°
 	else
 	{
 		g_Transform.matView = m_EditorCam->GetViewMat();
@@ -146,14 +146,14 @@ void CRenderMgr::UpdateData()
 	g_global.g_Light2DCount = (int)m_vecLight2D.size();
 	g_global.g_Light3DCount = (int)m_vecLight3D.size();
 
-	// Àü¿ª µ¥ÀÌÅÍ ¾÷µ¥ÀÌÆ®
+	// ì „ì—­ ë°ì´í„° ì—…ë°ì´íŠ¸
 	static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
 	pCB->SetData(&g_global);
 
 	pCB->UpdateData();
 	pCB->UpdateData_CS();
 
-	// 2D ±¤¿øÁ¤º¸ ¾÷µ¥ÀÌÆ®
+	// 2D ê´‘ì›ì •ë³´ ì—…ë°ì´íŠ¸
 	static vector<tLightInfo> vecLight2DInfo;
 
 	for (size_t i = 0; i < m_vecLight2D.size(); ++i)
@@ -170,7 +170,7 @@ void CRenderMgr::UpdateData()
 
 	vecLight2DInfo.clear();
 
-	// 3D ±¤¿øÁ¤º¸ ¾÷µ¥ÀÌÆ®
+	// 3D ê´‘ì›ì •ë³´ ì—…ë°ì´íŠ¸
 	static vector<tLightInfo> vecLight3DInfo;
 
 	for (size_t i = 0; i < m_vecLight3D.size(); ++i)
@@ -201,7 +201,7 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
 		m_vecCam.resize(_Idx + 1);
 	}
 
-	// µ¿ÀÏÇÑ ¿ì¼±¼øÀ§ÀÇ Ä«¸Ş¶ó°¡ ÀÌ¹Ì Á¸ÀçÇÏ¸é assert
+	// ë™ì¼í•œ ìš°ì„ ìˆœìœ„ì˜ ì¹´ë©”ë¼ê°€ ì´ë¯¸ ì¡´ì¬í•˜ë©´ assert
 	assert(nullptr == m_vecCam[_Idx]);
 
 	m_vecCam[_Idx] = _Cam;
