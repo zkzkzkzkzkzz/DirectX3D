@@ -302,3 +302,51 @@ ifstream& operator>>(ifstream& fin, tParticleModule& module)
 
 	return fin;
 }
+
+#define TagIntArr "[IntArr]"
+#define TagFloatArr "[FloatArr]"
+#define TagVec2Arr "[Vec2Arr]"
+#define TagVec4Arr "[Vec4Arr]"
+#define TagMatrixArr "[MatrixArr]"
+
+ofstream& operator<<(ofstream& fout, const tMtrlConst& _mtrlConst)
+{
+	fout << TagIntArr << endl;
+	for (auto& num : _mtrlConst.iArr) fout << num << " ";
+	fout << endl;
+
+	fout << TagFloatArr << endl;
+	for (auto& num : _mtrlConst.fArr) fout << num << " ";
+	fout << endl;
+
+	fout << TagVec2Arr << endl;
+	for (auto& vec : _mtrlConst.v2Arr) fout << vec << endl;
+
+	fout << TagVec4Arr << endl;
+	for (auto& vec : _mtrlConst.v4Arr) fout << vec << endl;
+
+	fout << TagMatrixArr << endl;
+	for (const Matrix& mat : _mtrlConst.matArr) fout << mat << endl;
+
+	return fout;
+}
+
+ifstream& operator>>(ifstream& fin, tMtrlConst& _mtrlConst)
+{
+	Utils::GetLineUntilString(fin, TagIntArr);
+	for (auto& num : _mtrlConst.iArr) fin >> num;
+
+	Utils::GetLineUntilString(fin, TagFloatArr);
+	for (auto& num : _mtrlConst.fArr) fin >> num;
+
+	Utils::GetLineUntilString(fin, TagVec2Arr);
+	for (auto& vec : _mtrlConst.v2Arr) fin >> vec;
+
+	Utils::GetLineUntilString(fin, TagVec4Arr);
+	for (auto& vec : _mtrlConst.v4Arr) fin >> vec;
+
+	Utils::GetLineUntilString(fin, TagMatrixArr);
+	for (Matrix& mat : _mtrlConst.matArr) fin >> mat;
+
+	return fin;
+}

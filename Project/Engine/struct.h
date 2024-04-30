@@ -154,6 +154,9 @@ struct tMtrlConst
 	Matrix matArr[4];
 	int	bTex[(UINT)TEX_PARAM::END];
 	int iPadding[2];
+
+	friend ofstream& operator<<(ofstream& fout, const tMtrlConst& _mtrlConst);
+	friend ifstream& operator>>(ifstream& fin, tMtrlConst& _mtrlConst);
 };
 
 struct tAnimData2D

@@ -272,9 +272,6 @@ void MenuUI::ContentSaveAll()
     vecRelativePaths = vecPaths;
     Utils::SlicePath(CPathMgr::GetContentPath(), vecRelativePaths);
 
-    Ptr<CPrefab> pPref;
-    Ptr<CMaterial> pMtrl;
-
     for (int i = 0; i < vecNames.size();i++) {
         string name = vecNames[i];
         string strPath = vecPaths[i];
@@ -293,13 +290,20 @@ void MenuUI::ContentSaveAll()
         }
         else if (extension == ExtensionPref)
         {
+            CPrefab* pPref = new CPrefab;
             pPref->Load(strPath);
             pPref->Save(strRelativePath);
+
+            delete pPref;
         }
         else if (extension == ExtensionMtrl)
         {
+            CMaterial* pMtrl = new CMaterial;
+
             pMtrl->Load(strPath);
             pMtrl->Save(strRelativePath);
+
+            delete pMtrl;
         }
         else if (extension == ExtensionLevel)
         {
