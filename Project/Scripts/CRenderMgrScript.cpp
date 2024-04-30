@@ -3,6 +3,7 @@
 
 #include <Engine/CRenderMgr.h>
 
+#define RENDERMGR CRenderMgr::GetInst()
 
 CRenderMgrScript::CRenderMgrScript()
 	: CScript((UINT)SCRIPT_TYPE::RENDERMGRSCRIPT)
@@ -16,6 +17,7 @@ CRenderMgrScript::~CRenderMgrScript()
 
 void CRenderMgrScript::begin()
 {
+	AddScriptParam(SCRIPT_PARAM::VEC4, "Clear Color", &(RENDERMGR->m_vClearColor) );
 }
 
 void CRenderMgrScript::tick()

@@ -81,5 +81,7 @@ private:
 
     // 리소스 클리어
     void Clear();
+
+    friend class CRenderMgrScript;
 };
 
