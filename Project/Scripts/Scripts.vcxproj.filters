@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -24,6 +24,7 @@
     </ClInclude>
     <ClInclude Include="CTimeMgrScript.h">
       <Filter>Scripts</Filter>
+    </ClInclude>
     <ClInclude Include="strAnim.h">
       <Filter>Default\GenString</Filter>
     </ClInclude>
@@ -47,6 +48,9 @@
     </ClInclude>
     <ClInclude Include="strTxt.h">
       <Filter>Default\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderMgrScript.h">
+      <Filter>Scripts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +76,9 @@
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CTimeMgrScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderMgrScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>

@@ -27,7 +27,7 @@ void CTimeMgrScript::begin()
 
 void CTimeMgrScript::tick()
 {
-	// ¸¸¾à ScriptParam¿¡ ÇÔ¼ö¸¦ È£ÃâÇÏ´Â µ¨¸®°ÔÀÌÆ® Çü½ÄÀÇ ¹öÆ°ÀÌ ÀÖ´Ù¸é ¸Å Æ½¸¶´Ù ÇÔ¼ö¸¦ È£ÃâÇÏÁö ¾Ê¾Æµµ µÉ °Í °°´Ù.
+	// ë§Œì•½ ScriptParamì— í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•˜ëŠ” ë¸ë¦¬ê²Œì´íŠ¸ í˜•ì‹ì˜ ë²„íŠ¼ì´ ìžˆë‹¤ë©´ ë§¤ í‹±ë§ˆë‹¤ í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•˜ì§€ ì•Šì•„ë„ ë  ê²ƒ ê°™ë‹¤.
 	LockDeltaTime(m_DTLock);
 	SetDTScale(m_DTScale);
 }
