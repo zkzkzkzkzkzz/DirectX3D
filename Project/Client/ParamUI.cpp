@@ -137,3 +137,16 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 
 	return false;
 }
+
+bool ParamUI::Param_COLOR(Vec4* _Data, const string& _Desc)
+{
+	ImGui::Text(_Desc.c_str());
+	ImGui::SameLine();
+
+	char szID[256] = {};
+	sprintf_s(szID, "##Vec4%d", g_ID++);
+	if (ImGui::ColorEdit4(szID, *_Data))
+	{
+		return true;
+	}
+}
