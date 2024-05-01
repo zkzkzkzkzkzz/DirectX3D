@@ -4,6 +4,7 @@
 
 #include <Engine/CCollisionMgr.h>
 
+#include <Engine/CTaskMgr.h>
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
 #include <Engine/CLayer.h>
@@ -182,4 +183,7 @@ void CCreateTempLevel::CreateTempLevel()
 	CLevelMgr::GetInst()->ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 
 	CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\temp.lv");
+
+	CTaskMgr::GetInst()->tick();
+
 }
