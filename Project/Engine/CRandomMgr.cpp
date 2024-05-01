@@ -83,6 +83,8 @@ float CRandomMgr::GetRandomFloat(float _low, float _high)
 
 void CRandomMgr::Test()
 {
+    MessageBox(nullptr, L"Random Manager Test Execute", L"Test Code", MB_OK);
+
     init();
 
     auto seed = GetSeed();
@@ -127,5 +129,27 @@ void CRandomMgr::Test()
     {
         float rand = GetRandomFloat(3.f, 11.f);
         if (rand < 3.f || rand > 11.f) assert(0);
+    }
+
+    vector<int> vecInts;
+    for (int i = 0; i < 100; i++) vecInts.push_back(i);
+
+    int randomInt = GetRandomElement(vecInts);
+
+    SortRandom(vecInts);
+
+    for (int i = 0; i < 100; i++) {
+        PopRandom(vecInts);
+    }
+
+    vector<int> listInts;
+    for (int i = 0; i < 100; i++) listInts.push_back(i);
+
+    randomInt = GetRandomElement(listInts);
+
+    SortRandom(listInts);
+
+    for (int i = 0; i < 100; i++) {
+        PopRandom(listInts);
     }
 }
