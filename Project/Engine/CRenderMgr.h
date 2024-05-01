@@ -8,7 +8,7 @@ class CCamera;
 class CLight2D;
 class CLight3D;
 class CStructuredBuffer;
-
+class CMRT;
 
 
 class CRenderMgr :
@@ -16,6 +16,8 @@ class CRenderMgr :
 {
     SINGLE(CRenderMgr);
 private:
+    CMRT*                   m_arrMRT[(UINT)MRT_TYPE::END];
+
     vector<CCamera*>        m_vecCam;
     CCamera* m_EditorCam;
 
@@ -71,6 +73,8 @@ public:
     void tick();
 
 private:
+    void CreateMRT();
+
     void render_play();
     void render_editor();
 

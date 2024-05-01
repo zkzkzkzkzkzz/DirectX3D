@@ -21,14 +21,14 @@ CDevice::~CDevice()
 
 int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 {
-	// Ãâ·Â À©µµ¿ì
+	// ì¶œë ¥ ìœˆë„ìš°
 	m_hRenderWnd = _hWnd;
 
-	// ¹öÆÛ ÇØ»óµµ 
+	// ë²„í¼ í•´ìƒë„ 
 	m_vRenderResolution = _vResolution;
 
 
-	// ÀåÄ¡ ÃÊ±âÈ­
+	// ì¥ì¹˜ ì´ˆê¸°í™”
 	D3D_FEATURE_LEVEL eLevel = D3D_FEATURE_LEVEL_11_0;
 
 	if (FAILED(D3D11CreateDevice( nullptr
@@ -37,51 +37,51 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 								, nullptr, 0, D3D11_SDK_VERSION
 								, m_Device.GetAddressOf(), &eLevel, m_Context.GetAddressOf())))
 	{
-		MessageBox(nullptr, L"Device, Context »ı¼º ½ÇÆĞ", L"Device ÃÊ±âÈ­ ½ÇÆĞ", MB_OK);
+		MessageBox(nullptr, L"Device, Context ìƒì„± ì‹¤íŒ¨", L"Device ì´ˆê¸°í™” ì‹¤íŒ¨", MB_OK);
 		return E_FAIL;
 	}	
 
-	// ½ºÆÃ¼ÀÎ »ı¼º 
+	// ìŠ¤ì™šì²´ì¸ ìƒì„± 
 	if (FAILED(CreateSwapChain()))
 	{
-		MessageBox(nullptr, L"SwapChain »ı¼º ½ÇÆĞ", L"Device ÃÊ±âÈ­ ½ÇÆĞ", MB_OK);
+		MessageBox(nullptr, L"SwapChain ìƒì„± ì‹¤íŒ¨", L"Device ì´ˆê¸°í™” ì‹¤íŒ¨", MB_OK);
 		return E_FAIL;
 	}
 
-	// ·»´õÅ¸°Ù, ·»´õÅ¸°Ù ºä, µª½º½ºÅÙ½Ç Å¸°Ù, µª½º ½ºÅÙ½Ç ºä »ı¼º
+	// ë Œë”íƒ€ê²Ÿ, ë Œë”íƒ€ê²Ÿ ë·°, ëìŠ¤ìŠ¤í…ì‹¤ íƒ€ê²Ÿ, ëìŠ¤ ìŠ¤í…ì‹¤ ë·° ìƒì„±
 	if (FAILED(CreateTargetView()))
 	{
-		MessageBox(nullptr, L"Å¸°Ù ¹× View »ı¼º ½ÇÆĞ", L"Device ÃÊ±âÈ­ ½ÇÆĞ", MB_OK);
+		MessageBox(nullptr, L"íƒ€ê²Ÿ ë° View ìƒì„± ì‹¤íŒ¨", L"Device ì´ˆê¸°í™” ì‹¤íŒ¨", MB_OK);
 		return E_FAIL;
 	}
 
 	if (FAILED(CreateRasterizerState()))
 	{
-		MessageBox(nullptr, L"Rasterizer State »ı¼º ½ÇÆĞ", L"Device ÃÊ±âÈ­ ½ÇÆĞ", MB_OK);
+		MessageBox(nullptr, L"Rasterizer State ìƒì„± ì‹¤íŒ¨", L"Device ì´ˆê¸°í™” ì‹¤íŒ¨", MB_OK);
 		return E_FAIL;
 	}
 
 	if (FAILED(CreateDepthStencilState()))
 	{
-		MessageBox(nullptr, L"DepthStencil State »ı¼º ½ÇÆĞ", L"Device ÃÊ±âÈ­ ½ÇÆĞ", MB_OK);
+		MessageBox(nullptr, L"DepthStencil State ìƒì„± ì‹¤íŒ¨", L"Device ì´ˆê¸°í™” ì‹¤íŒ¨", MB_OK);
 		return E_FAIL;
 	}
 
 
 	if (FAILED(CreateBlendState()))
 	{
-		MessageBox(nullptr, L"Blend State »ı¼º ½ÇÆĞ", L"Device ÃÊ±âÈ­ ½ÇÆĞ", MB_OK);
+		MessageBox(nullptr, L"Blend State ìƒì„± ì‹¤íŒ¨", L"Device ì´ˆê¸°í™” ì‹¤íŒ¨", MB_OK);
 		return E_FAIL;
 	}
 	
 	if (FAILED(CreateSamplerState()))
 	{
-		MessageBox(nullptr, L"Sampler State »ı¼º ½ÇÆĞ", L"Device ÃÊ±âÈ­ ½ÇÆĞ", MB_OK);
+		MessageBox(nullptr, L"Sampler State ìƒì„± ì‹¤íŒ¨", L"Device ì´ˆê¸°í™” ì‹¤íŒ¨", MB_OK);
 		return E_FAIL;
 	}
 
 
-	// ViewPort ¼³Á¤
+	// ViewPort ì„¤ì •
 	D3D11_VIEWPORT ViewportDesc = {};
 
 	ViewportDesc.MinDepth = 0;
@@ -96,7 +96,7 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 
 	if (FAILED(CreateConstBuffer()))
 	{
-		MessageBox(nullptr, L"»ó¼ö¹öÆÛ »ı¼º ½ÇÆĞ", L"Device ÃÊ±âÈ­ ½ÇÆĞ", MB_OK);
+		MessageBox(nullptr, L"ìƒìˆ˜ë²„í¼ ìƒì„± ì‹¤íŒ¨", L"Device ì´ˆê¸°í™” ì‹¤íŒ¨", MB_OK);
 		return E_FAIL;
 	}
 
@@ -117,10 +117,10 @@ void CDevice::Present()
 
 int CDevice::CreateSwapChain()
 {
-	// SwapChain »ı¼º ±¸Á¶Ã¼
+	// SwapChain ìƒì„± êµ¬ì¡°ì²´
 	DXGI_SWAP_CHAIN_DESC tDesc = {};
 
-	// SwapChain ÀÌ °ü¸®ÇÏ´Â Buffer(RenderTarget) ÀÇ ±¸¼º Á¤º¸
+	// SwapChain ì´ ê´€ë¦¬í•˜ëŠ” Buffer(RenderTarget) ì˜ êµ¬ì„± ì •ë³´
 	tDesc.BufferCount = 1;
 	tDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	tDesc.BufferDesc.Width = (UINT)m_vRenderResolution.x;
@@ -135,11 +135,11 @@ int CDevice::CreateSwapChain()
 	tDesc.SampleDesc.Count = 1;
 	tDesc.SampleDesc.Quality = 0;
 
-	tDesc.Windowed = true; // Ã¢¸ğµå
-	tDesc.OutputWindow = m_hRenderWnd; // SwapChain ÀÇ Ãâ·Â À©µµ¿ì ÁöÁ¤
+	tDesc.Windowed = true; // ì°½ëª¨ë“œ
+	tDesc.OutputWindow = m_hRenderWnd; // SwapChain ì˜ ì¶œë ¥ ìœˆë„ìš° ì§€ì •
 	
 
-	// ½ºÆÃ¼ÀÎ »ı¼º±â´ÉÀ» °¡Áö°í ÀÖ´Â Factory ¿¡ Á¢±ÙÇÑ´Ù.
+	// ìŠ¤ì™šì²´ì¸ ìƒì„±ê¸°ëŠ¥ì„ ê°€ì§€ê³  ìˆëŠ” Factory ì— ì ‘ê·¼í•œë‹¤.
 	ComPtr<IDXGIDevice>		pIdxgiDevice = nullptr;
 	ComPtr<IDXGIAdapter>	pAdapter = nullptr;
 	ComPtr<IDXGIFactory>	pFactory = nullptr;
@@ -148,13 +148,13 @@ int CDevice::CreateSwapChain()
 	pIdxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**)pAdapter.GetAddressOf());
 	pAdapter->GetParent(__uuidof(IDXGIFactory), (void**)pFactory.GetAddressOf());
 
-	// SwapChain »ı¼º
+	// SwapChain ìƒì„±
 	if (FAILED(pFactory->CreateSwapChain(m_Device.Get(), &tDesc, m_SwapChain.GetAddressOf())))
 	{
 		return E_FAIL;
 	}
 
-	// Àü¿ª µ¥ÀÌÅÍ¿¡ ·»´õ¸µ ÇØ»óµµ ±â·Ï
+	// ì „ì—­ ë°ì´í„°ì— ë Œë”ë§ í•´ìƒë„ ê¸°ë¡
 	g_global.g_RenderResolution = m_vRenderResolution;
 	
 	return S_OK;
@@ -162,18 +162,14 @@ int CDevice::CreateSwapChain()
 
 int CDevice::CreateTargetView()
 {
-	/*ID3D11Resource;
-	ID3D11Buffer;
-	ID3D11Texture2D;*/
-
-	// ·»´õÅ¸°Ù ÅØ½ºÃÄ¸¦ ½ºÆÃ¼ÀÎÀ¸·ÎºÎÅÍ ¾ò¾î¿Â´Ù.
+	// ë Œë”íƒ€ê²Ÿ í…ìŠ¤ì³ë¥¼ ìŠ¤ì™šì²´ì¸ìœ¼ë¡œë¶€í„° ì–»ì–´ì˜¨ë‹¤.
 	ComPtr<ID3D11Texture2D> tex2D;
 	m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)tex2D.GetAddressOf());
 
-	// RenderTargetTexture ¸¦ AssetMgr ¿¡ µî·Ï
+	// RenderTargetTexture ë¥¼ AssetMgr ì— ë“±ë¡
 	m_RTTex = CAssetMgr::GetInst()->CreateTexture(L"RenderTargetTex", tex2D);
 
-	// DepthStencilTexture »ı¼º
+	// DepthStencilTexture ìƒì„±
 	m_DSTex = CAssetMgr::GetInst()->CreateTexture( L"DepthStencilTex"
 												  , (UINT)m_vRenderResolution.x
 												  , (UINT)m_vRenderResolution.y

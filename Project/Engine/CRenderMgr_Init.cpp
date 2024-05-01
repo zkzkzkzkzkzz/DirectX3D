@@ -9,6 +9,7 @@
 #include "CMeshRender.h"
 
 #include "CStructuredBuffer.h"
+#include "CMRT.h"
 
 void CRenderMgr::init()
 {
@@ -37,6 +38,24 @@ void CRenderMgr::init()
 	m_vecNoiseTex[2]->UpdateData(14);
 	m_vecNoiseTex[2]->UpdateData_CS_SRV(14);
 	g_global.g_NoiseTexResolution = Vec2(m_vecNoiseTex[2]->GetWidth(), m_vecNoiseTex[2]->GetHeight());
+
+	// MRT Create
+	CreateMRT();
+}
+
+
+void CRenderMgr::CreateMRT()
+{
+	// =============
+	// SwapChain MRT
+	// =============
+	{
+		Ptr<CTexture> RTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+		Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
+
+		m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN] = new CMRT;
+		m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->Create(&RTTex, 1, DSTex);
+	}
 }
 
 void CRenderMgr::CopyRenderTargetToPostProcessTarget()

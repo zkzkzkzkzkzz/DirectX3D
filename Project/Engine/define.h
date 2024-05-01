@@ -260,3 +260,14 @@ enum class LEVEL_STATE
 	STOP,
 	NONE,
 };
+
+
+enum class MRT_TYPE
+{
+	SWAPCHAIN,		// RT 1, DS 1
+	DEFERRED,		// RT 5, DS 0
+	LIGHT,			// RT 3, DS 0
+	SHADOW_DEPTH,	// RT 1, DS 1
+
+	END,
+};
