@@ -98,7 +98,7 @@ void CEngine::DebugFunctionCheck()
 
 void CEngine::TestFunction()
 {
-	if (KEY_TAP(KEY::Y)) {
-		CRandomMgr::GetInst()->Test();
-	}
+	//if (KEY_TAP(KEY::Y)) {
+	//	CRandomMgr::GetInst()->Test();
+	//}
 }
