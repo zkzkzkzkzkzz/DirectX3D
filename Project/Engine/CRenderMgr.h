@@ -74,6 +74,7 @@ public:
 
 private:
     void CreateMRT();
+    void ClearMRT();
 
     void render_play();
     void render_editor();

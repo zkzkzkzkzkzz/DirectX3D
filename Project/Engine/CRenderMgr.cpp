@@ -42,16 +42,21 @@ CRenderMgr::~CRenderMgr()
 void CRenderMgr::tick()
 {
 	// 렌더타겟 및 깊이 타겟 설정
-	m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
-
-	CDevice::GetInst()->ClearRenderTarget(m_vClearColor);
-
+	ClearMRT();
 	UpdateData();
+
+	m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
 
 	(this->*m_RenderFunc)();
 	render_debug();
 
 	Clear();
+}
+
+void CRenderMgr::ClearMRT()
+{
+	m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->Clear();
+	m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->ClearRT();
 }
 
 void CRenderMgr::render_play()
