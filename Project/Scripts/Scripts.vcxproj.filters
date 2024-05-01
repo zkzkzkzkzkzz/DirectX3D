@@ -24,7 +24,7 @@
     </ClInclude>
     <ClInclude Include="CTimeMgrScript.h">
       <Filter>Scripts</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="strAnim.h">
       <Filter>Default\GenString</Filter>
     </ClInclude>
@@ -48,6 +48,9 @@
     </ClInclude>
     <ClInclude Include="strTxt.h">
       <Filter>Default\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraMoveScript.h">
+      <Filter>Scripts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +76,9 @@
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CTimeMgrScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraMoveScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>

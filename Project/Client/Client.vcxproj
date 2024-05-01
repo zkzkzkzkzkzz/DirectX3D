@@ -157,7 +157,6 @@
     <ClInclude Include="Animator2DUI.h" />
     <ClInclude Include="AssetUI.h" />
     <ClInclude Include="CameraUI.h" />
-    <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CCreateTempLevel.h" />
     <ClInclude Include="CEditorObjMgr.h" />
     <ClInclude Include="CGameObjectEx.h" />
@@ -206,7 +205,6 @@
     <ClCompile Include="Animator2DUI.cpp" />
     <ClCompile Include="AssetUI.cpp" />
     <ClCompile Include="CameraUI.cpp" />
-    <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCreateTempLevel.cpp" />
     <ClCompile Include="CEditorObjMgr.cpp" />
     <ClCompile Include="CGameObjectEx.cpp" />
