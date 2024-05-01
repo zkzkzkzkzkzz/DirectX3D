@@ -45,9 +45,13 @@ void ScriptUI::render_update()
 		case SCRIPT_PARAM::VEC3:
 			break;
 		case SCRIPT_PARAM::VEC4:
+			ParamUI::Param_VEC4((Vec4*)vecParam[i].pData, vecParam[i].Desc);
 			break;
 		case SCRIPT_PARAM::OBJECT:
-			break;		
+			break;
+		case SCRIPT_PARAM::COLOR:
+			ParamUI::Param_COLOR((Vec4*)vecParam[i].pData, vecParam[i].Desc);
+			break;
 		}		
 	}
 }

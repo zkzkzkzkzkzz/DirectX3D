@@ -18,6 +18,7 @@ CRenderMgr::CRenderMgr()
 	, m_DebugPosition(true)
 	, m_EditorCam(nullptr)
 	, m_RenderFunc(nullptr)
+	, m_vClearColor(Vec4(0.f, 0.f, 0.f, 1.f))
 {
 	m_RenderFunc = &CRenderMgr::render_play;
 }
@@ -41,8 +42,7 @@ void CRenderMgr::tick()
 	Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 	CONTEXT->OMSetRenderTargets(1, pRTTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
 
-	Vec4 vClearColor = Vec4(0.f, 0.f, 0.f, 1.f);
-	CDevice::GetInst()->ClearRenderTarget(vClearColor);
+	CDevice::GetInst()->ClearRenderTarget(m_vClearColor);
 
 	UpdateData();
 
@@ -72,6 +72,9 @@ void CRenderMgr::render_editor()
 
 void CRenderMgr::render_debug()
 {
+	if (m_vecCam.empty())
+		return;
+
 	//레벨이 플레이상태일경우(랜더Func가 render_play 일 경우)
 	if (&CRenderMgr::render_play == m_RenderFunc)
 	{

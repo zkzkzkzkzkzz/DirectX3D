@@ -49,6 +49,9 @@
     <ClInclude Include="strTxt.h">
       <Filter>Default\GenString</Filter>
     </ClInclude>
+    <ClInclude Include="CRenderMgrScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -73,6 +76,9 @@
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CTimeMgrScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderMgrScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>

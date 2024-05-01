@@ -1,8 +1,14 @@
 #pragma once
 
-
+#include <vector>
 class CGameObject;
 class CAsset;
+#include <Magic_Enum/magic_enum_all.hpp>
+
+string ToString(const wstring& _str);
+wstring ToWString(const string& _str);
+string ToString(const std::string_view& _sv);
+wstring ToWString(const std::string_view& _sv);
 
 namespace GamePlayStatic
 {
@@ -26,7 +32,46 @@ namespace GamePlayStatic
 	void DrawDebugCube(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
 
 	void DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
+	
+	class COLOR
+	{
+		// 유지보수 1/4 .Enum추가
+		enum class DEFAULT_COLOR
+		{
+			WHITE,
+			BLACK,
+			RED,
+			GREEN,
+			BLUE,
+			YELLOW,
+			MAZENTA,
+			END,
+		};
 
+		// 유지보수 2/4 . 컬러변수 추가
+		static const Vec4 WHITE;
+		static const Vec4 BLACK;
+		static const Vec4 RED;
+		static const Vec4 GREEN;
+		static const Vec4 BLUE;
+		static const Vec4 YELLOW;
+		static const Vec4 MAZENTA;
+
+	public:
+		// 유지보수 3/4 . 컬러변수 맵핑
+		static vector<std::pair<string, Vec4>> GetColors()
+		{
+			return
+			{
+				{ToString(magic_enum::enum_name(DEFAULT_COLOR::WHITE))	   , WHITE    }
+				, {ToString(magic_enum::enum_name(DEFAULT_COLOR::BLACK))   , BLACK    }
+				, {ToString(magic_enum::enum_name(DEFAULT_COLOR::RED))	   , RED      }
+				, {ToString(magic_enum::enum_name(DEFAULT_COLOR::GREEN))   , GREEN    }
+				, {ToString(magic_enum::enum_name(DEFAULT_COLOR::YELLOW))  , YELLOW   }
+				, {ToString(magic_enum::enum_name(DEFAULT_COLOR::MAZENTA)) , MAZENTA  }
+			};
+		}
+	};
 }
 
 namespace Utils
@@ -68,7 +113,6 @@ wstring ToWString(const std::string_view& _sv);
 
 void SaveWString(const wstring& _str, FILE* _File);
 void LoadWString(wstring& _str, FILE* _FILE);
-
 
 template<typename T>
 class Ptr;
