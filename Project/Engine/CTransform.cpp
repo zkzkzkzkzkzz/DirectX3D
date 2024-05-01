@@ -76,9 +76,6 @@ void CTransform::finaltick()
 			m_arrWorldDir[i].Normalize();
 		}
 	}
-
-	// 월드 뷰 행렬이 계산된 카메라 시점에서의 pos 값 세팅
-	m_vWorldViewPos = TransformByWorldView(GetWorldPos());
 }
 
 void CTransform::UpdateData()
@@ -126,26 +123,4 @@ void CTransform::LoadFromFile(FILE* _File)
 	fread(&m_vRelativeScale, sizeof(Vec3), 1, _File);
 	fread(&m_vRealtiveRotation, sizeof(Vec3), 1, _File);
 	fread(&m_bAbsolute, sizeof(bool), 1, _File);
-}
-
-Vec3 CTransform::TransformByWorldView(const Vec3& _vWorldpos)
-{
-	// 인자로 전달된 월드 위치 사용
-	XMFLOAT3 worldPos = _vWorldpos;
-
-	// 월드 뷰 행렬 가져오기
-	Matrix matWorldView = GetWorldViewMatrix();
-
-	// 타입 변환 (Vec -> Float)
-	XMVECTOR worldPosVec = XMLoadFloat3(&worldPos);
-	XMMATRIX worldViewMat = XMLoadFloat4x4(&matWorldView);
-
-	XMVECTOR transformedPosVec = XMVector3TransformCoord(worldPosVec, worldViewMat);
-
-	// 결과를 Vec3로 변환
-	Vec3 transformedPos;
-	XMStoreFloat3(&transformedPos, transformedPosVec);
-
-	// 변환된 위치 반환
-	return transformedPos;
 }

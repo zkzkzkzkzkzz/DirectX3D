@@ -45,13 +45,10 @@ public:
     Vec3 GetWorldDir(DIR_TYPE _type) const { return m_arrWorldDir[(UINT)_type]; }
 
     Matrix GetWorldViewMatrix() { return g_Transform.matWV; }
-    Vec3 GetWorldViewPos() const { return m_vWorldViewPos; }
+    Vec3 GetWorldViewPos() const { return g_Transform.matWV.Translation(); }
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
-
-private:
-    Vec3 TransformByWorldView(const Vec3& _vWorldpos);
 
 public:
     CLONE(CTransform);
