@@ -47,7 +47,7 @@ void CSkyBox::UpdateData()
 	}
 	else if (SKYBOX_TYPE::CUBE == m_SkyBoxType)
 	{
-		GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_CubeTex);
+		GetMaterial()->SetTexParam(TEX_PARAM::TEXCUBE_0, m_CubeTex);
 	}
 
 	GetMaterial()->UpdateData();
