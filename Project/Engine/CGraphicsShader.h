@@ -5,7 +5,9 @@
 struct tScalarParam
 {
     SCALAR_PARAM    Type;
-    string          Desc;
+    string          Desc;   
+    bool            View;
+    string          Tooltip;
 };
 
 struct tTexParam
@@ -47,7 +49,7 @@ private:
     // Shader Domain
     SHADER_DOMAIN                   m_Domain;
 
-    // Shader ∆ƒ∂ÛπÃ≈Õ ∏Ò∑œ
+    // Shader ÌååÎùºÎØ∏ÌÑ∞ Î™©Î°ù
     vector<tScalarParam>            m_ScalarParam;
     vector<tTexParam>               m_TexParam;
 
@@ -69,7 +71,10 @@ public:
     SHADER_DOMAIN GetDomain() { return m_Domain; }
 
 
-    void AddScalarParam(SCALAR_PARAM _Param, const string& _Desc) { m_ScalarParam.push_back(tScalarParam{ _Param , _Desc });}
+    void AddScalarParam(SCALAR_PARAM _Param, const string& _Desc, bool _View = false, const string& _Tooltip = {})
+    {
+        m_ScalarParam.push_back(tScalarParam{ _Param , _Desc, _View, _Tooltip });
+    }
     void AddTexParam(TEX_PARAM _Param, const string& _Desc){ m_TexParam.push_back(tTexParam{ _Param , _Desc });}
     const vector<tScalarParam>& GetScalarParam() { return  m_ScalarParam; }
     const vector<tTexParam>& GetTexParam() { return m_TexParam; }

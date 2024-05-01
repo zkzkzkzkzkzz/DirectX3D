@@ -56,14 +56,18 @@ void CMaterial::SetScalarParam(SCALAR_PARAM _ParamType, const T& _Value)
 
 	switch (_ParamType)
 	{
+	case SCALAR_PARAM::BOOL_0:
+	case SCALAR_PARAM::BOOL_1:
+	case SCALAR_PARAM::BOOL_2:
+	case SCALAR_PARAM::BOOL_3:
+		m_Const.bArr[(UINT)_ParamType] = *((bool*)pValue);
+		break;
+
 	case SCALAR_PARAM::INT_0:
 	case SCALAR_PARAM::INT_1:
 	case SCALAR_PARAM::INT_2:
 	case SCALAR_PARAM::INT_3:
-	/*	if constexpr (std::is_same_v<T, int>) {
-
-		}*/
-		m_Const.iArr[(UINT)_ParamType] = *((int*)pValue);
+		m_Const.iArr[(UINT)_ParamType - (UINT)SCALAR_PARAM::INT_0] = *((int*)pValue);
 		break;
 
 	case SCALAR_PARAM::FLOAT_0:
