@@ -45,11 +45,11 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
 
 	if (FAILED(CDevice::GetInst()->init(m_hMainWnd, m_vResolution)))
 	{
-		MessageBox(nullptr, L"Device ÃÊ±âÈ­ ½ÇÆĞ", L"ÃÊ±âÈ­ ½ÇÆĞ", MB_OK);
+		MessageBox(nullptr, L"Device ì´ˆê¸°í™” ì‹¤íŒ¨", L"ì´ˆê¸°í™” ì‹¤íŒ¨", MB_OK);
 		return E_FAIL;
 	}
 	
-	// Manager ÃÊ±âÈ­
+	// Manager ì´ˆê¸°í™”
 	CPathMgr::init();
 	CTimeMgr::GetInst()->init();
 	CKeyMgr::GetInst()->init();
@@ -81,6 +81,8 @@ void CEngine::progress()
 	CTaskMgr::GetInst()->tick();	
 
 	DebugFunctionCheck();
+
+	TestFunction();
 }
 
 
@@ -90,4 +92,13 @@ void CEngine::DebugFunctionCheck()
 	{
 		CRenderMgr::GetInst()->IsDebugPosition() ? CRenderMgr::GetInst()->SetDebugPosition(false) : CRenderMgr::GetInst()->SetDebugPosition(true);		
 	}
+}
+
+#include "CRandomMgr.h"
+
+void CEngine::TestFunction()
+{
+	//if (KEY_TAP(KEY::Y)) {
+	//	CRandomMgr::GetInst()->Test();
+	//}
 }

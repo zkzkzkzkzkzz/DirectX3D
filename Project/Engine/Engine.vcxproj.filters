@@ -172,6 +172,9 @@
     <ClInclude Include="CSkyBox.h">
       <Filter>08. Component\RenderComponent\04. SkyBox</Filter>
     </ClInclude>
+    <ClInclude Include="CRandomMgr.h">
+      <Filter>04. Manager\RandomMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -334,6 +337,9 @@
     <ClCompile Include="struct.cpp" />
     <ClCompile Include="CSkyBox.cpp">
       <Filter>08. Component\RenderComponent\04. SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="CRandomMgr.cpp">
+      <Filter>04. Manager\RandomMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -507,6 +513,9 @@
     </Filter>
     <Filter Include="08. Component\RenderComponent\04. SkyBox">
       <UniqueIdentifier>{5af869a4-c07e-4398-8a9a-c9a0916d4e36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\RandomMgr">
+      <UniqueIdentifier>{479dd5d3-11a6-4a40-9970-b9f715046232}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
