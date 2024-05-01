@@ -304,7 +304,7 @@ string Utils::GetLineUntilString(ifstream& fin, const std::initializer_list<stri
 	}
 	wstr.pop_back();
 	wstr.pop_back();
-	MessageBox(nullptr, wstr.c_str(), L"ÆÄÀÏ ÀÐ±â ½ÇÆÐ", 0);
+	MessageBox(nullptr, wstr.c_str(), L"íŒŒì¼ ì½ê¸° ì‹¤íŒ¨", 0);
 	return string();
 }
 
@@ -320,7 +320,7 @@ string Utils::GetLineUntilString(ifstream& fin, const string& str)
 	}
 
 	wstring wstr = ToWString(str);
-	MessageBox(nullptr, wstr.c_str(), L"ÆÄÀÏ ÀÐ±â ½ÇÆÐ", 0);
+	MessageBox(nullptr, wstr.c_str(), L"íŒŒì¼ ì½ê¸° ì‹¤íŒ¨", 0);
 	return string();
 }
 
@@ -343,6 +343,6 @@ string Utils::GetLineUntilString(ifstream& fin, const std::initializer_list<cons
 	}
 	wstr.pop_back();
 	wstr.pop_back();
-	MessageBox(nullptr, wstr.c_str(), L"ÆÄÀÏ ÀÐ±â ½ÇÆÐ", 0);
+	MessageBox(nullptr, wstr.c_str(), L"íŒŒì¼ ì½ê¸° ì‹¤íŒ¨", 0);
 	return string();
 }

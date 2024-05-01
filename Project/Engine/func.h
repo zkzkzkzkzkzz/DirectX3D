@@ -32,31 +32,31 @@ namespace GamePlayStatic
 namespace Utils
 {
 	/// <summary>
-	/// °æ·ÎÀÇ ¸ðµç ÆÄÀÏÀÇ È®ÀåÀÚ¸¦ Æ÷ÇÔÇÑ ÆÄÀÏ ÀÌ¸§À» ÃßÃâÇØÁÝ´Ï´Ù. ÇÏÀ§ Æú´õµµ Æ÷ÇÔµË´Ï´Ù.
+	/// ê²½ë¡œì˜ ëª¨ë“  íŒŒì¼ì˜ í™•ìž¥ìžë¥¼ í¬í•¨í•œ íŒŒì¼ ì´ë¦„ì„ ì¶”ì¶œí•´ì¤ë‹ˆë‹¤. í•˜ìœ„ í´ë”ë„ í¬í•¨ë©ë‹ˆë‹¤.
 	/// </summary>
 	void LoadAllFileNames(const wstring& _path, vector<string>& vec);
 
 	/// <summary>
-	/// °æ·ÎÀÇ ¸ðµç ÆÄÀÏÀÇ °æ·Î¸¦ ÃßÃâÇØÁÝ´Ï´Ù. ÇÏÀ§Æú´õµµ Æ÷ÇÔµË´Ï´Ù.
+	/// ê²½ë¡œì˜ ëª¨ë“  íŒŒì¼ì˜ ê²½ë¡œë¥¼ ì¶”ì¶œí•´ì¤ë‹ˆë‹¤. í•˜ìœ„í´ë”ë„ í¬í•¨ë©ë‹ˆë‹¤.
 	/// </summary>
 	void LoadAllFilePaths(const wstring& _path, vector<string>& vec);
 	/// <summary>
-	/// °æ·Î¸¦ °®°í ÀÖ´Â ÆÄÀÏµéÀ» °æ·Î¸¦ Á¦¿ÜÇÏ°í ÃßÃâÇØÁÝ´Ï´Ù. ÇØ´ç °æ·Î¸¦ °®°íÀÖÁö ¾Ê´Â´Ù¸é Á¦¿Ü½ÃÅµ´Ï´Ù.
+	/// ê²½ë¡œë¥¼ ê°–ê³  ìžˆëŠ” íŒŒì¼ë“¤ì„ ê²½ë¡œë¥¼ ì œì™¸í•˜ê³  ì¶”ì¶œí•´ì¤ë‹ˆë‹¤. í•´ë‹¹ ê²½ë¡œë¥¼ ê°–ê³ ìžˆì§€ ì•ŠëŠ”ë‹¤ë©´ ì œì™¸ì‹œí‚µë‹ˆë‹¤.
 	/// </summary>
 	void SlicePath(const wstring& _path, vector<string>& vec);
 
 	/// <summary>
-	/// ¿øÇÏ´Â ¹®ÀÚ¿­Áß ÇÏ³ª°¡ ³ª¿Ã ¶§ ±îÁö ÆÄÀÏÀ» ³¡±îÁö ÀÐ°í ¼º°ø½Ã ÀÐÀº ¹®ÀÚ¿­À» ¹ÝÈ¯ÇÕ´Ï´Ù. ¸®µù ½ÇÆÐ½Ã ¸Þ½ÃÁö¸¦ ¶ç¿ó´Ï´Ù.
+	/// ì›í•˜ëŠ” ë¬¸ìžì—´ì¤‘ í•˜ë‚˜ê°€ ë‚˜ì˜¬ ë•Œ ê¹Œì§€ íŒŒì¼ì„ ëê¹Œì§€ ì½ê³  ì„±ê³µì‹œ ì½ì€ ë¬¸ìžì—´ì„ ë°˜í™˜í•©ë‹ˆë‹¤. ë¦¬ë”© ì‹¤íŒ¨ì‹œ ë©”ì‹œì§€ë¥¼ ë„ì›ë‹ˆë‹¤.
 	/// </summary>
 	string GetLineUntilString(ifstream& fin, const std::initializer_list<string>& strings);
 
 	/// <summary>
-	/// ¿øÇÏ´Â ¹®ÀÚ¿­Áß ÇÏ³ª°¡ ³ª¿Ã ¶§ ±îÁö ÆÄÀÏÀ» ³¡±îÁö ÀÐ°í ¼º°ø½Ã ÀÐÀº ¹®ÀÚ¿­À» ¹ÝÈ¯ÇÕ´Ï´Ù. ¸®µù ½ÇÆÐ½Ã ¸Þ½ÃÁö¸¦ ¶ç¿ó´Ï´Ù.
+	/// ì›í•˜ëŠ” ë¬¸ìžì—´ì¤‘ í•˜ë‚˜ê°€ ë‚˜ì˜¬ ë•Œ ê¹Œì§€ íŒŒì¼ì„ ëê¹Œì§€ ì½ê³  ì„±ê³µì‹œ ì½ì€ ë¬¸ìžì—´ì„ ë°˜í™˜í•©ë‹ˆë‹¤. ë¦¬ë”© ì‹¤íŒ¨ì‹œ ë©”ì‹œì§€ë¥¼ ë„ì›ë‹ˆë‹¤.
 	/// </summary>
 	string GetLineUntilString(ifstream& fin, const string& strings);
 
 	/// <summary>
-	/// ¿øÇÏ´Â ¹®ÀÚ¿­Áß ÇÏ³ª°¡ ³ª¿Ã ¶§ ±îÁö ÆÄÀÏÀ» ³¡±îÁö ÀÐ°í ¼º°ø½Ã ÀÐÀº ¹®ÀÚ¿­À» ¹ÝÈ¯ÇÕ´Ï´Ù. ¸®µù ½ÇÆÐ½Ã ¸Þ½ÃÁö¸¦ ¶ç¿ó´Ï´Ù.
+	/// ì›í•˜ëŠ” ë¬¸ìžì—´ì¤‘ í•˜ë‚˜ê°€ ë‚˜ì˜¬ ë•Œ ê¹Œì§€ íŒŒì¼ì„ ëê¹Œì§€ ì½ê³  ì„±ê³µì‹œ ì½ì€ ë¬¸ìžì—´ì„ ë°˜í™˜í•©ë‹ˆë‹¤. ë¦¬ë”© ì‹¤íŒ¨ì‹œ ë©”ì‹œì§€ë¥¼ ë„ì›ë‹ˆë‹¤.
 	/// </summary>
 	string GetLineUntilString(ifstream& fin, const std::initializer_list<const char*> strings);
 }
