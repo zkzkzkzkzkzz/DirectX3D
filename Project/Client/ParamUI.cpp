@@ -153,6 +153,40 @@ bool ParamUI::Param_VEC2(Vec2* _Data, const string& _Desc, bool _View, const str
 	return false;
 }
 
+bool ParamUI::Param_VEC3(Vec3* _Data, const string& _Desc, bool _View, const string& _Tooltip)
+{
+	ImGui::Text(_Desc.c_str());
+	ImGui::SameLine();
+
+	char szID[256] = {};
+	sprintf_s(szID, "##Vec4%d", g_ID++);
+
+	if (_View)
+	{
+		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
+		{
+			ImGui::SetTooltip(_Tooltip.c_str());
+		}
+		if (ImGui::DragFloat3(szID, *_Data, 0.f, 0.f, 0.f, "%.1f", ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
+		{
+			return true;
+		}
+	}
+	else
+	{
+		if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !_Tooltip.empty())
+		{
+			ImGui::SetTooltip(_Tooltip.c_str());
+		}
+		if (ImGui::DragFloat3(szID, *_Data, 0.1f, 0.f, 0.f, "%.1f"))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool ParamUI::Param_VEC4(Vec4* _Data, const string& _Desc, bool _View, const string& _Tooltip)
 {
 	ImGui::Text(_Desc.c_str());

@@ -50,6 +50,7 @@ void ScriptUI::render_update()
 			ParamUI::Param_VEC2((Vec2*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::VEC3:
+			ParamUI::Param_VEC3((Vec3*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::VEC4:
 			ParamUI::Param_VEC4((Vec4*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
