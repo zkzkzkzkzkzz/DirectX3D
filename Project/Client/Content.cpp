@@ -135,7 +135,7 @@ void Content::ReloadContent()
 			// 메모리에 로딩된 에셋의 원본파일이, content 폴더 내에서 삭제된 경우
 			// 실제 로딩되어있는 에셋도 삭제시켜서 sync 를 맞춘다.
 			wstring strFilePath = strContentPath + pair.second->GetRelativePath();			
-			if (!exists(strFilePath))
+			if (!std::experimental::filesystem::exists(strFilePath))
 			{
 				MessageBox(nullptr, L"원본파일이 삭제되었습니다.", L"Asset 싱크", MB_OK);
 
@@ -199,7 +199,7 @@ void Content::FindFileName(const wstring& _Directory)
 	FindClose(hFindHandle);
 }
 
-ASSET_TYPE Content::GetAssetTypeByExt(const path& _relativePath)
+ASSET_TYPE Content::GetAssetTypeByExt(const std::experimental::filesystem::path& _relativePath)
 {
 	if (_relativePath.extension() == L".mesh")
 		return ASSET_TYPE::MESH;

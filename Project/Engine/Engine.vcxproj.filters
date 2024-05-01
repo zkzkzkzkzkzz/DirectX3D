@@ -330,6 +330,8 @@
     <ClCompile Include="CLight3D.cpp">
       <Filter>08. Component\07. Light3D</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleMath.cpp" />
+    <ClCompile Include="struct.cpp" />
     <ClCompile Include="CSkyBox.cpp">
       <Filter>08. Component\RenderComponent\04. SkyBox</Filter>
     </ClCompile>
