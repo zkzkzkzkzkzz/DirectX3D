@@ -4,20 +4,16 @@
 
 class CConstBuffer;
 
-// Directx11 ±âÁØ GPU Á¦¾î
+// Directx11 ê¸°ì¤€ GPU ì œì–´
 class CDevice
 	: public CSingleton<CDevice>
 {
 	SINGLE(CDevice);
 private:
-	ComPtr<ID3D11Device>			m_Device;	// GPU ¸Ş¸ğ¸® °ü¸®, °´Ã¼ »ı¼º
-	ComPtr<ID3D11DeviceContext>		m_Context;	// GPU ·»´õ¸µ ¸í·É 
+	ComPtr<ID3D11Device>			m_Device;	// GPU ë©”ëª¨ë¦¬ ê´€ë¦¬, ê°ì²´ ìƒì„±
+	ComPtr<ID3D11DeviceContext>		m_Context;	// GPU ë Œë”ë§ ëª…ë ¹ 
 
-	ComPtr<IDXGISwapChain>			m_SwapChain; // ½ºÆÃ¼ÀÎ(Ãâ·Â ¹öÆÛ ÁöÁ¤)
-
-	// OM(OutputMergeState)
-	Ptr<CTexture>					m_RTTex;
-	Ptr<CTexture>					m_DSTex;
+	ComPtr<IDXGISwapChain>			m_SwapChain; // ìŠ¤ì™šì²´ì¸(ì¶œë ¥ ë²„í¼ ì§€ì •)
 
 	HWND							m_hRenderWnd;
 	Vec2							m_vRenderResolution;
@@ -32,7 +28,6 @@ private:
 
 public:
 	int init(HWND _hWnd, Vec2 _vResolution);
-	void ClearRenderTarget(float(&Color)[4]);
 	void Present();
 
 	ID3D11Device* GetDevice() { return m_Device.Get(); }

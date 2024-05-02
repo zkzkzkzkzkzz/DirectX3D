@@ -21,7 +21,7 @@ void SoundUI::render_update()
     Ptr<CSound> pSound = (CSound*)GetAsset().Get();
     string strPath = string(pSound->GetRelativePath().begin(), pSound->GetRelativePath().end());
         
-    strPath = path(strPath).filename().generic_string();
+    strPath = std::experimental::filesystem::path(strPath).filename().generic_string();
 
     ImGui::Text("Sound");
     ImGui::SameLine();

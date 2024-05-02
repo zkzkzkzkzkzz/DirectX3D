@@ -5,14 +5,15 @@ class CEngine
 {
 	SINGLE(CEngine);
 private:
-	HWND		m_hMainWnd;		// ¸ŞÀÎ À©µµ¿ì ÇÚµé
-	Vec2		m_vResolution;	// ÇØ»óµµ Á¤º¸
+	HWND		m_hMainWnd;		// ë©”ì¸ ìœˆë„ìš° í•¸ë“¤
+	Vec2		m_vResolution;	// í•´ìƒë„ ì •ë³´
 
 public:
 	HWND GetMainWind() { return m_hMainWnd; }
 
 private:
 	void DebugFunctionCheck();
+	void TestFunction();
 
 public:
 	int init(HWND _hWnd, Vec2 _vResolution);

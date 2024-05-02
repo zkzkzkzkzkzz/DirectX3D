@@ -33,21 +33,36 @@ CCamera::~CCamera()
 {
 }
 
+struct CmpAscending
+{
+	bool operator() (CGameObject* _First, CGameObject* _Second)
+	{
+		return _First->Transform()->GetWorldViewPos().z < _Second->Transform()->GetWorldViewPos().z;
+	}
+};
+
+struct CmpDescending
+{
+	bool operator() (CGameObject* _First, CGameObject* _Second)
+	{
+		return _First->Transform()->GetWorldViewPos().z > _Second->Transform()->GetWorldViewPos().z;
+	}
+};
 
 void CCamera::begin()
 {
-	// Ä«¸Ş¶ó¸¦ ¿ì¼±¼øÀ§°ª¿¡ ¸Â°Ô RenderMgr ¿¡ µî·Ï½ÃÅ´
+	// ì¹´ë©”ë¼ë¥¼ ìš°ì„ ìˆœìœ„ê°’ì— ë§ê²Œ RenderMgr ì— ë“±ë¡ì‹œí‚´
 	CRenderMgr::GetInst()->RegisterCamera(this, m_CameraPriority);
 }
 
 void CCamera::finaltick()
 {
-	// ºä Çà·ÄÀ» °è»êÇÑ´Ù.
-	// Ä«¸Ş¶ó¸¦ ¿øÁ¡À¸·Î ÀÌµ¿½ÃÅ°´Â ÀÌµ¿ Çà·Ä
+	// ë·° í–‰ë ¬ì„ ê³„ì‚°í•œë‹¤.
+	// ì¹´ë©”ë¼ë¥¼ ì›ì ìœ¼ë¡œ ì´ë™ì‹œí‚¤ëŠ” ì´ë™ í–‰ë ¬
 	Vec3 vCamPos = Transform()->GetRelativePos();
 	Matrix matTrans = XMMatrixTranslation(-vCamPos.x, -vCamPos.y, -vCamPos.z);
 
-	// Ä«¸Ş¶óÀÇ °¢ ¿ì, »ó, Àü ¹æ ¹æÇâÀ» ±âÀúÃàÀÌ¶û ÀÏÄ¡½ÃÅ°µµ·Ï È¸ÀüÇÏ´Â È¸ÀüÇà·Ä
+	// ì¹´ë©”ë¼ì˜ ê° ìš°, ìƒ, ì „ ë°© ë°©í–¥ì„ ê¸°ì €ì¶•ì´ë‘ ì¼ì¹˜ì‹œí‚¤ë„ë¡ íšŒì „í•˜ëŠ” íšŒì „í–‰ë ¬
 	Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
 	Vec3 vUp	= Transform()->GetWorldDir(DIR_TYPE::UP);
 	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
@@ -57,22 +72,22 @@ void CCamera::finaltick()
 	matRotate._21 = vRight.y; matRotate._22 = vUp.y; matRotate._23 = vFront.y;
 	matRotate._31 = vRight.z; matRotate._32 = vUp.z; matRotate._33 = vFront.z;
 
-	// ÀÌµ¿ x È¸Àü = view Çà·Ä
+	// ì´ë™ x íšŒì „ = view í–‰ë ¬
 	m_matView = matTrans * matRotate;
 
 
-	// Åõ¿µ ¹æ½Ä¿¡ µû¸¥ Åõ¿µ Çà·ÄÀ» °è»êÇÑ´Ù.
+	// íˆ¬ì˜ ë°©ì‹ì— ë”°ë¥¸ íˆ¬ì˜ í–‰ë ¬ì„ ê³„ì‚°í•œë‹¤.
 	m_matProj = XMMatrixIdentity();
 
 	if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
 	{
-		// Á÷±³Åõ¿µ
+		// ì§êµíˆ¬ì˜
 		Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
 		m_matProj = XMMatrixOrthographicLH(vResol.x * m_Scale, (vResol.x / m_AspectRatio) * m_Scale, 1.f, m_Far);
 	}
 	else
 	{
-		// ¿ø±ÙÅõ¿µ
+		// ì›ê·¼íˆ¬ì˜
 		m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_AspectRatio, 1.f, m_Far);
 	}
 
@@ -116,7 +131,7 @@ void CCamera::SortObject()
 
 	for (int i = 0; i < (UINT)LAYER::LAYER_MAX; ++i)
 	{
-		// Ä«¸Ş¶ó°¡ Âïµµ·Ï ¼³Á¤µÈ Layer °¡ ¾Æ´Ï¸é ¹«½Ã
+		// ì¹´ë©”ë¼ê°€ ì°ë„ë¡ ì„¤ì •ëœ Layer ê°€ ì•„ë‹ˆë©´ ë¬´ì‹œ
 		if (false == (m_LayerCheck & (1 << i)))
 			continue;
 
@@ -124,7 +139,7 @@ void CCamera::SortObject()
 		const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
 		for (size_t j = 0; j < vecObjects.size(); ++j)
 		{
-			// ¸Ş½¬, ÀçÁú, ½¦ÀÌ´õ È®ÀÎ
+			// ë©”ì‰¬, ì¬ì§ˆ, ì‰ì´ë” í™•ì¸
 			if (!( vecObjects[j]->GetRenderComopnent()
 				&& vecObjects[j]->GetRenderComopnent()->GetMesh().Get()
 				&& vecObjects[j]->GetRenderComopnent()->GetMaterial().Get()
@@ -141,7 +156,7 @@ void CCamera::SortObject()
 				m_vecOpaque.push_back(vecObjects[j]);
 				break;
 			case SHADER_DOMAIN::DOMAIN_MASKED:
-				m_vecMaked.push_back(vecObjects[j]);
+				m_vecMasked.push_back(vecObjects[j]);
 				break;
 			case SHADER_DOMAIN::DOMAIN_TRANSPARENT:
 				m_vecTransparent.push_back(vecObjects[j]);
@@ -154,20 +169,26 @@ void CCamera::SortObject()
 			}
 		}
 	}
+
+	// Depth Sort
+	std::sort(m_vecOpaque.begin(), m_vecOpaque.end(), CmpAscending());
+	std::sort(m_vecMasked.begin(), m_vecMasked.end(), CmpAscending());
+	std::sort(m_vecTransparent.begin(), m_vecTransparent.end(), CmpDescending());
+
 }
 
 void CCamera::render()
 {
-	// °è»êÇÑ view Çà·Ä°ú proj Çà·ÄÀ» Àü¿ªº¯¼ö¿¡ ´ã¾ÆµĞ´Ù.
+	// ê³„ì‚°í•œ view í–‰ë ¬ê³¼ proj í–‰ë ¬ì„ ì „ì—­ë³€ìˆ˜ì— ë‹´ì•„ë‘”ë‹¤.
 	g_Transform.matView = m_matView;
 	g_Transform.matProj = m_matProj;
 
-	// Domain ¼ø¼­´ë·Î ·»´õ¸µ
+	// Domain ìˆœì„œëŒ€ë¡œ ë Œë”ë§
 	render(m_vecOpaque);	
-	render(m_vecMaked);
+	render(m_vecMasked);
 	render(m_vecTransparent);
 
-	// ÈÄÃ³¸® ÀÛ¾÷
+	// í›„ì²˜ë¦¬ ì‘ì—…
 	render_postprocess();
 }
 
@@ -184,14 +205,14 @@ void CCamera::render_postprocess()
 {
 	for (size_t i = 0; i < m_vecPostProcess.size(); ++i)
 	{
-		// ÃÖÁ¾ ·»´õ¸µ ÀÌ¹ÌÁö¸¦ ÈÄÃ³¸® Å¸°Ù¿¡ º¹»ç
+		// ìµœì¢… ë Œë”ë§ ì´ë¯¸ì§€ë¥¼ í›„ì²˜ë¦¬ íƒ€ê²Ÿì— ë³µì‚¬
 		CRenderMgr::GetInst()->CopyRenderTargetToPostProcessTarget();
 
-		// º¹»ç¹ŞÀº ÈÄÃ³¸® ÅØ½ºÃÄ¸¦ t13 ·¹Áö½ºÅÍ¿¡ ¹ÙÀÎµù
+		// ë³µì‚¬ë°›ì€ í›„ì²˜ë¦¬ í…ìŠ¤ì³ë¥¼ t13 ë ˆì§€ìŠ¤í„°ì— ë°”ì¸ë”©
 		Ptr<CTexture> pPostProcessTex = CRenderMgr::GetInst()->GetPostProcessTex();
 		pPostProcessTex->UpdateData(13);
 
-		// ÈÄÃ³¸® ¿ÀºêÁ§Æ® ·»´õ¸µ
+		// í›„ì²˜ë¦¬ ì˜¤ë¸Œì íŠ¸ ë Œë”ë§
 		m_vecPostProcess[i]->render();
 	}
 
@@ -210,6 +231,43 @@ void CCamera::SaveToFile(FILE* _File)
 	fwrite(&m_CameraPriority, sizeof(int), 1, _File);
 }
 
+#define TagProjType "[ProjType]"
+#define TagFOV "[FOV]"
+#define TagWidth "[Width]"
+#define TagScale "[Scale]"
+#define TagAspectRatio "[AspectRatio]"
+#define TagFar "[Far]"
+#define TagLayerCheck "[LayerCheck]"
+#define TagPriority "[Priority]"
+
+void CCamera::SaveToFile(ofstream& fout)
+{
+	fout << TagProjType << endl;
+	auto str = magic_enum::enum_name((PROJ_TYPE)m_ProjType);
+	fout << ToString(str) << endl;
+
+	fout << TagFOV << endl;
+	fout << m_FOV << endl;
+
+	fout << TagWidth << endl;
+	fout << m_Width << endl;
+
+	fout << TagScale << endl;
+	fout << m_Scale << endl;
+
+	fout << TagAspectRatio << endl;
+	fout << m_AspectRatio << endl;
+
+	fout << TagFar << endl;
+	fout << m_Far << endl;
+
+	fout << TagLayerCheck << endl;
+	fout << m_LayerCheck << endl;
+
+	fout << TagPriority << endl;
+	fout << m_CameraPriority << endl;
+}
+
 void CCamera::LoadFromFile(FILE* _File)
 {
 	fread(&m_ProjType, sizeof(PROJ_TYPE), 1, _File);
@@ -220,4 +278,33 @@ void CCamera::LoadFromFile(FILE* _File)
 	fread(&m_Far, sizeof(float), 1, _File);
 	fread(&m_LayerCheck, sizeof(UINT), 1, _File);
 	fread(&m_CameraPriority, sizeof(int), 1, _File);
+}
+
+void CCamera::LoadFromFile(ifstream& fin)
+{
+	string str;
+	Utils::GetLineUntilString(fin, TagProjType);
+	getline(fin, str);
+	m_ProjType = magic_enum::enum_cast<PROJ_TYPE>(str).value();
+
+	Utils::GetLineUntilString(fin, TagFOV);
+	fin >> m_FOV;
+
+	Utils::GetLineUntilString(fin, TagWidth);
+	fin >> m_Width;
+
+	Utils::GetLineUntilString(fin, TagScale);
+	fin >> m_Scale;
+
+	Utils::GetLineUntilString(fin, TagAspectRatio);
+	fin >> m_AspectRatio;
+
+	Utils::GetLineUntilString(fin, TagFar);
+	fin >> m_Far;
+
+	Utils::GetLineUntilString(fin, TagLayerCheck);
+	fin >> m_LayerCheck;
+
+	Utils::GetLineUntilString(fin, TagPriority);
+	fin >> m_CameraPriority;
 }

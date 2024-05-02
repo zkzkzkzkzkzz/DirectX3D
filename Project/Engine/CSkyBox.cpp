@@ -39,13 +39,15 @@ void CSkyBox::UpdateData()
 {
 	Transform()->UpdateData();
 
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, (int)m_SkyBoxType);
+
 	if (SKYBOX_TYPE::SPHERE == m_SkyBoxType)
 	{
 		GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_SphereTex);
 	}
 	else if (SKYBOX_TYPE::CUBE == m_SkyBoxType)
 	{
-		GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_CubeTex);
+		GetMaterial()->SetTexParam(TEX_PARAM::TEXCUBE_0, m_CubeTex);
 	}
 
 	GetMaterial()->UpdateData();

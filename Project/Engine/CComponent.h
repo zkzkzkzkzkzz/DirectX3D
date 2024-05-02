@@ -38,7 +38,9 @@ public:
 
 
     virtual void SaveToFile(FILE* _File) = 0;
+    virtual void SaveToFile(ofstream& fout) = 0;
     virtual void LoadFromFile(FILE* _File) = 0;
+    virtual void LoadFromFile(ifstream& fin) = 0;
 
     virtual CComponent* Clone() = 0;
 public:

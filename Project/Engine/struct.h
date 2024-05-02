@@ -1,16 +1,16 @@
 #pragma once
 
 
-// 3Â÷¿ø °ø°£¿¡ ¹èÄ¡µÇ´Â Á¤Á¡
+// 3ì°¨ì› ê³µê°„ì— ë°°ì¹˜ë˜ëŠ” ì •ì 
 struct Vtx
 {
-	Vec3 vPos;		 // Á¤Á¡ÀÇ ÁÂÇ¥	
-	Vec4 vColor;	 // Á¤Á¡ÀÇ »ö»ó Á¤º¸
-	Vec2 vUV;		 // UV ÁÂÇ¥°è or Texture Coodinate
+	Vec3 vPos;		 // ì •ì ì˜ ì¢Œí‘œ	
+	Vec4 vColor;	 // ì •ì ì˜ ìƒ‰ìƒ ì •ë³´
+	Vec2 vUV;		 // UV ì¢Œí‘œê³„ or Texture Coodinate
 
-	Vec3 vTangent;	// Á¢¼± º¤ÅÍ
-	Vec3 vNormal;	// ¹ı¼± º¤ÅÍ
-	Vec3 vBinormal;	// Á¾¹ı¼± º¤ÅÍ
+	Vec3 vTangent;	// ì ‘ì„  ë²¡í„°
+	Vec3 vNormal;	// ë²•ì„  ë²¡í„°
+	Vec3 vBinormal;	// ì¢…ë²•ì„  ë²¡í„°
 };
 
 struct tDebugShapeInfo
@@ -31,18 +31,21 @@ struct tDebugShapeInfo
 
 struct tLightInfo
 {
-	Vec4	vColor;		// ºûÀÇ »ö»ó	- ±¤¿øÀÇ ¼ø¼ö »ö»ó
-	Vec4	vSpecular;	// ¹İ»ç±¤	- ±¤¿øÀÌ ¹°Ã¼ Ç¥º¯¿¡ ¹İ»çµÈ »ö»ó
-	Vec4	vAmbient;	// È¯°æ±¤(ÁÖº¯±¤) - ±¤¿ø¿¡ ÀÇÇØ¼­ º¸ÀåµÇ´Â ÃÖ¼ÒÇÑÀÇ ºû
+	Vec4	vColor;		// ë¹›ì˜ ìƒ‰ìƒ	- ê´‘ì›ì˜ ìˆœìˆ˜ ìƒ‰ìƒ
+	Vec4	vSpecular;	// ë°˜ì‚¬ê´‘	- ê´‘ì›ì´ ë¬¼ì²´ í‘œë³€ì— ë°˜ì‚¬ëœ ìƒ‰ìƒ
+	Vec4	vAmbient;	// í™˜ê²½ê´‘(ì£¼ë³€ê´‘) - ê´‘ì›ì— ì˜í•´ì„œ ë³´ì¥ë˜ëŠ” ìµœì†Œí•œì˜ ë¹›
 
-	Vec3	vWorldPos;	// ±¤¿øÀÇ À§Ä¡
-	Vec3	vWorldDir;	// ±¤¿øÀÌ ÇâÇÏ´Â ¹æÇâ
-	float	fRadius;	// ±¤¿øÀÇ ¿µÇâ ¹İ°æ, °Å¸® Á¤º¸
-	float	fAngle;		// ±¤¿øÀÇ ¹üÀ§ °¢µµ
+	Vec3	vWorldPos;	// ê´‘ì›ì˜ ìœ„ì¹˜
+	Vec3	vWorldDir;	// ê´‘ì›ì´ í–¥í•˜ëŠ” ë°©í–¥
+	float	fRadius;	// ê´‘ì›ì˜ ì˜í–¥ ë°˜ê²½, ê±°ë¦¬ ì •ë³´
+	float	fAngle;		// ê´‘ì›ì˜ ë²”ìœ„ ê°ë„
 
-	int		LightType;	// ±¤¿ø Å¸ÀÔ
+	int		LightType;	// ê´‘ì› íƒ€ì…
 
 	Vec3	vPadding;
+
+	friend ofstream& operator<<(ofstream& fout, const tLightInfo& info);
+	friend ifstream& operator>>(ifstream& fin, tLightInfo& info);
 };
 
 struct tPixel
@@ -52,47 +55,47 @@ struct tPixel
 
 struct tParticle
 {
-	Vec4	vLocalPos;		// ·ÎÄÃ À§Ä¡
-	Vec4	vWorldPos;		// Àªµå À§Ä¡
-	Vec4	vWorldInitScale;// ÃÊ±â Å©±â
-	Vec4	vWorldScale;	// Å©±â
-	Vec4	vWorldRotation;	// È¸Àü°ª
-	Vec3	vVelocity;		// ¼Óµµ
-	Vec4	vColor;			// »ö»ó
-	Vec4	vForce;			// ÀÔÀÚ¿¡ Àû¿ëµÈ ´©Àû Èû ÃÑ·®
-	Vec3	vNoiseForce;	// NoiseForce ¸ğµâ·Î ÀÎÇÑ ·£´ı Èû
-	float	NoiseForceTime;	// NoiseForce ¸¦ ¼¼ÆÃ¹ŞÀº ½Ã°£
+	Vec4	vLocalPos;		// ë¡œì»¬ ìœ„ì¹˜
+	Vec4	vWorldPos;		// ìœŒë“œ ìœ„ì¹˜
+	Vec4	vWorldInitScale;// ì´ˆê¸° í¬ê¸°
+	Vec4	vWorldScale;	// í¬ê¸°
+	Vec4	vWorldRotation;	// íšŒì „ê°’
+	Vec3	vVelocity;		// ì†ë„
+	Vec4	vColor;			// ìƒ‰ìƒ
+	Vec4	vForce;			// ì…ìì— ì ìš©ëœ ëˆ„ì  í˜ ì´ëŸ‰
+	Vec3	vNoiseForce;	// NoiseForce ëª¨ë“ˆë¡œ ì¸í•œ ëœë¤ í˜
+	float	NoiseForceTime;	// NoiseForce ë¥¼ ì„¸íŒ…ë°›ì€ ì‹œê°„
 
-	float	NormalizeAge;	// Age ¸¦ Life ±âÁØÀ¸·Î Á¤±ÔÈ­ÇÑ °ª
-	float	Mass;			// Áú·®
-	float	Age;			// ÇöÀç ³ªÀÌ
-	float	Life;			// ¼ö¸í
-	int		Active;			// È°¼ºÈ­, ºñÈ°¼ºÈ­ ¿©ºÎ
+	float	NormalizeAge;	// Age ë¥¼ Life ê¸°ì¤€ìœ¼ë¡œ ì •ê·œí™”í•œ ê°’
+	float	Mass;			// ì§ˆëŸ‰
+	float	Age;			// í˜„ì¬ ë‚˜ì´
+	float	Life;			// ìˆ˜ëª…
+	int		Active;			// í™œì„±í™”, ë¹„í™œì„±í™” ì—¬ë¶€
 };
 
 struct tParticleModule
 {
-	// Sapwn ¸ğµâ
-	Vec4	vSpawnColor;	// ÃÊ±â ÄÃ·¯
-	Vec4	vSpawnMinScale;	// ÃÊ±â ÃÖ¼Ò Å©±â
-	Vec4	vSpawnMaxScale;	// ÃÊ±â ÃÖ´ë Å©±â	
+	// Sapwn ëª¨ë“ˆ
+	Vec4	vSpawnColor;	// ì´ˆê¸° ì»¬ëŸ¬
+	Vec4	vSpawnMinScale;	// ì´ˆê¸° ìµœì†Œ í¬ê¸°
+	Vec4	vSpawnMaxScale;	// ì´ˆê¸° ìµœëŒ€ í¬ê¸°	
 
-	float	MinLife;		// ÃÖ¼Ò ¼ö¸í
-	float	MaxLife;		// ÃÖ´ë ¼ö¸í
-	float	MinMass;		// ÃÖ¼Ò Áú·®
-	float	MaxMass;		// ÃÖ´ë Áú·®
-	int		SpawnRate;		// ÃÊ´ç »ı¼º °³¼ö
-	int		SpaceType;		// ÁÂÇ¥°è(0 : LocalSpace, 1 : WorldSpace)
-	int		SpawnShape;		// ½ºÆù ¹üÀ§(0 : Sphere, 1 : Box)
-	float	Radius;			// SpawnShape °¡ Sphere ÀÎ °æ¿ì, ¹İÁö¸§ ±æÀÌ
-	Vec4	vSpawnBoxScale;	// SpawnShape °¡ Box ÀÎ °æ¿ì, Box ÀÇ Å©±â
+	float	MinLife;		// ìµœì†Œ ìˆ˜ëª…
+	float	MaxLife;		// ìµœëŒ€ ìˆ˜ëª…
+	float	MinMass;		// ìµœì†Œ ì§ˆëŸ‰
+	float	MaxMass;		// ìµœëŒ€ ì§ˆëŸ‰
+	int		SpawnRate;		// ì´ˆë‹¹ ìƒì„± ê°œìˆ˜
+	int		SpaceType;		// ì¢Œí‘œê³„(0 : LocalSpace, 1 : WorldSpace)
+	int		SpawnShape;		// ìŠ¤í° ë²”ìœ„(0 : Sphere, 1 : Box)
+	float	Radius;			// SpawnShape ê°€ Sphere ì¸ ê²½ìš°, ë°˜ì§€ë¦„ ê¸¸ì´
+	Vec4	vSpawnBoxScale;	// SpawnShape ê°€ Box ì¸ ê²½ìš°, Box ì˜ í¬ê¸°
 
 	// Add Velocity
 	int		AddVelocityType;// 0 : From Center, 1: To Center, 2: Fix Direction
 	float	MinSpeed;
 	float	MaxSpeed;	
-	float	FixedAngle;		// ÇØ´ç ¹æÇâ¿¡¼­ ·£´ı¹üÀ§ °¢µµ
-	Vec4	FixedDirection;	// ÁöÁ¤ ¹æÇâ
+	float	FixedAngle;		// í•´ë‹¹ ë°©í–¥ì—ì„œ ëœë¤ë²”ìœ„ ê°ë„
+	Vec4	FixedDirection;	// ì§€ì • ë°©í–¥
 
 	// Scale
 	Vec4	vScaleRatio;
@@ -102,7 +105,7 @@ struct tParticleModule
 	float	NoiseForceTerm;
 
 	// Drag
-	float	DragTime;	// °¨¼Ó½ÃÅ°´Âµ¥ °É¸®´Â ½Ã°£
+	float	DragTime;	// ê°ì†ì‹œí‚¤ëŠ”ë° ê±¸ë¦¬ëŠ” ì‹œê°„
 
 	// Render
 	int		VelocityAlignment;  // 1 : On, 0 : Off
@@ -111,6 +114,9 @@ struct tParticleModule
 
 	// Module On / Off
 	int arrModuleCheck[(UINT)PARTICLE_MODULE::END];
+
+	friend ofstream& operator<< (ofstream& fout, const tParticleModule& module);
+	friend ifstream& operator>>(ifstream& fin, tParticleModule& module);
 };
 
 struct tSpawnCount
@@ -121,7 +127,7 @@ struct tSpawnCount
 
 
 // ==================
-// »ó¼ö¹öÆÛ ´ëÀÀ ±¸Á¶Ã¼
+// ìƒìˆ˜ë²„í¼ ëŒ€ì‘ êµ¬ì¡°ì²´
 // ==================
 struct tTransform
 {
@@ -141,6 +147,7 @@ extern tTransform g_Transform;
 
 struct tMtrlConst
 {
+	int bArr[4];
 	int iArr[4];
 	float fArr[4];
 	Vec2 v2Arr[4];
@@ -148,6 +155,9 @@ struct tMtrlConst
 	Matrix matArr[4];
 	int	bTex[(UINT)TEX_PARAM::END];
 	int iPadding[2];
+
+	friend ofstream& operator<<(ofstream& fout, const tMtrlConst& _mtrlConst);
+	friend ifstream& operator>>(ifstream& fin, tMtrlConst& _mtrlConst);
 };
 
 struct tAnimData2D
@@ -162,11 +172,11 @@ struct tAnimData2D
 
 struct tGlobalData
 {
-	Vec2	g_RenderResolution;	// ·»´õ¸µ ÇØ»óµµ
+	Vec2	g_RenderResolution;	// ë Œë”ë§ í•´ìƒë„
 	Vec2	g_NoiseTexResolution;
 	float	g_dt;				// Delta Time
-	float	g_time;				// ´©Àû ½Ã°£
-	int		g_Light2DCount;		// 2D ±¤¿ø °³¼ö
-	int		g_Light3DCount;		// 3D ±¤¿ø °³¼ö	
+	float	g_time;				// ëˆ„ì  ì‹œê°„
+	int		g_Light2DCount;		// 2D ê´‘ì› ê°œìˆ˜
+	int		g_Light3DCount;		// 3D ê´‘ì› ê°œìˆ˜	
 };
 extern tGlobalData g_global;

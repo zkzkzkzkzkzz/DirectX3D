@@ -32,7 +32,10 @@ public:
     virtual void finaltick() override;
 
     virtual void SaveToFile(FILE* _File) override;
+    virtual void SaveToFile(ofstream& fout) {};
     virtual void LoadFromFile(FILE* _File) override;
+    virtual void LoadFromFile(ifstream& fin) {};
+
 public:
     CLONE(CStateMachine);
     CStateMachine();

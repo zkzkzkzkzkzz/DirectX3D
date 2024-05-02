@@ -8,24 +8,36 @@
 #define DEVICE CDevice::GetInst()->GetDevice()
 #define CONTEXT CDevice::GetInst()->GetContext()
 
-#define KEY_CHECK(Key, State) CKeyMgr::GetInst()->GetKeyState(Key) == State
 #define DT	CTimeMgr::GetInst()->GetDeltaTime()
 #define DTd	CTimeMgr::GetInst()->GetDeltaTime_d()
 
 #define DT_ENGINE	CTimeMgr::GetInst()->GetEngineDeltaTime()
 #define DTd_ENGINE	CTimeMgr::GetInst()->GetEngineDeltaTime_d()
 
+#define KEY_CHECK(Key, State, Focus) (CKeyMgr::GetInst()->GetKeyState(Key) == State) && (CKeyMgr::GetInst()->GetFocusState() == Focus)
 
-#define KEY_TAP(Key) KEY_CHECK(Key, TAP)
-#define KEY_PRESSED(Key) KEY_CHECK(Key, PRESSED)
-#define KEY_RELEASED(Key) KEY_CHECK(Key, RELEASED)
-#define KEY_NONE(Key) KEY_CHECK(Key, NONE)
+#define KEY_TAP(Key)				KEY_CHECK(Key, TAP, FOCUS_STATE::MAIN)
+#define KEY_PRESSED(Key)			KEY_CHECK(Key, PRESSED, FOCUS_STATE::MAIN)
+#define KEY_RELEASED(Key)			KEY_CHECK(Key, RELEASED, FOCUS_STATE::MAIN)
+#define KEY_NONE(Key)				KEY_CHECK(Key, NONE, FOCUS_STATE::MAIN)
+
+#define KEY_TAP_EDITOR(Key)			KEY_CHECK(Key, TAP, FOCUS_STATE::OTHER)
+#define KEY_PRESSED_EDITOR(Key)		KEY_CHECK(Key, PRESSED, FOCUS_STATE::OTHER)
+#define KEY_RELEASED_EDITOR(Key)	KEY_CHECK(Key, RELEASED, FOCUS_STATE::OTHER)
+#define KEY_NONE_EDITOR(Key)		KEY_CHECK(Key, NONE, FOCUS_STATE::OTHER)
+
 
 //#define LAYER_MAX 32
 
 #define CLONE(TYPE) virtual TYPE* Clone() { return new TYPE(*this); }
 #define CLONE_DISABLE(TYPE) TYPE* Clone() { return nullptr; assert(nullptr); }\
 							TYPE(const TYPE& _OriginBuffer) = delete;
+
+#define ExtensionAnim ".anim"
+#define ExtensionLevel ".lv"
+#define ExtensionPref ".pref"
+#define ExtensionMtrl ".mtrl"
+#define ExtensionFSM ".fsm"
 
 enum class LAYER
 {
@@ -154,6 +166,11 @@ enum class BS_TYPE
 // ScalarParam
 enum class SCALAR_PARAM
 {
+	BOOL_0,
+	BOOL_1,
+	BOOL_2,
+	BOOL_3,
+
 	INT_0,
 	INT_1,
 	INT_2,
@@ -200,6 +217,7 @@ enum class TEX_PARAM
 
 enum class SCRIPT_PARAM
 {
+	BOOL,
 	INT,
 	FLOAT,
 	VEC2,
@@ -259,4 +277,21 @@ enum class LEVEL_STATE
 	PAUSE,
 	STOP,
 	NONE,
+};
+
+enum class FOCUS_STATE
+{
+	OTHER,
+	MAIN,
+	NONE,
+};
+
+enum class MRT_TYPE
+{
+	SWAPCHAIN,		// RT 1, DS 1
+	DEFERRED,		// RT 5, DS 0
+	LIGHT,			// RT 3, DS 0
+	SHADOW_DEPTH,	// RT 1, DS 1
+
+	END,
 };
