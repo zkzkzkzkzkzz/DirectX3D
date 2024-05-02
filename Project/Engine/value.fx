@@ -5,7 +5,7 @@
 
 #define PI 3.1415926535f
 
-// 4096 Å©±âÁ¦ÇÑ
+// 4096 í¬ê¸°ì œí•œ
 cbuffer TRANSFORM : register(b0)
 {
     row_major Matrix g_matWorld;
@@ -23,6 +23,11 @@ cbuffer TRANSFORM : register(b0)
 
 cbuffer MATERIAL_CONST : register(b1)
 {
+    bool g_bool_0;
+    bool g_bool_1;
+    bool g_bool_2;
+    bool g_bool_3;
+    
     int g_int_0;
     int g_int_1;
     int g_int_2;
@@ -72,12 +77,12 @@ cbuffer ANIM_DATA2D : register(b2)
 
 cbuffer GLOBAL_DATA : register(b3)
 {
-    float2  g_RenderResolution; // ·»´õ¸µ ÇØ»óµµ
-    float2 g_NoiseTexResolution; // Noise ÅØ½ºÃÄ ÇØ»óµµ
+    float2  g_RenderResolution; // ë Œë”ë§ í•´ìƒë„
+    float2 g_NoiseTexResolution; // Noise í…ìŠ¤ì³ í•´ìƒë„
     float   g_dt;               // Delta Time
-    float   g_time;             // ´©Àû ½Ã°£
-    int     g_Light2DCount;     // 2D ±¤¿ø °³¼ö
-    int     g_Light3DCount;     // 3D ±¤¿ø °³¼ö
+    float   g_time;             // ëˆ„ì  ì‹œê°„
+    int     g_Light2DCount;     // 2D ê´‘ì› ê°œìˆ˜
+    int     g_Light3DCount;     // 3D ê´‘ì› ê°œìˆ˜
     float2  globalpadding;
 }
 

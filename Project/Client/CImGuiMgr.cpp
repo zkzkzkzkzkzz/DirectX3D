@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "CImGuiMgr.h"
 
+#include <Engine/CEngine.h>
+#include <Engine/define.h>
+
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
 #include <Engine/CGameObject.h>
@@ -19,6 +22,8 @@
 
 #include "ParamUI.h"
 
+bool CImGuiMgr::isViewportFocused;
+
 CImGuiMgr::CImGuiMgr()
     : m_bDemoUI(true)
     , m_hNotify(nullptr)
@@ -36,14 +41,14 @@ CImGuiMgr::~CImGuiMgr()
     // UI 
     Delete_Map(m_mapUI);
 
-    // µð·ºÅÍ¸® º¯°æ °¨½Ã Á¾·á
+    // ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     FindCloseChangeNotification(m_hNotify);
 }
 
 void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device
     , ComPtr<ID3D11DeviceContext> _Context)
 {
-    // ImGui ÃÊ±âÈ­
+    // ImGui ï¿½Ê±ï¿½È­
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -94,7 +99,7 @@ void CImGuiMgr::init(HWND _hMainWnd, ComPtr<ID3D11Device> _Device
 
     create_ui();
 
-    // Content Æú´õ °¨½Ã
+    // Content ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     wstring strContentPath = CPathMgr::GetContentPath();
     m_hNotify = FindFirstChangeNotification(strContentPath.c_str(), true
                                         , FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME 
@@ -108,6 +113,47 @@ void CImGuiMgr::progress()
     render();
 
     observe_content();
+}
+
+FOCUS_STATE CImGuiMgr::GetFocus_debug()
+{
+    // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, 
+    // 1. ï¿½Ö¼ï¿½ Ç®ï¿½ï¿½ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½
+    // 2. "ï¿½ï¿½ï¿½ï¿½Æ® UI ï¿½ï¿½ tick()"ï¿½ï¿½
+    //      CImGuiMgr::isViewportFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_None); ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
+
+    if (GetFocus() == CEngine::GetInst()->GetMainWind())
+    {
+        if (isViewportFocused)
+        {
+            return FOCUS_STATE::MAIN;
+        }
+        else
+        {
+            return FOCUS_STATE::MAIN;   // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½
+            //return FOCUS_STATE::OTHER;// ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½
+        }
+    }
+    else  if (ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
+    {
+        return FOCUS_STATE::OTHER;
+    }
+    else
+    {
+        return FOCUS_STATE::NONE;
+    }
+}
+
+FOCUS_STATE CImGuiMgr::GetFocus_release()
+{
+    if (GetFocus() == CEngine::GetInst()->GetMainWind())
+    {
+        return FOCUS_STATE::MAIN;
+    }
+    else
+    {
+        return FOCUS_STATE::NONE;
+    }
 }
 
 void CImGuiMgr::tick()
@@ -196,14 +242,14 @@ void CImGuiMgr::create_ui()
 
 void CImGuiMgr::observe_content()
 {
-    // WaitForSingleObject ¸¦ ÀÌ¿ëÇØ¼­ ¾Ë¸²ÀÌ ÀÖ´ÂÁö È®ÀÎ,
-    // ´ë±â½Ã°£Àº 0·Î ¼³Á¤ÇØ¼­ ¾Ë¸²ÀÌ ÀÖ´ø ¾ø´ø ¹Ù·Î ¹ÝÈ¯
+    // WaitForSingleObject ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ø¼ï¿½ ï¿½Ë¸ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½,
+    // ï¿½ï¿½ï¿½Ã°ï¿½ï¿½ï¿½ 0ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½Ë¸ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù·ï¿½ ï¿½ï¿½È¯
     if (WAIT_OBJECT_0 == WaitForSingleObject(m_hNotify, 0))
     {
-        // ´Ù½Ã ¾Ë¸² È°¼ºÈ­
+        // ï¿½Ù½ï¿½ ï¿½Ë¸ï¿½ È°ï¿½ï¿½È­
         FindNextChangeNotification(m_hNotify);
 
-        // ContentUI ¿¡ Reload ÀÛ¾÷ ¼öÇà
+        // ContentUI ï¿½ï¿½ Reload ï¿½Û¾ï¿½ ï¿½ï¿½ï¿½ï¿½
         Content* pContentUI = (Content*)FindUI("##Content");
         pContentUI->ReloadContent();
     }

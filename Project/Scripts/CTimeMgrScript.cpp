@@ -9,7 +9,7 @@
 
 CTimeMgrScript::CTimeMgrScript()
 	: CScript((UINT)SCRIPT_TYPE::TIMEMGRSCRIPT)
-	, m_DTLock(false)
+	, m_DTLock(0)
 	, m_DTScale(1.f)
 {
 
@@ -21,8 +21,8 @@ CTimeMgrScript::~CTimeMgrScript()
 
 void CTimeMgrScript::begin()
 {
-	AddScriptParam(SCRIPT_PARAM::INT, "[bool] DeltaTime Lock", &m_DTLock);
-	AddScriptParam(SCRIPT_PARAM::FLOAT, "[float] DeltaTime Scale", &m_DTScale);
+	AppendScriptParam("DeltaTime Lock", SCRIPT_PARAM::INT, &m_DTLock);
+	AppendScriptParam("DeltaTime Scale", SCRIPT_PARAM::FLOAT, &m_DTScale);
 }
 
 void CTimeMgrScript::tick()

@@ -13,7 +13,7 @@ CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
 	, m_Speed(500.f)
 {
-	AddScriptParam(SCRIPT_PARAM::FLOAT, "Player Speed", &m_Speed);
+	AppendScriptParam("Player Speed", SCRIPT_PARAM::FLOAT, &m_Speed);
 }
 
 CPlayerScript::~CPlayerScript()

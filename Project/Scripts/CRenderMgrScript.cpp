@@ -17,7 +17,7 @@ CRenderMgrScript::~CRenderMgrScript()
 
 void CRenderMgrScript::begin()
 {
-	AddScriptParam(SCRIPT_PARAM::COLOR, "Clear Color", &(RENDERMGR->m_vClearColor) );
+	AppendScriptParam("Clear Color", SCRIPT_PARAM::COLOR, &(RENDERMGR->m_vClearColor));
 }
 
 void CRenderMgrScript::tick()
