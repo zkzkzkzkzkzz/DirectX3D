@@ -22,7 +22,7 @@ void MaterialUI::render_update()
 {
 	AssetUI::render_update();
 
-    // ÇØ´ç ÅØ½ºÃÄ ÀÌ¹ÌÁö Ãâ·Â
+    // í•´ë‹¹ í…ìŠ¤ì³ ì´ë¯¸ì§€ ì¶œë ¥
     Ptr<CMaterial> pMtrl = (CMaterial*)GetAsset().Get();
     string strPath = string(pMtrl->GetRelativePath().begin(), pMtrl->GetRelativePath().end());
 
@@ -55,35 +55,41 @@ void MaterialUI::render_update()
     {
         switch (vecScalarParam[i].Type)
         {
+        case SCALAR_PARAM::BOOL_0:
+        case SCALAR_PARAM::BOOL_1:
+        case SCALAR_PARAM::BOOL_2:
+        case SCALAR_PARAM::BOOL_3:
+            ParamUI::Param_BOOL((bool*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].View, vecScalarParam[i].Tooltip);
+            break;
         case SCALAR_PARAM::INT_0:
         case SCALAR_PARAM::INT_1:
         case SCALAR_PARAM::INT_2:
         case SCALAR_PARAM::INT_3:                   
-            ParamUI::Param_INT((int*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc);
+            ParamUI::Param_INT((int*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, (int)vecScalarParam[i].min, (int)vecScalarParam[i].Max,vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::FLOAT_0:
         case SCALAR_PARAM::FLOAT_1:
         case SCALAR_PARAM::FLOAT_2:
         case SCALAR_PARAM::FLOAT_3:
-            ParamUI::Param_FLOAT((float*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc);
+            ParamUI::Param_FLOAT((float*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].min, vecScalarParam[i].Max, vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::VEC2_0:
         case SCALAR_PARAM::VEC2_1:
         case SCALAR_PARAM::VEC2_2:
         case SCALAR_PARAM::VEC2_3:
-            ParamUI::Param_VEC2((Vec2*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc);
+            ParamUI::Param_VEC2((Vec2*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].min, vecScalarParam[i].Max,  vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::VEC4_0:
         case SCALAR_PARAM::VEC4_1:
         case SCALAR_PARAM::VEC4_2:
         case SCALAR_PARAM::VEC4_3:
-            ParamUI::Param_VEC4((Vec4*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc);
+            ParamUI::Param_VEC4((Vec4*)pMtrl->GetScalarParam(vecScalarParam[i].Type), vecScalarParam[i].Desc, vecScalarParam[i].min, vecScalarParam[i].Max,  vecScalarParam[i].View, vecScalarParam[i].Tooltip);
             break;
         case SCALAR_PARAM::MAT_0:
         case SCALAR_PARAM::MAT_1:
         case SCALAR_PARAM::MAT_2:
         case SCALAR_PARAM::MAT_3:
-            break;        
+            break;
         }        
     }
 
@@ -93,7 +99,7 @@ void MaterialUI::render_update()
         Ptr<CTexture> pTex = pMtrl->GetTexParam(vecTexParam[i].Type);      
         if (ParamUI::Param_TEXTURE(pTex, vecTexParam[i].Desc, this, (Delegate_1)&MaterialUI::SelectTexture))
         {           
-            // ¸®½ºÆ® ¹öÆ°À» ´­·¶´Ù¸é
+            // ë¦¬ìŠ¤íŠ¸ ë²„íŠ¼ì„ ëˆŒë €ë‹¤ë©´
             m_SelectTexParam = vecTexParam[i].Type;
         }
         pMtrl->SetTexParam(vecTexParam[i].Type, pTex);

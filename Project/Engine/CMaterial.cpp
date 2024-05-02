@@ -27,7 +27,6 @@ void CMaterial::UpdateData()
 	if (nullptr == m_pShader.Get())
 		return;
 	
-	// »ç¿ëÇÒ ½¦ÀÌ´õ ¹ÙÀÎµù
 	m_pShader->UpdateData();	
 
 	// Texture Update(Register Binding)
@@ -45,7 +44,6 @@ void CMaterial::UpdateData()
 		}
 	}
 
-	// »ó¼ö µ¥ÀÌÅÍ ¾÷µ¥ÀÌÆ®
 	static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL_CONST);
 	pCB->SetData(&m_Const);
 	pCB->UpdateData();	
@@ -60,6 +58,15 @@ void* CMaterial::GetScalarParam(SCALAR_PARAM _ParamType)
 {
 	switch (_ParamType)
 	{
+	case SCALAR_PARAM::BOOL_0:
+	case SCALAR_PARAM::BOOL_1:
+	case SCALAR_PARAM::BOOL_2:
+	case SCALAR_PARAM::BOOL_3:
+	{
+		int idx = (UINT)_ParamType - (UINT)SCALAR_PARAM::BOOL_0;
+		return m_Const.bArr + idx;
+	}
+		break;
 	case SCALAR_PARAM::INT_0:
 	case SCALAR_PARAM::INT_1:
 	case SCALAR_PARAM::INT_2:
@@ -124,14 +131,14 @@ int CMaterial::Save(const wstring& _strRelativePath)
 	fout << TagMtrlConst << endl;
 	fout << m_Const << endl;
 
-	// ÀçÁúÀÌ ÂüÁ¶ÇÏ´Â ÅØ½ºÃÄ Á¤º¸¸¦ ÀúÀå	
+	// ì¬ì§ˆì´ ì°¸ì¡°í•˜ëŠ” í…ìŠ¤ì³ ì •ë³´ë¥¼ ì €ì¥	
 	fout << TagTexture << endl;
 	for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
 	{
 		SaveAssetRef<CTexture>(m_arrTex[i], fout);
 	}
 
-	// ÀçÁúÀÌ ÂüÁ¶ÇÏ´Â ½¦ÀÌ´õ Á¤º¸¸¦ ÀúÀå
+	// ì¬ì§ˆì´ ì°¸ì¡°í•˜ëŠ” ì‰ì´ë” ì •ë³´ë¥¼ ì €ì¥
 	fout << TagMtrlShader << endl;
 	SaveAssetRef<CGraphicsShader>(m_pShader, fout);
 
@@ -146,14 +153,14 @@ int CMaterial::Load(const wstring& _strFilePath)
 	Utils::GetLineUntilString(fin, TagMtrlConst);
 	fin >> m_Const;
 
-	// ÀçÁúÀÌ ÂüÁ¶ÇÏ´Â ÅØ½ºÃÄ Á¤º¸¸¦ ·Îµå
+	// ì¬ì§ˆì´ ì°¸ì¡°í•˜ëŠ” í…ìŠ¤ì³ ì •ë³´ë¥¼ ë¡œë“œ
 	Utils::GetLineUntilString(fin, TagTexture);
 	for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
 	{
 		LoadAssetRef<CTexture>(m_arrTex[i], fin);
 	}
 
-	// ÀçÁúÀÌ ÂüÁ¶ÇÏ´Â ½¦ÀÌ´õ Á¤º¸¸¦ ÀúÀå
+	// ì¬ì§ˆì´ ì°¸ì¡°í•˜ëŠ” ì‰ì´ë” ì •ë³´ë¥¼ ì €ì¥
 	Utils::GetLineUntilString(fin, TagMtrlShader);
 	LoadAssetRef<CGraphicsShader>(m_pShader, fin);
 
