@@ -308,6 +308,9 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 		case COMPONENT_TYPE::PARTICLESYSTEM:
 			pComponent = new CParticleSystem;
 			break;
+		case COMPONENT_TYPE::SKYBOX:
+			pComponent = new CSkyBox;
+			break;
 		default:
 			assert(nullptr);
 			break;
@@ -403,6 +406,9 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 			case COMPONENT_TYPE::PARTICLESYSTEM:
 				pComponent = new CParticleSystem;
 				break;
+			case COMPONENT_TYPE::SKYBOX:
+				pComponent = new CSkyBox;
+
 			default:
 				assert(nullptr);
 				break;

@@ -20,6 +20,11 @@ public:
     void SetCubeTexture(Ptr<CTexture> _Texture) { m_CubeTex = _Texture; }
 
 public:
+    virtual void SaveToFile(FILE* _File) override;
+    virtual void SaveToFile(ofstream& fout) override;
+    virtual void LoadFromFile(FILE* _File) override;
+    virtual void LoadFromFile(ifstream& fin) override;
+
     virtual void finaltick() override;
     virtual void UpdateData() override;
     virtual void render() override;

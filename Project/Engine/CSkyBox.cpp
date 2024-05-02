@@ -31,6 +31,22 @@ void CSkyBox::SetSkyBoxType(SKYBOX_TYPE _Type)
 	}
 }
 
+void CSkyBox::SaveToFile(FILE* _File)
+{
+}
+
+void CSkyBox::LoadFromFile(FILE* _File)
+{
+}
+
+void CSkyBox::SaveToFile(ofstream& fout)
+{
+}
+
+void CSkyBox::LoadFromFile(ifstream& fin)
+{
+}
+
 void CSkyBox::finaltick()
 {
 }
