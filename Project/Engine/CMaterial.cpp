@@ -1,4 +1,4 @@
-癤#include "pch.h"
+#include "pch.h"
 #include "CMaterial.h"
 
 #include "CGraphicsShader.h"
@@ -27,7 +27,6 @@ void CMaterial::UpdateData()
 	if (nullptr == m_pShader.Get())
 		return;
 	
-	// ъ⑺ 대 諛몃
 	m_pShader->UpdateData();	
 
 	// Texture Update(Register Binding)
@@ -45,7 +44,6 @@ void CMaterial::UpdateData()
 		}
 	}
 
-	//  곗댄 곗댄
 	static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL_CONST);
 	pCB->SetData(&m_Const);
 	pCB->UpdateData();	

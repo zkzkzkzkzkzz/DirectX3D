@@ -12,6 +12,8 @@ struct tScriptParam
 {
     SCRIPT_PARAM    Type;
     void*           pData;
+    float           min;
+    float           Max;
     bool            View;
     string          Tooltip;
 };
@@ -30,9 +32,9 @@ public:
 
 protected:
     void Instantiate(Ptr<CPrefab> _Prefab, Vec3 _vWorldPos, int _LayerIdx);
-    void AppendScriptParam(const string& _Key, SCRIPT_PARAM _Param, void* _Data, bool _View = false, const string& _Tooltip = {})
+    void AppendScriptParam(const string& _Key, SCRIPT_PARAM _Param, void* _Data, float _min = 0.f, float _Max = 0.f, bool _View = false, const string& _Tooltip = {})
     {
-        m_umScriptParam[_Key] = tScriptParam{ _Param, _Data, _View, _Tooltip };
+        m_umScriptParam[_Key] = tScriptParam{ _Param, _Data, _min, _Max, _View, _Tooltip };
     }
 
 public:
