@@ -40,7 +40,17 @@ void CLight3D::SaveToFile(FILE* _File)
 	fwrite(&m_Info, sizeof(tLightInfo), 1, _File);
 }
 
+void CLight3D::SaveToFile(ofstream& fout)
+{
+	fout << m_Info << endl;
+}
+
 void CLight3D::LoadFromFile(FILE* _File)
 {
 	fread(&m_Info, sizeof(tLightInfo), 1, _File);
+}
+
+void CLight3D::LoadFromFile(ifstream& fin)
+{
+	fin >> m_Info;
 }

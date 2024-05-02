@@ -27,6 +27,12 @@
 #define CLONE_DISABLE(TYPE) TYPE* Clone() { return nullptr; assert(nullptr); }\
 							TYPE(const TYPE& _OriginBuffer) = delete;
 
+#define ExtensionAnim ".anim"
+#define ExtensionLevel ".lv"
+#define ExtensionPref ".pref"
+#define ExtensionMtrl ".mtrl"
+#define ExtensionFSM ".fsm"
+
 enum class LAYER
 {
 	LAYER_DEFAULT,

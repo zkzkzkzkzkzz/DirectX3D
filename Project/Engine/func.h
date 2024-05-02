@@ -74,6 +74,43 @@ namespace GamePlayStatic
 	};
 }
 
+namespace Utils
+{
+	/// <summary>
+	/// 경로의 모든 파일의 확장자를 포함한 파일 이름을 추출해줍니다. 하위 폴더도 포함됩니다.
+	/// </summary>
+	void LoadAllFileNames(const wstring& _path, vector<string>& vec);
+
+	/// <summary>
+	/// 경로의 모든 파일의 경로를 추출해줍니다. 하위폴더도 포함됩니다.
+	/// </summary>
+	void LoadAllFilePaths(const wstring& _path, vector<string>& vec);
+	/// <summary>
+	/// 경로를 갖고 있는 파일들을 경로를 제외하고 추출해줍니다. 해당 경로를 갖고있지 않는다면 제외시킵니다.
+	/// </summary>
+	void SlicePath(const wstring& _path, vector<string>& vec);
+
+	/// <summary>
+	/// 원하는 문자열중 하나가 나올 때 까지 파일을 끝까지 읽고 성공시 읽은 문자열을 반환합니다. 리딩 실패시 메시지를 띄웁니다.
+	/// </summary>
+	string GetLineUntilString(ifstream& fin, const std::initializer_list<string>& strings);
+
+	/// <summary>
+	/// 원하는 문자열중 하나가 나올 때 까지 파일을 끝까지 읽고 성공시 읽은 문자열을 반환합니다. 리딩 실패시 메시지를 띄웁니다.
+	/// </summary>
+	string GetLineUntilString(ifstream& fin, const string& strings);
+
+	/// <summary>
+	/// 원하는 문자열중 하나가 나올 때 까지 파일을 끝까지 읽고 성공시 읽은 문자열을 반환합니다. 리딩 실패시 메시지를 띄웁니다.
+	/// </summary>
+	string GetLineUntilString(ifstream& fin, const std::initializer_list<const char*> strings);
+}
+
+string ToString(const wstring& _str);
+wstring ToWString(const string& _str);
+string ToString(const std::string_view& _sv);
+wstring ToWString(const std::string_view& _sv);
+
 void SaveWString(const wstring& _str, FILE* _File);
 void LoadWString(wstring& _str, FILE* _FILE);
 
@@ -97,6 +134,28 @@ void SaveAssetRef(Ptr<T> _Asset, FILE* _File)
 	}
 }
 
+#define TagAssetExist "[AssetExist]"
+#define TagKey "[Key]"
+#define TagPath "[Path]"
+
+template<typename T>
+void SaveAssetRef(Ptr<T> _Asset, ofstream& fout)
+{
+	fout << TagAssetExist << endl;
+	bool bAssetExist = false;
+	_Asset == nullptr ? bAssetExist = false : bAssetExist = true;
+
+	fout << bAssetExist << endl;
+
+	if (bAssetExist)
+	{
+		fout << TagKey << endl;
+		fout << ToString(_Asset->GetKey()) << endl;
+		fout << TagPath << endl;
+		fout << ToString(_Asset->GetRelativePath()) << endl;
+	}
+}
+
 template<typename T>
 void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
 {	
@@ -114,8 +173,26 @@ void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
 	}
 }
 
+template<typename T>
+void LoadAssetRef(Ptr<T>& _Asset, ifstream& fin)
+{
+	bool exist;
+	Utils::GetLineUntilString(fin, TagAssetExist);
+	fin >> exist;
 
+	if (exist) 
+	{
+		string key, path;
 
+		Utils::GetLineUntilString(fin, TagKey);
+		getline(fin, key);
+
+		Utils::GetLineUntilString(fin, TagPath);
+		getline(fin, path);
+
+		_Asset = CAssetMgr::GetInst()->Load<T>(key, path);
+	}
+}
 
 template<typename T, UINT SIZE>
 void Delete_Array(T* (&Arr)[SIZE])

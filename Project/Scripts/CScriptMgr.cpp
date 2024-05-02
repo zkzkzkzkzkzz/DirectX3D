@@ -3,19 +3,19 @@
 
 #include "CBackgroundScript.h"
 #include "CMissileScript.h"
-#include "CPlayerScript.h"
 #include "CMonsterScript.h"
-#include "CTimeMgrScript.h"
+#include "CPlayerScript.h"
 #include "CRenderMgrScript.h"
+#include "CTimeMgrScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CBackgroundScript");
 	_vec.push_back(L"CMissileScript");
-	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CMonsterScript");
-	_vec.push_back(L"CTimeMgrScript");
+	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CRenderMgrScript");
+	_vec.push_back(L"CTimeMgrScript");
 }
 
 CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -24,14 +24,14 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CBackgroundScript;
 	if (L"CMissileScript" == _strScriptName)
 		return new CMissileScript;
-	if (L"CPlayerScript" == _strScriptName)
-		return new CPlayerScript;
 	if (L"CMonsterScript" == _strScriptName)
 		return new CMonsterScript;
-	if (L"CTimeMgrScript" == _strScriptName)
-		return new CTimeMgrScript;
+	if (L"CPlayerScript" == _strScriptName)
+		return new CPlayerScript;
 	if (L"CRenderMgrScript" == _strScriptName)
 		return new CRenderMgrScript;
+	if (L"CTimeMgrScript" == _strScriptName)
+		return new CTimeMgrScript;
 	return nullptr;
 }
 
@@ -45,17 +45,17 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::MISSILESCRIPT:
 		return new CMissileScript;
 		break;
-	case (UINT)SCRIPT_TYPE::PLAYERSCRIPT:
-		return new CPlayerScript;
-		break;
 	case (UINT)SCRIPT_TYPE::MONSTERSCRIPT:
 		return new CMonsterScript;
 		break;
-	case (UINT)SCRIPT_TYPE::TIMEMGRSCRIPT:
-		return new CTimeMgrScript;
+	case (UINT)SCRIPT_TYPE::PLAYERSCRIPT:
+		return new CPlayerScript;
 		break;
 	case (UINT)SCRIPT_TYPE::RENDERMGRSCRIPT:
 		return new CRenderMgrScript;
+		break;
+	case (UINT)SCRIPT_TYPE::TIMEMGRSCRIPT:
+		return new CTimeMgrScript;
 		break;
 	}
 	return nullptr;
@@ -73,20 +73,20 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 		return L"CMissileScript";
 		break;
 
-	case SCRIPT_TYPE::PLAYERSCRIPT:
-		return L"CPlayerScript";
-		break;
-
 	case SCRIPT_TYPE::MONSTERSCRIPT:
 		return L"CMonsterScript";
 		break;
 
-	case SCRIPT_TYPE::TIMEMGRSCRIPT:
-		return L"CTimeMgrScript";
+	case SCRIPT_TYPE::PLAYERSCRIPT:
+		return L"CPlayerScript";
 		break;
 
 	case SCRIPT_TYPE::RENDERMGRSCRIPT:
 		return L"CRenderMgrScript";
+		break;
+
+	case SCRIPT_TYPE::TIMEMGRSCRIPT:
+		return L"CTimeMgrScript";
 		break;
 
 	}

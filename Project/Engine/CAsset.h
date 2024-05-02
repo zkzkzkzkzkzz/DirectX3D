@@ -36,6 +36,8 @@ private:
 
     virtual int Save(const wstring& _strRelativePath) { return E_FAIL; }
     virtual int Load(const wstring& _strFilePath) { return E_FAIL; }
+    virtual int Save(const string& _strRelativePath) { return E_FAIL; }
+    virtual int Load(const string& _strFilePath) { return E_FAIL; }
 
 public:
     CAsset(ASSET_TYPE _Type, bool _bEngineAsset);

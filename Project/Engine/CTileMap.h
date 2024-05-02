@@ -8,6 +8,9 @@ struct tTileInfo
     Vec2 vLeftTopUV;    
     int  bRender;
     int  padding;
+
+    friend ofstream& operator<<(ofstream& fout, const tTileInfo& info);
+    friend ifstream& operator>>(ifstream& fin, tTileInfo& info);
 };
 
 
@@ -46,9 +49,12 @@ public:
     virtual void render() override;
 
     virtual void SaveToFile(FILE* _File) override;
+    virtual void SaveToFile(ofstream& fout) override;
     virtual void LoadFromFile(FILE* _File) override;
-    CLONE(CTileMap);
+    virtual void LoadFromFile(ifstream& fin) override;
+
 public:
+    CLONE(CTileMap);
     CTileMap();
     CTileMap(const CTileMap& _OriginTileMap);
     ~CTileMap();

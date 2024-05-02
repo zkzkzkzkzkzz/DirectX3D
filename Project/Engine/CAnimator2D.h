@@ -27,9 +27,13 @@ public:
     void Play(const wstring& _strAnimName, bool _bRepeat = true);
 
     virtual void SaveToFile(FILE* _File) override;
+    virtual void SaveToFile(ofstream& fout) override;
     virtual void LoadFromFile(FILE* _File) override;
-    CLONE(CAnimator2D);
+    virtual void LoadFromFile(ifstream& fin) override;
+    void SaveAllAnim(const wstring& path);
+
 public:
+    CLONE(CAnimator2D);
     CAnimator2D();
     CAnimator2D(const CAnimator2D& _OriginAnimator);
     ~CAnimator2D();

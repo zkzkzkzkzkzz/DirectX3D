@@ -256,7 +256,7 @@ void MenuUI::Asset()
             while (true)
             {                
                 swprintf_s(szPath, L"Material//New Material_%d.mtrl", num);
-                if (!exists(FilePath + szPath))
+                if (!std::experimental::filesystem::exists(FilePath + szPath))
                     break;
                 ++num;
             }
@@ -267,6 +267,68 @@ void MenuUI::Asset()
             GamePlayStatic::AddAsset(pMtrl);
         }
 
+        if (ImGui::MenuItem("Content Save All"))
+        {
+            ContentSaveAll();
+        }
+
         ImGui::EndMenu();
+    }
+}
+
+#include <Engine/CAnim.h>
+
+void MenuUI::ContentSaveAll()
+{
+    CPathMgr::GetContentPath();
+
+    vector<string> vecNames;
+    vector<string> vecPaths;
+    vector<string> vecRelativePaths;
+    Utils::LoadAllFileNames(CPathMgr::GetContentPath(), vecNames);
+    Utils::LoadAllFilePaths(CPathMgr::GetContentPath(), vecPaths);
+    vecRelativePaths = vecPaths;
+    Utils::SlicePath(CPathMgr::GetContentPath(), vecRelativePaths);
+
+    for (int i = 0; i < vecNames.size();i++) {
+        string name = vecNames[i];
+        string strPath = vecPaths[i];
+        string strRelativePath = vecRelativePaths[i];
+        auto extension = filesystem::path(name).extension();
+
+        if (extension == ExtensionAnim) 
+        {
+            CAnim* pAnim = new CAnim;
+            ifstream fin(strPath);
+            pAnim->LoadFromFile(fin);
+
+            ofstream fout(strPath);
+            pAnim->SaveToFile(fout);
+            delete pAnim;
+        }
+        else if (extension == ExtensionPref)
+        {
+            CPrefab* pPref = new CPrefab;
+            pPref->Load(strPath);
+            pPref->Save(strRelativePath);
+
+            delete pPref;
+        }
+        else if (extension == ExtensionMtrl)
+        {
+            CMaterial* pMtrl = new CMaterial;
+
+            pMtrl->Load(strPath);
+            pMtrl->Save(strRelativePath);
+
+            delete pMtrl;
+        }
+        else if (extension == ExtensionLevel)
+        {
+            CLevel* pLevel;
+            pLevel = CLevelSaveLoad::LoadLevel(strRelativePath);
+            CLevelSaveLoad::SaveLevel(pLevel, strRelativePath);
+            delete pLevel;
+        }
     }
 }
