@@ -504,7 +504,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->SetBSType(BS_TYPE::DEFAULT);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 
-	pShader->AddScalarParam(SCALAR_PARAM::INT_0, "Lighting Type, 0 : Gouraud, 1 : Phong");
+	pShader->AddScalarParam(SCALAR_PARAM::INT_0, "Lighting Type", false, "0 : Gouraud, 1 : Phong");
 	pShader->AddTexParam(TEX_PARAM::TEX_0, "Output Texture");
 	pShader->AddTexParam(TEX_PARAM::TEX_1, "Normal Texture");
 

@@ -29,29 +29,37 @@ void ScriptUI::render_update()
 {
 	ComponentUI::render_update();
 
-	const vector<tScriptParam>& vecParam = m_TargetScript->GetScriptParam();
+	const std::unordered_map<string, tScriptParam>& umParam = m_TargetScript->GetScriptParam();
 
-	for (size_t i = 0; i < vecParam.size(); ++i)
+	auto iter = umParam.begin();
+
+	for (; iter != umParam.end(); ++iter)
 	{
-		switch (vecParam[i].Type)
+		switch (iter->second.Type)
 		{
+		case SCRIPT_PARAM::BOOL:
+			ParamUI::Param_BOOL((bool*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
+			break;
 		case SCRIPT_PARAM::INT:
+			ParamUI::Param_INT((int*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::FLOAT:
-			ParamUI::Param_FLOAT((float*)vecParam[i].pData, vecParam[i].Desc);
+			ParamUI::Param_FLOAT((float*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::VEC2:
+			ParamUI::Param_VEC2((Vec2*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::VEC3:
+			ParamUI::Param_VEC3((Vec3*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::VEC4:
-			ParamUI::Param_VEC4((Vec4*)vecParam[i].pData, vecParam[i].Desc);
+			ParamUI::Param_VEC4((Vec4*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::OBJECT:
 			break;
 		case SCRIPT_PARAM::COLOR:
-			ParamUI::Param_COLOR((Vec4*)vecParam[i].pData, vecParam[i].Desc);
+			ParamUI::Param_COLOR((Vec4*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
 			break;
-		}		
+		}
 	}
 }

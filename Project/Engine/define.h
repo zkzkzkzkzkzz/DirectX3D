@@ -160,6 +160,11 @@ enum class BS_TYPE
 // ScalarParam
 enum class SCALAR_PARAM
 {
+	BOOL_0,
+	BOOL_1,
+	BOOL_2,
+	BOOL_3,
+
 	INT_0,
 	INT_1,
 	INT_2,
@@ -206,6 +211,7 @@ enum class TEX_PARAM
 
 enum class SCRIPT_PARAM
 {
+	BOOL,
 	INT,
 	FLOAT,
 	VEC2,
