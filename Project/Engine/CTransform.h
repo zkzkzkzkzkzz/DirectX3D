@@ -9,8 +9,6 @@ private:
     Vec3    m_vRelativeScale;
     Vec3    m_vRelativeRotation;
 
-    Vec3    m_vWorldViewPos;
-
     Vec3    m_arrLocalDir[3]; // Right, Up, Front
     Vec3    m_arrWorldDir[3]; // Right, Up, Front
 
