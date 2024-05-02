@@ -21,7 +21,7 @@ void Light3DUI::render_update()
 
 	tLightInfo info = GetTargetObject()->Light3D()->GetLightInfo();
 
-	static int LightType = (int)info.LightType;
+	int LightType = (int)info.LightType;
 	Vec3 vColor = info.vColor;
 	Vec3 vAmbient = info.vAmbient;
 	Vec3 vWorldDir = info.vWorldDir;

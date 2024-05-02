@@ -20,14 +20,14 @@ void Light2DUI::render_update()
 
 	tLightInfo info = GetTargetObject()->Light2D()->GetLightInfo();
 
-	static int LightType = (int)info.LightType;
+	int LightType = (int)info.LightType;
 	Vec3 vColor = info.vColor;
 	Vec3 vAmbient = info.vAmbient;
 	Vec3 vWorldDir = info.vWorldDir;
 	float fRadius = info.fRadius;
 	float fAngle = info.fAngle;
 
-	static float Dir = 1.f;
+	float Dir = 1.f;
 	vWorldDir = AngleToVector(Dir);
 
 
