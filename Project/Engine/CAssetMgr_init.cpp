@@ -524,6 +524,20 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 	AddAsset(L"Std3D_DeferredShader", pShader.Get());
 
+	// ============
+	// Merge Shader
+	// ============
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(L"shader\\merge.fx", "VS_Merge");
+	pShader->CreatePixelShader(L"shader\\merge.fx", "PS_Merge");
+
+	pShader->SetRSType(RS_TYPE::CULL_BACK);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetBSType(BS_TYPE::DEFAULT);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MERGE);
+
+	AddAsset(L"MergeShader", pShader.Get());
+
 	// =================================
 	// EffectShader
 	// =================================
@@ -660,6 +674,11 @@ void CAssetMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std3D_DeferredShader"));
 	AddAsset<CMaterial>(L"Std3D_DeferredMtrl", pMtrl);
+
+	// MergeMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(L"MergeShader"));
+	AddAsset<CMaterial>(L"MergeMtrl", pMtrl);
 
 	// BackgroundMtrl
 	pMtrl = new CMaterial(true);

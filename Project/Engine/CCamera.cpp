@@ -168,10 +168,22 @@ void CCamera::render()
 	g_Transform.matProj = m_matProj;
 
 	// Domain 순서대로 렌더링
+
+	// Deferred 물체 렌더링
 	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet();
 	render(m_vecDeferred);
 
+	// Deferred 정보를 SwapChain 으로 병함
 	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
+
+	Ptr<CMesh>	pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
+	Ptr<CMaterial> pMergeMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"MergeMtrl");
+
+	pMergeMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex")); // NormalTargetTex || PositionTargetTex || ColorTargetTex
+	pMergeMtrl->UpdateData();
+	pRectMesh->render();
+
+	// Foward 렌더링
 	render(m_vecOpaque);	
 	render(m_vecMaked);
 	render(m_vecTransparent);

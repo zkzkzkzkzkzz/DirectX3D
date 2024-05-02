@@ -241,6 +241,9 @@ enum class SHADER_DOMAIN
 	DOMAIN_DECAL,
 	DOMAIN_LIGHTING,
 
+	// Merge
+	DOMAIN_MERGE, // Deferred 정보를 SwapChain 타겟으로 이동
+
 	// Foward
 	DOMAIN_OPAQUE,			// 불투명
 	DOMAIN_MASKED,			// 불투명 or 투명
