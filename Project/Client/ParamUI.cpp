@@ -46,7 +46,7 @@ bool ParamUI::Param_BOOL(bool* _Data, const string& _Desc, bool _View, const str
 	return false;
 }
 
-bool ParamUI::Param_INT(int* _Data, const string& _Desc, bool _View, const string& _Tooltip)
+bool ParamUI::Param_INT(int* _Data, const string& _Desc, int _min, int _Max, bool _View, const string& _Tooltip)
 {
 	ImGui::Text(_Desc.c_str());
 	ImGui::SameLine();
@@ -71,7 +71,7 @@ bool ParamUI::Param_INT(int* _Data, const string& _Desc, bool _View, const strin
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragInt(szID, _Data))
+		if (ImGui::DragInt(szID, _Data, 1.f, _min, _Max))
 		{
 			return true;
 		}
@@ -80,7 +80,7 @@ bool ParamUI::Param_INT(int* _Data, const string& _Desc, bool _View, const strin
 	return false;
 }
 
-bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, bool _View, const string& _Tooltip)
+bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, float _min, float _Max, bool _View, const string& _Tooltip)
 {
 	ImGui::Text(_Desc.c_str());
 	ImGui::SameLine();
@@ -105,7 +105,7 @@ bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, bool _View, const s
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragFloat(szID, _Data, 0.1f, 0.f, 0.f, "%.1f"))
+		if (ImGui::DragFloat(szID, _Data, 0.1f, _min, _Max, "%.1f"))
 		{
 			return true;
 		}
@@ -114,7 +114,7 @@ bool ParamUI::Param_FLOAT(float* _Data, const string& _Desc, bool _View, const s
 	return false;
 }
 
-bool ParamUI::Param_VEC2(Vec2* _Data, const string& _Desc, bool _View, const string& _Tooltip)
+bool ParamUI::Param_VEC2(Vec2* _Data, const string& _Desc, float _min, float _Max, bool _View, const string& _Tooltip)
 {
 	ImGui::Text(_Desc.c_str());
 	ImGui::SameLine();
@@ -142,7 +142,7 @@ bool ParamUI::Param_VEC2(Vec2* _Data, const string& _Desc, bool _View, const str
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragFloat2(szID, arrFloat, 0.1f, 0.f, 0.f, "%.1f"))
+		if (ImGui::DragFloat2(szID, arrFloat, 0.1f, _min, _Max, "%.1f"))
 		{
 			_Data->x = arrFloat[0];
 			_Data->y = arrFloat[1];
@@ -153,7 +153,7 @@ bool ParamUI::Param_VEC2(Vec2* _Data, const string& _Desc, bool _View, const str
 	return false;
 }
 
-bool ParamUI::Param_VEC3(Vec3* _Data, const string& _Desc, bool _View, const string& _Tooltip)
+bool ParamUI::Param_VEC3(Vec3* _Data, const string& _Desc, float _min, float _Max, bool _View, const string& _Tooltip)
 {
 	ImGui::Text(_Desc.c_str());
 	ImGui::SameLine();
@@ -178,7 +178,7 @@ bool ParamUI::Param_VEC3(Vec3* _Data, const string& _Desc, bool _View, const str
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragFloat3(szID, *_Data, 0.1f, 0.f, 0.f, "%.1f"))
+		if (ImGui::DragFloat3(szID, *_Data, 0.1f, _min, _Max, "%.1f"))
 		{
 			return true;
 		}
@@ -187,7 +187,7 @@ bool ParamUI::Param_VEC3(Vec3* _Data, const string& _Desc, bool _View, const str
 	return false;
 }
 
-bool ParamUI::Param_VEC4(Vec4* _Data, const string& _Desc, bool _View, const string& _Tooltip)
+bool ParamUI::Param_VEC4(Vec4* _Data, const string& _Desc, float _min, float _Max, bool _View, const string& _Tooltip)
 {
 	ImGui::Text(_Desc.c_str());
 	ImGui::SameLine();
@@ -212,7 +212,7 @@ bool ParamUI::Param_VEC4(Vec4* _Data, const string& _Desc, bool _View, const str
 		{
 			ImGui::SetTooltip(_Tooltip.c_str());
 		}
-		if (ImGui::DragFloat4(szID, *_Data, 0.1f, 0.f, 0.f, "%.1f"))
+		if (ImGui::DragFloat4(szID, *_Data, 0.1f, _min, _Max, "%.1f"))
 		{
 			return true;
 		}
