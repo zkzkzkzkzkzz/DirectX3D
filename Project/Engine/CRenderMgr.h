@@ -8,7 +8,7 @@ class CCamera;
 class CLight2D;
 class CLight3D;
 class CStructuredBuffer;
-
+class CMRT;
 
 
 class CRenderMgr :
@@ -16,6 +16,8 @@ class CRenderMgr :
 {
     SINGLE(CRenderMgr);
 private:
+    CMRT*                   m_arrMRT[(UINT)MRT_TYPE::END];
+
     vector<CCamera*>        m_vecCam;
     CCamera* m_EditorCam;
 
@@ -37,6 +39,8 @@ private:
     // render function pointer
     typedef void(CRenderMgr::* RENDER_FUNC)(void);
     RENDER_FUNC             m_RenderFunc;
+
+    Vec4 m_vClearColor;
 
 public:
     void RegisterCamera(CCamera* _Cam, int _Idx);
@@ -62,21 +66,27 @@ public:
             m_RenderFunc = &CRenderMgr::render_play;
     }
 
-
+    void SetClearColor(const Vec4& _ClearColor) { m_vClearColor = _ClearColor; }
+    Vec4 GetClearColor() { return m_vClearColor;}
 public:
     void init();
     void tick();
 
 private:
+    void CreateMRT();
+    void ClearMRT();
+
     void render_play();
     void render_editor();
 
     void render_debug();
 
-    // ∏Æº“Ω∫ πŸ¿Œµ˘
+    // Î¶¨ÏÜåÏä§ Î∞îÏù∏Îî©
     void UpdateData();
 
-    // ∏Æº“Ω∫ ≈¨∏ÆæÓ
+    // Î¶¨ÏÜåÏä§ ÌÅ¥Î¶¨Ïñ¥
     void Clear();
+
+    friend class CRenderMgrScript;
 };
 

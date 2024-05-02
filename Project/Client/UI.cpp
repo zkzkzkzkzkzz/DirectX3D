@@ -103,3 +103,39 @@ void UI::render()
 		ImGui::EndChild();
 	}
 }
+
+bool UI::ColorSelector(const char* _label, Vec4* _col)
+{
+	auto items = GamePlayStatic::COLOR::GetColors();
+	static int selectedidx = 0;
+
+	if (0 != items.size())
+	{
+		if (!(selectedidx < items.size()))
+		{
+			selectedidx = 0;
+		}
+		ImGui::SetNextItemWidth(150);
+		if (ImGui::BeginCombo("##comboColorPreset", items[selectedidx].first.c_str())) {
+			for (int i = 0; i < items.size(); i++) {
+				const bool isSelected = (selectedidx == i);
+				if (ImGui::Selectable(items[i].first.c_str(), isSelected)) {
+					*_col = items[i].second;
+					selectedidx = i;
+				}
+
+				// 항목 선택 시 자동으로 스크롤
+				if (isSelected) {
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+
+	}
+
+	if (ImGui::ColorEdit4(_label, *_col))
+	{
+		return true;
+	}
+}

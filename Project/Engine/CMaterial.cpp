@@ -27,7 +27,6 @@ void CMaterial::UpdateData()
 	if (nullptr == m_pShader.Get())
 		return;
 	
-	// »ç¿ëÇÒ ½¦ÀÌ´õ ¹ÙÀÎµù
 	m_pShader->UpdateData();	
 
 	// Texture Update(Register Binding)
@@ -45,7 +44,6 @@ void CMaterial::UpdateData()
 		}
 	}
 
-	// »ó¼ö µ¥ÀÌÅÍ ¾÷µ¥ÀÌÆ®
 	static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL_CONST);
 	pCB->SetData(&m_Const);
 	pCB->UpdateData();	
@@ -60,6 +58,15 @@ void* CMaterial::GetScalarParam(SCALAR_PARAM _ParamType)
 {
 	switch (_ParamType)
 	{
+	case SCALAR_PARAM::BOOL_0:
+	case SCALAR_PARAM::BOOL_1:
+	case SCALAR_PARAM::BOOL_2:
+	case SCALAR_PARAM::BOOL_3:
+	{
+		int idx = (UINT)_ParamType - (UINT)SCALAR_PARAM::BOOL_0;
+		return m_Const.bArr + idx;
+	}
+		break;
 	case SCALAR_PARAM::INT_0:
 	case SCALAR_PARAM::INT_1:
 	case SCALAR_PARAM::INT_2:
@@ -110,58 +117,52 @@ void* CMaterial::GetScalarParam(SCALAR_PARAM _ParamType)
 	return nullptr;
 }
 
+#define TagMtrlConst "[MtrlConst]"
+#define TagTexture "[Textures]"
+#define TagMtrlShader "[MtrlShader]"
 int CMaterial::Save(const wstring& _strRelativePath)
 {
 	wstring strFilePath = CPathMgr::GetContentPath();
 	strFilePath += _strRelativePath;
 
-	FILE* pFile = nullptr;
-	_wfopen_s(&pFile, strFilePath.c_str(), L"wb");
+	ofstream fout(strFilePath);
+	if (!fout.is_open()) return E_FAIL;
 
-	if (nullptr == pFile)
-		return E_FAIL;
+	fout << TagMtrlConst << endl;
+	fout << m_Const << endl;
 
-	// ÀçÁú »ó¼ö°ª ÀúÀå
-	fwrite(&m_Const, sizeof(tMtrlConst), 1, pFile);	
-
-
-	// ÀçÁúÀÌ ÂüÁ¶ÇÏ´Â ÅØ½ºÃÄ Á¤º¸¸¦ ÀúÀå	
+	// ì¬ì§ˆì´ ì°¸ì¡°í•˜ëŠ” í…ìŠ¤ì³ ì •ë³´ë¥¼ ì €ì¥	
+	fout << TagTexture << endl;
 	for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
 	{
-		SaveAssetRef<CTexture>(m_arrTex[i], pFile);
+		SaveAssetRef<CTexture>(m_arrTex[i], fout);
 	}
 
-	// ÀçÁúÀÌ ÂüÁ¶ÇÏ´Â ½¦ÀÌ´õ Á¤º¸¸¦ ÀúÀå
-	SaveAssetRef<CGraphicsShader>(m_pShader, pFile);
-
-	fclose(pFile);
+	// ì¬ì§ˆì´ ì°¸ì¡°í•˜ëŠ” ì‰ì´ë” ì •ë³´ë¥¼ ì €ì¥
+	fout << TagMtrlShader << endl;
+	SaveAssetRef<CGraphicsShader>(m_pShader, fout);
 
 	return 0;
 }
 
 int CMaterial::Load(const wstring& _strFilePath)
 {
-	FILE* pFile = nullptr;
-	_wfopen_s(&pFile, _strFilePath.c_str(), L"rb");
+	ifstream fin(_strFilePath);
+	if (!fin.is_open()) return E_FAIL;
 
-	if (nullptr == pFile)
-		return E_FAIL;
+	Utils::GetLineUntilString(fin, TagMtrlConst);
+	fin >> m_Const;
 
-	// ÀçÁú »ó¼ö°ª ÀúÀå
-	fread(&m_Const, sizeof(tMtrlConst), 1, pFile);
-
-
-	// ÀçÁúÀÌ ÂüÁ¶ÇÏ´Â ÅØ½ºÃÄ Á¤º¸¸¦ ·Îµå
+	// ì¬ì§ˆì´ ì°¸ì¡°í•˜ëŠ” í…ìŠ¤ì³ ì •ë³´ë¥¼ ë¡œë“œ
+	Utils::GetLineUntilString(fin, TagTexture);
 	for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
 	{
-		LoadAssetRef<CTexture>(m_arrTex[i], pFile);
+		LoadAssetRef<CTexture>(m_arrTex[i], fin);
 	}
 
-	// ÀçÁúÀÌ ÂüÁ¶ÇÏ´Â ½¦ÀÌ´õ Á¤º¸¸¦ ÀúÀå
-	LoadAssetRef<CGraphicsShader>(m_pShader, pFile);
-
-
-	fclose(pFile);
+	// ì¬ì§ˆì´ ì°¸ì¡°í•˜ëŠ” ì‰ì´ë” ì •ë³´ë¥¼ ì €ì¥
+	Utils::GetLineUntilString(fin, TagMtrlShader);
+	LoadAssetRef<CGraphicsShader>(m_pShader, fin);
 
 	return 0;
 }

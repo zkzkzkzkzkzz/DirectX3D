@@ -231,6 +231,43 @@ void CCamera::SaveToFile(FILE* _File)
 	fwrite(&m_CameraPriority, sizeof(int), 1, _File);
 }
 
+#define TagProjType "[ProjType]"
+#define TagFOV "[FOV]"
+#define TagWidth "[Width]"
+#define TagScale "[Scale]"
+#define TagAspectRatio "[AspectRatio]"
+#define TagFar "[Far]"
+#define TagLayerCheck "[LayerCheck]"
+#define TagPriority "[Priority]"
+
+void CCamera::SaveToFile(ofstream& fout)
+{
+	fout << TagProjType << endl;
+	auto str = magic_enum::enum_name((PROJ_TYPE)m_ProjType);
+	fout << ToString(str) << endl;
+
+	fout << TagFOV << endl;
+	fout << m_FOV << endl;
+
+	fout << TagWidth << endl;
+	fout << m_Width << endl;
+
+	fout << TagScale << endl;
+	fout << m_Scale << endl;
+
+	fout << TagAspectRatio << endl;
+	fout << m_AspectRatio << endl;
+
+	fout << TagFar << endl;
+	fout << m_Far << endl;
+
+	fout << TagLayerCheck << endl;
+	fout << m_LayerCheck << endl;
+
+	fout << TagPriority << endl;
+	fout << m_CameraPriority << endl;
+}
+
 void CCamera::LoadFromFile(FILE* _File)
 {
 	fread(&m_ProjType, sizeof(PROJ_TYPE), 1, _File);
@@ -241,4 +278,33 @@ void CCamera::LoadFromFile(FILE* _File)
 	fread(&m_Far, sizeof(float), 1, _File);
 	fread(&m_LayerCheck, sizeof(UINT), 1, _File);
 	fread(&m_CameraPriority, sizeof(int), 1, _File);
+}
+
+void CCamera::LoadFromFile(ifstream& fin)
+{
+	string str;
+	Utils::GetLineUntilString(fin, TagProjType);
+	getline(fin, str);
+	m_ProjType = magic_enum::enum_cast<PROJ_TYPE>(str).value();
+
+	Utils::GetLineUntilString(fin, TagFOV);
+	fin >> m_FOV;
+
+	Utils::GetLineUntilString(fin, TagWidth);
+	fin >> m_Width;
+
+	Utils::GetLineUntilString(fin, TagScale);
+	fin >> m_Scale;
+
+	Utils::GetLineUntilString(fin, TagAspectRatio);
+	fin >> m_AspectRatio;
+
+	Utils::GetLineUntilString(fin, TagFar);
+	fin >> m_Far;
+
+	Utils::GetLineUntilString(fin, TagLayerCheck);
+	fin >> m_LayerCheck;
+
+	Utils::GetLineUntilString(fin, TagPriority);
+	fin >> m_CameraPriority;
 }
