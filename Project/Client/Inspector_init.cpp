@@ -108,14 +108,18 @@ void Inspector::RefreshScriptUI()
 		m_vecScriptUI[i]->Deactivate();
 	}
 
-	if (m_vecScriptUI.size() < m_TargetObject->GetScripts().size())
+	if (m_TargetObject != nullptr)
 	{
-		ResizeScriptUI(m_TargetObject->GetScripts().size());
-	}
 
-	const vector<CScript*>& vecScripts = m_TargetObject->GetScripts();
-	for (size_t i = 0; i < vecScripts.size(); ++i)
-	{
-		m_vecScriptUI[i]->SetScript(vecScripts[i]);
+		if (m_vecScriptUI.size() < m_TargetObject->GetScripts().size())
+		{
+			ResizeScriptUI(m_TargetObject->GetScripts().size());
+		}
+
+		const vector<CScript*>& vecScripts = m_TargetObject->GetScripts();
+		for (size_t i = 0; i < vecScripts.size(); ++i)
+		{
+			m_vecScriptUI[i]->SetScript(vecScripts[i]);
+		}
 	}
 }

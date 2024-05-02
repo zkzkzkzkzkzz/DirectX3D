@@ -110,6 +110,30 @@ void CAnim::SaveToFile(FILE* _File)
 	SaveAssetRef(m_AtlasTex, _File);
 }
 
+#define TagAnimName "[AnimName]"
+#define TagFrmCount "[FrmCount]"
+#define TagFrmInfo "[FrmInfo]"
+
+void CAnim::SaveToFile(ofstream& fout)
+{
+	// 애니메이션 이름 저장
+	fout << TagAnimName << endl;
+	fout << ToString(GetName()) << endl;
+
+	// 모든 프레임 정보 저장
+	fout << TagFrmCount << endl;
+	fout << m_vecFrm.size() << endl;
+
+	if (m_vecFrm.size() == 0) return;
+	
+	fout << TagFrmInfo << endl;
+	for (size_t i = 0; i < m_vecFrm.size(); ++i) {
+		fout << m_vecFrm[i] << endl;
+	}
+
+	SaveAssetRef(m_AtlasTex, fout);
+}
+
 void CAnim::LoadFromFile(FILE* _File)
 {
 	// 애니메이션 이름 로드
@@ -125,4 +149,74 @@ void CAnim::LoadFromFile(FILE* _File)
 
 	// 애니메이션이 참조하던 텍스쳐 정보 로드
 	LoadAssetRef(m_AtlasTex, _File);
+}
+
+void CAnim::LoadFromFile(ifstream& fin)
+{
+	string str;
+
+	Utils::GetLineUntilString(fin, TagAnimName);
+	getline(fin, str);
+	SetName(str);
+
+	size_t frmCnt;
+	Utils::GetLineUntilString(fin, TagFrmCount);
+	fin >> frmCnt;
+
+	if (frmCnt == 0) return;
+
+	Utils::GetLineUntilString(fin, TagFrmInfo);
+	for (size_t i = 0; i < frmCnt; ++i) {
+		tAnimFrm frm;
+		fin >> frm;
+		m_vecFrm.push_back(frm);
+	}
+
+	LoadAssetRef(m_AtlasTex, fin);
+}
+
+#define TagLeftTop "[LeftTop]"
+#define TagSlice "[Slice]"
+#define TagOffset "[Offset]"
+#define TagBackground "[Background]"
+#define TagDuration "[Duration]"
+
+ofstream& operator<<(ofstream& fout, const tAnimFrm& frm)
+{
+	fout << TagLeftTop << endl;
+	fout << frm.vLeftTop << endl;
+
+	fout << TagSlice << endl;
+	fout << frm.vSlice << endl;
+
+	fout << TagOffset << endl;
+	fout << frm.vOffset << endl;
+
+	fout << TagBackground << endl;
+	fout << frm.vBackground << endl;
+
+	fout << TagDuration << endl;
+	fout << frm.Duration;
+
+	return fout;
+}
+
+ifstream& operator>>(ifstream& fin, tAnimFrm& frm)
+{
+	Utils::GetLineUntilString(fin, TagLeftTop);
+	fin >> frm.vLeftTop;
+
+	Utils::GetLineUntilString(fin, TagSlice);
+	fin >> frm.vSlice;
+
+	Utils::GetLineUntilString(fin, TagOffset);
+	fin >> frm.vOffset;
+
+	Utils::GetLineUntilString(fin, TagBackground);
+	fin >> frm.vBackground;
+
+	Utils::GetLineUntilString(fin, TagDuration);
+	fin >> frm.Duration;
+
+	return fin;
 }

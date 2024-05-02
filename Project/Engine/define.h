@@ -33,6 +33,12 @@
 #define CLONE_DISABLE(TYPE) TYPE* Clone() { return nullptr; assert(nullptr); }\
 							TYPE(const TYPE& _OriginBuffer) = delete;
 
+#define ExtensionAnim ".anim"
+#define ExtensionLevel ".lv"
+#define ExtensionPref ".pref"
+#define ExtensionMtrl ".mtrl"
+#define ExtensionFSM ".fsm"
+
 enum class LAYER
 {
 	LAYER_DEFAULT,
@@ -72,20 +78,20 @@ extern const char* ASSET_TYPE_STRING[(UINT)ASSET_TYPE::END];
 
 enum class COMPONENT_TYPE
 {
-	TRANSFORM,	// ¿ÀºêÁ§Æ®ÀÇ À§Ä¡,Å©±â,È¸Àü
+	TRANSFORM,	// ì˜¤ë¸Œì íŠ¸ì˜ ìœ„ì¹˜,í¬ê¸°,íšŒì „
 
-	COLLIDER2D,	// 2Â÷¿ø Ãæµ¹Ã¼
-	COLLIDER3D, // 3Â÷¿ø Ãæµ¹Ã¼
+	COLLIDER2D,	// 2ì°¨ì› ì¶©ëŒì²´
+	COLLIDER3D, // 3ì°¨ì› ì¶©ëŒì²´
 
-	ANIMATOR2D,	// ½ºÇÁ¶óÀÌÆ® Animation
+	ANIMATOR2D,	// ìŠ¤í”„ë¼ì´íŠ¸ Animation
 	ANIMATOR3D,	// Bone Skinning Animation
 
-	LIGHT2D,	// 2Â÷¿ø ±¤¿ø
-	LIGHT3D,	// 3Â÷¿ø ±¤¿ø
+	LIGHT2D,	// 2ì°¨ì› ê´‘ì›
+	LIGHT3D,	// 3ì°¨ì› ê´‘ì›
 
-	CAMERA,		// Ä«¸Þ¶ó ±â´É
+	CAMERA,		// ì¹´ë©”ë¼ ê¸°ëŠ¥
 
-	STATEMACHINE, // »óÅÂ¸Ó½Å
+	STATEMACHINE, // ìƒíƒœë¨¸ì‹ 
 
 	// Render Component
 	MESHRENDER,
@@ -101,7 +107,7 @@ enum class COMPONENT_TYPE
 };
 
 
-// »ó¼ö¹öÆÛ Á¾·ù
+// ìƒìˆ˜ë²„í¼ ì¢…ë¥˜
 enum class CB_TYPE
 {
 	TRANSFORM,
@@ -128,16 +134,16 @@ enum class RS_TYPE
 // DepthStencil State Type
 enum class DS_TYPE
 {
-	LESS,				// ÀÛÀº°Ô Åë°ú			±íÀÌ ±â·Ï O
-	LESS_EQUAL,			// ÀÛ°Å³ª °°À¸¸é Åë°ú		±íÀÌ ±â·Ï O
+	LESS,				// ìž‘ì€ê²Œ í†µê³¼			ê¹Šì´ ê¸°ë¡ O
+	LESS_EQUAL,			// ìž‘ê±°ë‚˜ ê°™ìœ¼ë©´ í†µê³¼		ê¹Šì´ ê¸°ë¡ O
 
-	GRATER,				// ´õ ¸Ö¸é Åë°ú			±íÀÌ ±â·Ï O
-	GRATER_EQUAL,		// ´õ ¸Ö°Å³ª °°À¸¸é Åë°ú	±íÀÌ ±â·Ï O
+	GRATER,				// ë” ë©€ë©´ í†µê³¼			ê¹Šì´ ê¸°ë¡ O
+	GRATER_EQUAL,		// ë” ë©€ê±°ë‚˜ ê°™ìœ¼ë©´ í†µê³¼	ê¹Šì´ ê¸°ë¡ O
 
-	NO_TEST,			// ±íÀÌ Å×½ºÆ® X			±íÀÌ ±â·Ï O
-	NO_WRITE,			// ±íÀÌ Å×½ºÆ® O			±íÀÌ ±â·Ï X
+	NO_TEST,			// ê¹Šì´ í…ŒìŠ¤íŠ¸ X			ê¹Šì´ ê¸°ë¡ O
+	NO_WRITE,			// ê¹Šì´ í…ŒìŠ¤íŠ¸ O			ê¹Šì´ ê¸°ë¡ X
 
-	NO_TEST_NO_WRITE,	// ±íÀÌ Å×½ºÆ® X			±íÀÌ ±â·Ï X
+	NO_TEST_NO_WRITE,	// ê¹Šì´ í…ŒìŠ¤íŠ¸ X			ê¹Šì´ ê¸°ë¡ X
 
 	END,
 };
@@ -160,6 +166,11 @@ enum class BS_TYPE
 // ScalarParam
 enum class SCALAR_PARAM
 {
+	BOOL_0,
+	BOOL_1,
+	BOOL_2,
+	BOOL_3,
+
 	INT_0,
 	INT_1,
 	INT_2,
@@ -206,12 +217,14 @@ enum class TEX_PARAM
 
 enum class SCRIPT_PARAM
 {
+	BOOL,
 	INT,
 	FLOAT,
 	VEC2,
 	VEC3,
 	VEC4,
 	OBJECT,
+	COLOR,
 };
 
 
@@ -235,24 +248,24 @@ enum class LIGHT_TYPE
 
 enum class SHADER_DOMAIN
 {
-	DOMAIN_OPAQUE,			// ºÒÅõ¸í
-	DOMAIN_MASKED,			// ºÒÅõ¸í or Åõ¸í
-	DOMAIN_TRANSPARENT,		// ¹ÝÅõ¸í
-	DOMAIN_POSTPROCESS,		// ÈÄÃ³¸®
+	DOMAIN_OPAQUE,			// ë¶ˆíˆ¬ëª…
+	DOMAIN_MASKED,			// ë¶ˆíˆ¬ëª… or íˆ¬ëª…
+	DOMAIN_TRANSPARENT,		// ë°˜íˆ¬ëª…
+	DOMAIN_POSTPROCESS,		// í›„ì²˜ë¦¬
 
 	DOMAIN_DEBUG,
 };
 
 enum class PARTICLE_MODULE
 {
-	SPAWN,			// ÆÄÆ¼Å¬ »ý¼º °ü·Ã
-	DRAG,			// °¨¼Ó °ü·Ã ¸ðµâ
-	SCALE,			// Å©±â º¯È­ ¸ðµâ
-	ADD_VELOCITY,	// ÃÊ±â ¼Óµµ ÁöÁ¤ ¸ðµâ
+	SPAWN,			// íŒŒí‹°í´ ìƒì„± ê´€ë ¨
+	DRAG,			// ê°ì† ê´€ë ¨ ëª¨ë“ˆ
+	SCALE,			// í¬ê¸° ë³€í™” ëª¨ë“ˆ
+	ADD_VELOCITY,	// ì´ˆê¸° ì†ë„ ì§€ì • ëª¨ë“ˆ
 	NOISE_FORCE,
-	CALCULATE_FORCE,// ÁÖ¾îÁø ÈûÀ» °è»êÇÏ´Â ¸ðµâ
+	CALCULATE_FORCE,// ì£¼ì–´ì§„ íž˜ì„ ê³„ì‚°í•˜ëŠ” ëª¨ë“ˆ
 
-	RENDER,			// ·»´õ¸µ ¶§ÀÇ ¿É¼Ç °ü·Ã
+	RENDER,			// ë Œë”ë§ ë•Œì˜ ì˜µì…˜ ê´€ë ¨
 
 	END,
 };
@@ -271,4 +284,14 @@ enum class FOCUS_STATE
 	OTHER,
 	MAIN,
 	NONE,
+};
+
+enum class MRT_TYPE
+{
+	SWAPCHAIN,		// RT 1, DS 1
+	DEFERRED,		// RT 5, DS 0
+	LIGHT,			// RT 3, DS 0
+	SHADOW_DEPTH,	// RT 1, DS 1
+
+	END,
 };

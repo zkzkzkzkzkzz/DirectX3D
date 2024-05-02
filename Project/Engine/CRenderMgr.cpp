@@ -11,13 +11,16 @@
 #include "CAssetMgr.h"
 #include "components.h"
 
+#include "CMRT.h"
 
 CRenderMgr::CRenderMgr()
-	: m_Light2DBuffer(nullptr)
+	: m_arrMRT{}
+	, m_Light2DBuffer(nullptr)
 	, m_pDebugObj(nullptr)
 	, m_DebugPosition(true)
 	, m_EditorCam(nullptr)
 	, m_RenderFunc(nullptr)
+	, m_vClearColor(Vec4(0.f, 0.f, 0.f, 1.f))
 {
 	m_RenderFunc = &CRenderMgr::render_play;
 }
@@ -32,24 +35,28 @@ CRenderMgr::~CRenderMgr()
 
 	if (nullptr != m_Light3DBuffer)
 		delete m_Light3DBuffer;
+
+	Delete_Array(m_arrMRT);
 }
 
 void CRenderMgr::tick()
 {
 	// 렌더타겟 및 깊이 타겟 설정
-	Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
-	Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
-	CONTEXT->OMSetRenderTargets(1, pRTTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
-
-	Vec4 vClearColor = Vec4(0.f, 0.f, 0.f, 1.f);
-	CDevice::GetInst()->ClearRenderTarget(vClearColor);
-
+	ClearMRT();
 	UpdateData();
+
+	m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
 
 	(this->*m_RenderFunc)();
 	render_debug();
 
 	Clear();
+}
+
+void CRenderMgr::ClearMRT()
+{
+	m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->Clear();
+	m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->ClearRT();
 }
 
 void CRenderMgr::render_play()
@@ -72,6 +79,9 @@ void CRenderMgr::render_editor()
 
 void CRenderMgr::render_debug()
 {
+	if (m_vecCam.empty())
+		return;
+
 	//레벨이 플레이상태일경우(랜더Func가 render_play 일 경우)
 	if (&CRenderMgr::render_play == m_RenderFunc)
 	{

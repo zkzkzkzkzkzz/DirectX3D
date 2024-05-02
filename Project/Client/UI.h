@@ -46,5 +46,8 @@ public:
 public:
 	UI(const string& _strName, const string& _strID);
 	virtual ~UI();
+
+public:
+	static bool ColorSelector(const char* _label, Vec4* _col);
 };
 

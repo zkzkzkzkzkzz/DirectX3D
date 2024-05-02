@@ -73,7 +73,7 @@ void MenuUI::File()
             ofn.lpstrFileTitle = NULL;
             ofn.nMaxFileTitle = 0;
 
-            // Å½»öÃ¢ ÃÊ±â À§Ä¡ ÁöÁ¤
+            // íƒìƒ‰ì°½ ì´ˆê¸° ìœ„ì¹˜ ì§€ì •
             wstring strInitPath = CPathMgr::GetContentPath();
             strInitPath += L"level\\";
             ofn.lpstrInitialDir = strInitPath.c_str();
@@ -102,7 +102,7 @@ void MenuUI::File()
             ofn.lpstrFileTitle = NULL;
             ofn.nMaxFileTitle = 0;
 
-            // Å½»öÃ¢ ÃÊ±â À§Ä¡ ÁöÁ¤
+            // íƒìƒ‰ì°½ ì´ˆê¸° ìœ„ì¹˜ ì§€ì •
             wstring strInitPath = CPathMgr::GetContentPath();
             strInitPath += L"level\\";
             ofn.lpstrInitialDir = strInitPath.c_str();
@@ -114,7 +114,7 @@ void MenuUI::File()
                 CLevel* pLevel = CLevelSaveLoad::LoadLevel(CPathMgr::GetRelativePath(szSelect));
                 CLevelMgr::GetInst()->ChangeLevel(pLevel, LEVEL_STATE::STOP);
 
-                // Inspector ÀÇ Å¸°ÙÁ¤º¸¸¦ nullptr ·Î µÇµ¹¸®±â
+                // Inspector ì˜ íƒ€ê²Ÿì •ë³´ë¥¼ nullptr ë¡œ ë˜ëŒë¦¬ê¸°
                 Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
                 pInspector->SetTargetObject(nullptr);
             }
@@ -180,7 +180,7 @@ void MenuUI::Level()
             auto m_Tree = pOutliner->GetTree()->GetSelectedNode();
             m_Tree = nullptr;
 
-            // Inspector ÀÇ Å¸°ÙÁ¤º¸¸¦ nullptr ·Î µÇµ¹¸®±â
+            // Inspector ì˜ íƒ€ê²Ÿì •ë³´ë¥¼ nullptr ë¡œ ë˜ëŒë¦¬ê¸°
             Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
             pInspector->SetTargetObject(nullptr);
         }
@@ -199,6 +199,10 @@ void MenuUI::GameObject()
             pNewObj->SetName(L"New GameObject");
             pNewObj->AddComponent(new CTransform);
             GamePlayStatic::SpawnGameObject(pNewObj, 0);
+
+            // Inspector ì˜ íƒ€ê²Ÿì •ë³´ë¥¼ ìƒˆë¡œ ë§Œë“ ê±¸ë¡œ ê°±ì‹ 
+            Inspector* pInspector = (Inspector*)CImGuiMgr::GetInst()->FindUI("##Inspector");
+            pInspector->SetTargetObject(pNewObj);
         }
         ImGui::Separator();
 
@@ -252,7 +256,7 @@ void MenuUI::Asset()
             while (true)
             {                
                 swprintf_s(szPath, L"Material//New Material_%d.mtrl", num);
-                if (!exists(FilePath + szPath))
+                if (!std::experimental::filesystem::exists(FilePath + szPath))
                     break;
                 ++num;
             }
@@ -263,6 +267,68 @@ void MenuUI::Asset()
             GamePlayStatic::AddAsset(pMtrl);
         }
 
+        if (ImGui::MenuItem("Content Save All"))
+        {
+            ContentSaveAll();
+        }
+
         ImGui::EndMenu();
+    }
+}
+
+#include <Engine/CAnim.h>
+
+void MenuUI::ContentSaveAll()
+{
+    CPathMgr::GetContentPath();
+
+    vector<string> vecNames;
+    vector<string> vecPaths;
+    vector<string> vecRelativePaths;
+    Utils::LoadAllFileNames(CPathMgr::GetContentPath(), vecNames);
+    Utils::LoadAllFilePaths(CPathMgr::GetContentPath(), vecPaths);
+    vecRelativePaths = vecPaths;
+    Utils::SlicePath(CPathMgr::GetContentPath(), vecRelativePaths);
+
+    for (int i = 0; i < vecNames.size();i++) {
+        string name = vecNames[i];
+        string strPath = vecPaths[i];
+        string strRelativePath = vecRelativePaths[i];
+        auto extension = filesystem::path(name).extension();
+
+        if (extension == ExtensionAnim) 
+        {
+            CAnim* pAnim = new CAnim;
+            ifstream fin(strPath);
+            pAnim->LoadFromFile(fin);
+
+            ofstream fout(strPath);
+            pAnim->SaveToFile(fout);
+            delete pAnim;
+        }
+        else if (extension == ExtensionPref)
+        {
+            CPrefab* pPref = new CPrefab;
+            pPref->Load(strPath);
+            pPref->Save(strRelativePath);
+
+            delete pPref;
+        }
+        else if (extension == ExtensionMtrl)
+        {
+            CMaterial* pMtrl = new CMaterial;
+
+            pMtrl->Load(strPath);
+            pMtrl->Save(strRelativePath);
+
+            delete pMtrl;
+        }
+        else if (extension == ExtensionLevel)
+        {
+            CLevel* pLevel;
+            pLevel = CLevelSaveLoad::LoadLevel(strRelativePath);
+            CLevelSaveLoad::SaveLevel(pLevel, strRelativePath);
+            delete pLevel;
+        }
     }
 }

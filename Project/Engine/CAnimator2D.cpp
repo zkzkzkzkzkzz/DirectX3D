@@ -68,6 +68,8 @@ void CAnimator2D::Create(const wstring& _strKey, Ptr<CTexture> _AltasTex, Vec2 _
 
 	pAnim = new CAnim;	
 	pAnim->Create(this, _AltasTex, _LeftTop, _vSliceSize, _OffsetSize, _Background, _FrmCount, _FPS);
+	auto name = std::filesystem::path(_strKey).filename();
+	pAnim->SetName(name);
 	m_mapAnim.insert(make_pair(_strKey, pAnim));
 }
 
@@ -116,6 +118,40 @@ void CAnimator2D::SaveToFile(FILE* _File)
 	fwrite(&m_bRepeat, sizeof(bool), 1, _File);
 }
 
+#define TagAnimCount "[AnimCount]"
+#define TagAnimNames "[AnimNames]"
+#define TagPlayingAnimName "[PlayingAnimName]"
+#define TagRepeat "[IsRepeat]"
+
+void CAnimator2D::SaveToFile(ofstream& fout)
+{
+	// 애니메이션 개수 저장
+	size_t AnimCount = m_mapAnim.size();
+	fout << TagAnimCount << endl;
+	fout << AnimCount << endl;
+	if (AnimCount == 0) return;
+
+	fout << TagAnimNames << endl;
+	for (const auto& pair : m_mapAnim)
+	{
+		fout << ToString(pair.first) << endl;
+	}
+
+	// 플레이 중이던 애니메이션의 키를 저장한다.
+	wstring PlayAnimName;
+	fout << TagPlayingAnimName << endl;
+
+	if (nullptr != m_CurAnim)
+	{
+		PlayAnimName = m_CurAnim->GetName();
+	}
+
+	fout << ToString(PlayAnimName) << endl;
+
+	fout << TagRepeat << endl;
+	fout << m_bRepeat << endl;
+}
+
 void CAnimator2D::LoadFromFile(FILE* _File)
 {
 	// 애니메이션 개수 로드
@@ -141,4 +177,70 @@ void CAnimator2D::LoadFromFile(FILE* _File)
 	}
 
 	fread(&m_bRepeat, sizeof(bool), 1, _File);
+}
+
+void CAnimator2D::LoadFromFile(ifstream& fin)
+{
+	size_t animcount;
+	Utils::GetLineUntilString(fin, TagAnimCount);
+	fin >> animcount;
+
+	if (animcount == 0) return;
+
+	Utils::GetLineUntilString(fin, TagAnimNames);
+
+	wstring path = CPathMgr::GetContentPath();
+	path += L"anim\\";
+
+	vector<string> files;
+	Utils::LoadAllFilePaths(path, files);
+
+	for (size_t i = 0; i < animcount; i++)
+	{
+		string animName;
+		getline(fin, animName);
+
+		bool isFind = false;
+		for (int i = 0; i < files.size(); i++) 
+		{
+			if (files[i].find(animName) != string::npos) 
+			{
+				isFind = true;
+
+				ifstream finAnim(files[i]);
+
+				CAnim* pAnim = new CAnim;
+				pAnim->LoadFromFile(finAnim);
+
+				pAnim->m_Animator = this;
+				m_mapAnim.insert(make_pair(pAnim->GetName(), pAnim));
+				break;
+			}
+		}
+
+		if (!isFind) 
+		{
+			MessageBox(nullptr, L"없는 애니메이션입니다.", L"애니메이션 로드 실패", 0);
+		}
+	}
+
+	string str;
+	Utils::GetLineUntilString(fin, TagPlayingAnimName);
+	getline(fin, str);
+
+	bool repeat;
+	Utils::GetLineUntilString(fin, TagRepeat);
+	fin >> repeat;
+
+	Play(ToWString(str), repeat);
+}
+
+void CAnimator2D::SaveAllAnim(const wstring& path)
+{
+	for (auto iter : m_mapAnim) {
+		string animPath = ToString(path + iter.second->GetName());
+		animPath += ExtensionAnim;
+		ofstream fout(animPath);
+		iter.second->SaveToFile(fout);
+	}
 }
