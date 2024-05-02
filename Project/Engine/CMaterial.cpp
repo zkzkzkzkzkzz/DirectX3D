@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+癤#include "pch.h"
 #include "CMaterial.h"
 
 #include "CGraphicsShader.h"
@@ -27,7 +27,7 @@ void CMaterial::UpdateData()
 	if (nullptr == m_pShader.Get())
 		return;
 	
-	// 사용할 쉐이더 바인딩
+	// ъ⑺ 대 諛몃
 	m_pShader->UpdateData();	
 
 	// Texture Update(Register Binding)
@@ -45,7 +45,7 @@ void CMaterial::UpdateData()
 		}
 	}
 
-	// 상수 데이터 업데이트
+	//  곗댄 곗댄
 	static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL_CONST);
 	pCB->SetData(&m_Const);
 	pCB->UpdateData();	
@@ -119,58 +119,52 @@ void* CMaterial::GetScalarParam(SCALAR_PARAM _ParamType)
 	return nullptr;
 }
 
+#define TagMtrlConst "[MtrlConst]"
+#define TagTexture "[Textures]"
+#define TagMtrlShader "[MtrlShader]"
 int CMaterial::Save(const wstring& _strRelativePath)
 {
 	wstring strFilePath = CPathMgr::GetContentPath();
 	strFilePath += _strRelativePath;
 
-	FILE* pFile = nullptr;
-	_wfopen_s(&pFile, strFilePath.c_str(), L"wb");
+	ofstream fout(strFilePath);
+	if (!fout.is_open()) return E_FAIL;
 
-	if (nullptr == pFile)
-		return E_FAIL;
-
-	// 재질 상수값 저장
-	fwrite(&m_Const, sizeof(tMtrlConst), 1, pFile);	
-
+	fout << TagMtrlConst << endl;
+	fout << m_Const << endl;
 
 	// 재질이 참조하는 텍스쳐 정보를 저장	
+	fout << TagTexture << endl;
 	for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
 	{
-		SaveAssetRef<CTexture>(m_arrTex[i], pFile);
+		SaveAssetRef<CTexture>(m_arrTex[i], fout);
 	}
 
 	// 재질이 참조하는 쉐이더 정보를 저장
-	SaveAssetRef<CGraphicsShader>(m_pShader, pFile);
-
-	fclose(pFile);
+	fout << TagMtrlShader << endl;
+	SaveAssetRef<CGraphicsShader>(m_pShader, fout);
 
 	return 0;
 }
 
 int CMaterial::Load(const wstring& _strFilePath)
 {
-	FILE* pFile = nullptr;
-	_wfopen_s(&pFile, _strFilePath.c_str(), L"rb");
+	ifstream fin(_strFilePath);
+	if (!fin.is_open()) return E_FAIL;
 
-	if (nullptr == pFile)
-		return E_FAIL;
-
-	// 재질 상수값 저장
-	fread(&m_Const, sizeof(tMtrlConst), 1, pFile);
-
+	Utils::GetLineUntilString(fin, TagMtrlConst);
+	fin >> m_Const;
 
 	// 재질이 참조하는 텍스쳐 정보를 로드
+	Utils::GetLineUntilString(fin, TagTexture);
 	for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
 	{
-		LoadAssetRef<CTexture>(m_arrTex[i], pFile);
+		LoadAssetRef<CTexture>(m_arrTex[i], fin);
 	}
 
 	// 재질이 참조하는 쉐이더 정보를 저장
-	LoadAssetRef<CGraphicsShader>(m_pShader, pFile);
-
-
-	fclose(pFile);
+	Utils::GetLineUntilString(fin, TagMtrlShader);
+	LoadAssetRef<CGraphicsShader>(m_pShader, fin);
 
 	return 0;
 }

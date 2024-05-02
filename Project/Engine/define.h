@@ -27,6 +27,12 @@
 #define CLONE_DISABLE(TYPE) TYPE* Clone() { return nullptr; assert(nullptr); }\
 							TYPE(const TYPE& _OriginBuffer) = delete;
 
+#define ExtensionAnim ".anim"
+#define ExtensionLevel ".lv"
+#define ExtensionPref ".pref"
+#define ExtensionMtrl ".mtrl"
+#define ExtensionFSM ".fsm"
+
 enum class LAYER
 {
 	LAYER_DEFAULT,
@@ -265,4 +271,15 @@ enum class LEVEL_STATE
 	PAUSE,
 	STOP,
 	NONE,
+};
+
+
+enum class MRT_TYPE
+{
+	SWAPCHAIN,		// RT 1, DS 1
+	DEFERRED,		// RT 5, DS 0
+	LIGHT,			// RT 3, DS 0
+	SHADOW_DEPTH,	// RT 1, DS 1
+
+	END,
 };

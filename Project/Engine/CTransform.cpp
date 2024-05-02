@@ -23,9 +23,9 @@ void CTransform::finaltick()
 
 	Matrix matScale = XMMatrixScaling(m_vRelativeScale.x, m_vRelativeScale.y, m_vRelativeScale.z);
 	
-	Matrix matRotX = XMMatrixRotationX(m_vRealtiveRotation.x);
-	Matrix matRotY = XMMatrixRotationY(m_vRealtiveRotation.y);
-	Matrix matRotZ = XMMatrixRotationZ(m_vRealtiveRotation.z);
+	Matrix matRotX = XMMatrixRotationX(m_vRelativeRotation.x);
+	Matrix matRotY = XMMatrixRotationY(m_vRelativeRotation.y);
+	Matrix matRotZ = XMMatrixRotationZ(m_vRelativeRotation.z);
 
 	Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
 
@@ -113,14 +113,48 @@ void CTransform::SaveToFile(FILE* _File)
 {
 	fwrite(&m_vRelativePos, sizeof(Vec3), 1, _File);
 	fwrite(&m_vRelativeScale, sizeof(Vec3), 1, _File);
-	fwrite(&m_vRealtiveRotation, sizeof(Vec3), 1, _File);
+	fwrite(&m_vRelativeRotation, sizeof(Vec3), 1, _File);
 	fwrite(&m_bAbsolute, sizeof(bool), 1, _File);	
+}
+
+#define TagPos "[Pos]"
+#define TagScale "[Scale]"
+#define TagRotation "[Rotation]"
+#define TagAbsolute "[Absolute]"
+
+void CTransform::SaveToFile(ofstream& fout)
+{
+	fout << TagPos << endl;
+	fout << m_vRelativePos << endl;
+	fout << TagScale << endl;
+	fout << m_vRelativeScale << endl;
+	fout << TagRotation << endl;
+	fout << m_vRelativeRotation << endl;
+	fout << TagAbsolute << endl;
+	fout << m_bAbsolute << endl;
 }
 
 void CTransform::LoadFromFile(FILE* _File)
 {
 	fread(&m_vRelativePos, sizeof(Vec3), 1, _File);
 	fread(&m_vRelativeScale, sizeof(Vec3), 1, _File);
-	fread(&m_vRealtiveRotation, sizeof(Vec3), 1, _File);
+	fread(&m_vRelativeRotation, sizeof(Vec3), 1, _File);
 	fread(&m_bAbsolute, sizeof(bool), 1, _File);
+}
+
+void CTransform::LoadFromFile(ifstream& fin)
+{
+	string tag;
+
+	Utils::GetLineUntilString(fin, TagPos);
+	fin >> m_vRelativePos;
+	
+	Utils::GetLineUntilString(fin, TagScale);
+	fin >> m_vRelativeScale;
+
+	Utils::GetLineUntilString(fin, TagRotation);
+	fin >> m_vRelativeRotation;
+
+	Utils::GetLineUntilString(fin, TagAbsolute);
+	fin >> m_bAbsolute;
 }

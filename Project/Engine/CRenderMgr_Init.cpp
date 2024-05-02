@@ -9,6 +9,7 @@
 #include "CMeshRender.h"
 
 #include "CStructuredBuffer.h"
+#include "CMRT.h"
 
 void CRenderMgr::init()
 {
@@ -37,6 +38,66 @@ void CRenderMgr::init()
 	m_vecNoiseTex[2]->UpdateData(14);
 	m_vecNoiseTex[2]->UpdateData_CS_SRV(14);
 	g_global.g_NoiseTexResolution = Vec2(m_vecNoiseTex[2]->GetWidth(), m_vecNoiseTex[2]->GetHeight());
+
+	// MRT Create
+	CreateMRT();
+}
+
+
+void CRenderMgr::CreateMRT()
+{
+	Vec2 vResolution = CDevice::GetInst()->GetRenderResolution();
+
+	// =============
+	// SwapChain MRT
+	// =============
+	{
+		Ptr<CTexture> RTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+		Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
+		Vec4 vClearColor = (Vec4(0.3f, 0.3f, 0.3f, 1.f));
+
+		m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN] = new CMRT;
+		m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->Create(&RTTex, 1, DSTex);
+		m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->SetClearColor(&vClearColor, 1);
+	}
+
+	// ============
+	// Deferred MRT
+	// ============
+	{
+		Ptr<CTexture> pRTTex[4] =
+		{
+			CAssetMgr::GetInst()->CreateTexture(L"ColorTargetTex"
+											  , vResolution.x, vResolution.y
+											  , DXGI_FORMAT_R8G8B8A8_UNORM
+											  , D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
+			CAssetMgr::GetInst()->CreateTexture(L"PositionTargetTex"
+											  , vResolution.x, vResolution.y
+											  , DXGI_FORMAT_R32G32B32A32_FLOAT
+											  , D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
+			CAssetMgr::GetInst()->CreateTexture(L"NormalTargetTex"
+											  , vResolution.x, vResolution.y
+											  , DXGI_FORMAT_R32G32B32A32_FLOAT
+											  , D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
+			CAssetMgr::GetInst()->CreateTexture(L"DataTargetTex"
+											  , vResolution.x, vResolution.y
+											  , DXGI_FORMAT_R32G32B32A32_FLOAT
+											  , D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
+		};
+
+		Vec4 arrClearColor[4] = {
+			Vec4(0.f, 0.f, 0.f, 1.f),
+			Vec4(0.f, 0.f, 0.f, 0.f),
+			Vec4(0.f, 0.f, 0.f, 0.f),
+			Vec4(0.f, 0.f, 0.f, 0.f),
+		};
+
+		Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
+
+		m_arrMRT[(UINT)MRT_TYPE::DEFERRED] = new CMRT;
+		m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->Create(pRTTex, 4, DSTex);
+		m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->SetClearColor(arrClearColor, 4);
+	}
 }
 
 void CRenderMgr::CopyRenderTargetToPostProcessTarget()

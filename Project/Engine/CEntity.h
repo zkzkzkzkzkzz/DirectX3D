@@ -12,6 +12,7 @@ private:
 
 public:
 	void SetName(const wstring& _strName) { m_strName = _strName; }
+	void SetName(const string& _strName) { m_strName = ToWString(_strName); }
 	const wstring& GetName() const { return m_strName; }
 	UINT GetID() const { return m_ID; }
 

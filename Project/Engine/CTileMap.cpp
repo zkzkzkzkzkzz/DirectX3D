@@ -129,10 +129,6 @@ void CTileMap::SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx)
 	m_vecTileInfo[idx].bRender = 1;
 }
 
-
-
-
-
 void CTileMap::SaveToFile(FILE* _File)
 {
 	// TileMap 정보 저장
@@ -152,6 +148,55 @@ void CTileMap::SaveToFile(FILE* _File)
 	size_t InfoCount = m_vecTileInfo.size();
 	fwrite(&InfoCount, sizeof(size_t), 1, _File);
 	fwrite(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
+}
+
+#define TagFaceX "[FaceX]"
+#define TagFaceY "[FaceY]"
+#define TagRenderSize "[RenderSize]"
+#define TagAtlas "[Atlas]"
+#define TagPixelSize "[PixelSize]"
+#define TagSliceSize "[SliceSize]"
+#define TagMaxCol "[MaxCol]"
+#define TagMaxRow "[MaxRow]"
+#define TagInfoCount "[InfoCount]"
+#define TagTileInfo "[TileInfo]"
+
+void CTileMap::SaveToFile(ofstream& fout)
+{
+	fout << TagFaceX << endl;
+	fout << m_FaceX << endl;
+
+	fout << TagFaceY << endl;
+	fout << m_FaceY << endl;
+
+	fout << TagRenderSize << endl;
+	fout << m_vTileRenderSize << endl;
+
+	fout << TagAtlas << endl;
+	SaveAssetRef(m_TileAtlas, fout);
+
+	fout << TagPixelSize << endl;
+	fout << m_vTilePixelSize << endl;
+	
+	fout << TagSliceSize << endl;
+	fout << m_vSliceSizeUV << endl;
+
+	fout << TagMaxCol << endl;
+	fout << m_MaxCol << endl;
+
+	fout << TagMaxRow << endl;
+	fout << m_MaxRow << endl;
+
+	size_t InfoCount = m_vecTileInfo.size();
+	fout << TagInfoCount << endl;
+	fout << InfoCount << endl;
+
+	if (InfoCount == 0) return;
+
+	fout << TagTileInfo << endl;
+	for (int i = 0; i < m_vecTileInfo.size(); i++) {
+		fout << m_vecTileInfo[i] << endl;
+	}
 }
 
 void CTileMap::LoadFromFile(FILE* _File)
@@ -174,4 +219,67 @@ void CTileMap::LoadFromFile(FILE* _File)
 	fread(&InfoCount, sizeof(size_t), 1, _File);
 	m_vecTileInfo.reserve(InfoCount);
 	fread(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
+}
+
+void CTileMap::LoadFromFile(ifstream& fin)
+{
+	Utils::GetLineUntilString(fin, TagFaceX);
+	fin >> m_FaceX;
+
+	Utils::GetLineUntilString(fin, TagFaceY);
+	fin >> m_FaceY;
+
+	Utils::GetLineUntilString(fin, TagRenderSize);
+	fin >> m_vTileRenderSize;
+
+	Utils::GetLineUntilString(fin, TagAtlas);
+	LoadAssetRef(m_TileAtlas, fin);
+
+	Utils::GetLineUntilString(fin, TagPixelSize);
+	fin >> m_vTilePixelSize;
+
+	Utils::GetLineUntilString(fin, TagSliceSize);
+	fin >> m_vSliceSizeUV;
+
+	Utils::GetLineUntilString(fin, TagMaxCol);
+	fin >> m_MaxCol;
+
+	Utils::GetLineUntilString(fin, TagMaxRow);
+	fin >> m_MaxRow;
+
+	size_t infoCnt;
+	Utils::GetLineUntilString(fin, TagInfoCount);
+	fin >> infoCnt;
+
+	if (infoCnt == 0) return;
+
+	Utils::GetLineUntilString(fin, TagTileInfo);
+	for (int i = 0; i < m_vecTileInfo.size(); i++) {
+		fin >> m_vecTileInfo[i];
+	}
+}
+
+#define TagLeftTop "[LeftTop]"
+#define TagRender "[IsRender]"
+
+ofstream& operator<<(ofstream& fout, const tTileInfo& info)
+{
+	fout << TagLeftTop << endl;
+	fout << info.vLeftTopUV << endl;
+
+	fout << TagRender << endl;
+	fout << info.bRender;
+
+	return fout;
+}
+
+ifstream& operator>>(ifstream& fin, tTileInfo& info)
+{
+	Utils::GetLineUntilString(fin, TagLeftTop);
+	fin >> info.vLeftTopUV;
+
+	Utils::GetLineUntilString(fin, TagRender);
+	fin >> info.bRender;
+	
+	return fin;
 }
