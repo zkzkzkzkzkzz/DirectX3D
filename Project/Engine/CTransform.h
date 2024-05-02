@@ -7,7 +7,7 @@ class CTransform :
 private:
     Vec3    m_vRelativePos;
     Vec3    m_vRelativeScale;
-    Vec3    m_vRealtiveRotation;
+    Vec3    m_vRelativeRotation;
 
     Vec3    m_vWorldViewPos;
 
@@ -24,13 +24,13 @@ public:
 public:
     void SetRelativePos(Vec3 _Pos) {m_vRelativePos = _Pos;}
     void SetRelativeScale(Vec3 _Scale) {m_vRelativeScale = _Scale;}
-    void SetRelativeRotation(Vec3 _Rotation) { m_vRealtiveRotation = _Rotation; }
+    void SetRelativeRotation(Vec3 _Rotation) { m_vRelativeRotation = _Rotation; }
 
     void SetWorldMat(const Matrix _matWorld) { m_matWorld = _matWorld; }
 
     Vec3 GetRelativePos() const { return m_vRelativePos; }
     Vec3 GetRelativeScale() const { return m_vRelativeScale; }
-    Vec3 GetRelativeRotation() const { return m_vRealtiveRotation; }
+    Vec3 GetRelativeRotation() const { return m_vRelativeRotation; }
 
     Vec3 GetWorldPos() { return m_matWorld.Translation(); }
     Vec3 GetWorldScale();
@@ -48,11 +48,11 @@ public:
     Vec3 GetWorldViewPos() const { return g_Transform.matWV.Translation(); }
 
     virtual void SaveToFile(FILE* _File) override;
+    virtual void SaveToFile(ofstream& fout) override;
     virtual void LoadFromFile(FILE* _File) override;
-
-public:
+    virtual void LoadFromFile(ifstream& fin) override;
     CLONE(CTransform);
+public:
     CTransform();    
     ~CTransform();
 };
-
