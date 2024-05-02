@@ -175,6 +175,7 @@
     <ClInclude Include="CMRT.h">
       <Filter>04. Manager\RenderMgr\MRT</Filter>
     </ClInclude>
+    <ClInclude Include="CRandomMgr.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -341,6 +342,7 @@
     <ClCompile Include="CMRT.cpp">
       <Filter>04. Manager\RenderMgr\MRT</Filter>
     </ClCompile>
+    <ClCompile Include="CRandomMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -558,6 +560,9 @@
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
     <FxCompile Include="skybox.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
+    <FxCompile Include="std3d_deferred.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
   </ItemGroup>
