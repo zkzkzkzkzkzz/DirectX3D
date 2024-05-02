@@ -408,7 +408,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(ifstream& fin)
 				break;
 			case COMPONENT_TYPE::SKYBOX:
 				pComponent = new CSkyBox;
-
+				break;
 			default:
 				assert(nullptr);
 				break;

@@ -5,6 +5,12 @@
 #include "CMesh.h"
 
 #include "CTransform.h"
+
+#define TagType "[SkyBoxType]"
+#define TagSphere "[SkyBoxSphereTex]"
+#define TagCube "[SkyBoxCubeTex]"
+
+
 CSkyBox::CSkyBox()
 	: CRenderComponent(COMPONENT_TYPE::SKYBOX)
 	, m_SkyBoxType(SKYBOX_TYPE::SPHERE)
@@ -31,20 +37,39 @@ void CSkyBox::SetSkyBoxType(SKYBOX_TYPE _Type)
 	}
 }
 
-void CSkyBox::SaveToFile(FILE* _File)
-{
-}
-
-void CSkyBox::LoadFromFile(FILE* _File)
-{
-}
 
 void CSkyBox::SaveToFile(ofstream& fout)
 {
+	fout << TagType << endl;
+
+	int iSkyBoxType = (int)m_SkyBoxType;
+	fout << iSkyBoxType << endl;
+
+	fout << TagSphere << endl;
+	SaveAssetRef(m_SphereTex, fout);
+
+	fout << TagCube << endl;
+	SaveAssetRef(m_CubeTex, fout);
+
 }
 
 void CSkyBox::LoadFromFile(ifstream& fin)
 {
+	string tag;
+
+	Utils::GetLineUntilString(fin, TagType);
+	
+	int iSkyBoxType;
+	fin >> iSkyBoxType;
+
+	m_SkyBoxType = (SKYBOX_TYPE)iSkyBoxType;
+
+	Utils::GetLineUntilString(fin, TagSphere);
+	LoadAssetRef(m_SphereTex, fin);
+
+	Utils::GetLineUntilString(fin, TagCube);
+	LoadAssetRef(m_CubeTex, fin);
+
 }
 
 void CSkyBox::finaltick()
