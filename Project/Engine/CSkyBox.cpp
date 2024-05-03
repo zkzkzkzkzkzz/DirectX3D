@@ -5,6 +5,12 @@
 #include "CMesh.h"
 
 #include "CTransform.h"
+
+#define TagType "[SkyBoxType]"
+#define TagSphere "[SkyBoxSphereTex]"
+#define TagCube "[SkyBoxCubeTex]"
+
+
 CSkyBox::CSkyBox()
 	: CRenderComponent(COMPONENT_TYPE::SKYBOX)
 	, m_SkyBoxType(SKYBOX_TYPE::SPHERE)
@@ -29,6 +35,45 @@ void CSkyBox::SetSkyBoxType(SKYBOX_TYPE _Type)
 	{
 		SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CubeMesh"));
 	}
+}
+
+
+void CSkyBox::SaveToFile(ofstream& fout)
+{
+	fout << TagType << endl;
+
+	string strSkyBoxType;
+	strSkyBoxType = ToString(magic_enum::enum_name(m_SkyBoxType));
+
+	fout << strSkyBoxType << endl;
+
+	fout << TagSphere << endl;
+	SaveAssetRef(m_SphereTex, fout);
+
+	fout << TagCube << endl;
+	SaveAssetRef(m_CubeTex, fout);
+
+}
+
+void CSkyBox::LoadFromFile(ifstream& fin)
+{
+	string tag;
+
+	Utils::GetLineUntilString(fin, TagType);
+	
+	string strSkyBoxType;
+	fin >> strSkyBoxType;
+
+	auto SkyboxType = magic_enum::enum_cast<SKYBOX_TYPE>(strSkyBoxType);
+
+	m_SkyBoxType = SkyboxType.value();
+
+	Utils::GetLineUntilString(fin, TagSphere);
+	LoadAssetRef(m_SphereTex, fin);
+
+	Utils::GetLineUntilString(fin, TagCube);
+	LoadAssetRef(m_CubeTex, fin);
+
 }
 
 void CSkyBox::finaltick()
