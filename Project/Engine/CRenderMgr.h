@@ -66,6 +66,8 @@ public:
             m_RenderFunc = &CRenderMgr::render_play;
     }
 
+    CMRT* GetMRT(MRT_TYPE _Type) { return m_arrMRT[(UINT)_Type]; }
+
     void SetClearColor(const Vec4& _ClearColor) { m_vClearColor = _ClearColor; }
     Vec4 GetClearColor() { return m_vClearColor;}
 public:

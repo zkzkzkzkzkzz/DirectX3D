@@ -248,6 +248,15 @@ enum class LIGHT_TYPE
 
 enum class SHADER_DOMAIN
 {
+	// Deferred
+	DOMAIN_DEFERRED,
+	DOMAIN_DECAL,
+	DOMAIN_LIGHTING,
+
+	// Merge
+	DOMAIN_MERGE, // Deferred 정보를 SwapChain 타겟으로 이동
+
+	// Foward
 	DOMAIN_OPAQUE,			// 불투명
 	DOMAIN_MASKED,			// 불투명 or 투명
 	DOMAIN_TRANSPARENT,		// 반투명

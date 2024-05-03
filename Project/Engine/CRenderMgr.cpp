@@ -45,7 +45,6 @@ void CRenderMgr::tick()
 	ClearMRT();
 	UpdateData();
 
-	m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
 
 	(this->*m_RenderFunc)();
 	render_debug();
