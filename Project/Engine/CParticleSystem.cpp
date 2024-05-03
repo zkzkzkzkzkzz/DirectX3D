@@ -204,6 +204,23 @@ void CParticleSystem::SaveToFile(FILE* _File)
 	SaveAssetRef(m_ParticleTex, _File);	
 }
 
+#define TagMaxPraticleCount "[MaxParticleCount]"
+#define TagModules "[Modules]"
+#define TagParticleTexture "[ParticleTexture]"
+
+void CParticleSystem::SaveToFile(ofstream& fout)
+{
+	fout << TagMaxPraticleCount << endl;
+	fout << m_MaxParticleCount << endl;
+
+	fout << TagModules << endl;
+	fout << m_Module << endl;
+
+	fout << TagParticleTexture << endl;
+	SaveAssetRef(m_ParticleTex, fout);
+
+}
+
 void CParticleSystem::LoadFromFile(FILE* _File)
 {
 	// 파티클 최대 갯수 및 모듈 정보 로드
@@ -217,4 +234,16 @@ void CParticleSystem::LoadFromFile(FILE* _File)
 
 	// 파티클 입자 텍스쳐 정보 로드
 	LoadAssetRef(m_ParticleTex, _File);
+}
+
+void CParticleSystem::LoadFromFile(ifstream& fin)
+{
+	Utils::GetLineUntilString(fin, TagMaxPraticleCount);
+	fin >> m_MaxParticleCount;
+
+	Utils::GetLineUntilString(fin, TagModules);
+	fin >> m_Module;
+
+	Utils::GetLineUntilString(fin, TagParticleTexture);
+	LoadAssetRef(m_ParticleTex, fin);
 }

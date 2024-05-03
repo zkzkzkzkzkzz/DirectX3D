@@ -31,6 +31,7 @@
 
 #include "CIdleState.h"
 #include "CTraceState.h"
+#include <Scripts/CRenderMgrScript.h>
 
 
 void CCreateTempLevel::Init()
@@ -114,13 +115,20 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->Transform()->SetRelativePos(Vec3(-500.f, 0.f, 500.f));
 	pObj->Transform()->SetRelativeRotation(Vec3(XM_PI / 4.f, XM_PI / 4.f, 0.f));
 
-	pObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+	pObj->Light3D()->SetLightType(LIGHT_TYPE::POINT);
 	pObj->Light3D()->SetLightColor(Vec3(1.f, 1.f, 1.f));
 	pObj->Light3D()->SetAmbient(Vec3(0.1f, 0.1f, 0.1f));
 	pObj->Light3D()->SetSpecular(Vec3(0.3f, 0.3f, 0.3f));
 	pObj->Light3D()->SetRadius(1000.f);
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
+
+	pObj = pObj->Clone();
+	pObj->SetName(L"Light3D_Clone2");
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	pObj->Light3D()->SetLightColor(Vec3(0.3f, 1.f, 0.3f));
+	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
+
 
 	// SkyBox 용 오브젝트 추가
 	pObj = new CGameObject;
@@ -140,6 +148,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pObj, (UINT)LAYER::LAYER_DEFAULT, false);
 
+
 	// Player Object 생성
 	pObj = new CGameObject;
 	pObj->SetName(L"Player");
@@ -150,6 +159,14 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CAnimator2D);
 	pObj->AddComponent(new CPlayerScript);
 	pObj->AddComponent(new CMissileScript);
+
+
+	Ptr<CTexture> pAltasTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\link.png", L"texture\\link.png");
+	pObj->Animator2D()->Create(L"IDLE_UP", pAltasTex, Vec2(0.f, 260.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 1, 10);
+	pObj->Animator2D()->Create(L"IDLE_DOWN", pAltasTex, Vec2(0.f, 0.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 3, 10);
+	wstring str = CPathMgr::GetContentPath();
+	str += L"anim\\";
+	pObj->Animator2D()->SaveAllAnim(str);
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, -500.f, 500.f));
 	pObj->Transform()->SetRelativeScale(Vec3(3000.f, 3000.f, 3000.f));
@@ -172,6 +189,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->SetName(L"Manager Object");
 
 	pObj->AddComponent(new CTimeMgrScript);
+	pObj->AddComponent(new CRenderMgrScript);
 
 	pTempLevel->AddObject(pObj, 0);
 

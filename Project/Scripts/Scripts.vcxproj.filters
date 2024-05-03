@@ -46,14 +46,14 @@
 		<ClInclude Include="CPlayerScript.h">
 			<Filter>Scripts\Lecture</Filter>
 		</ClInclude>
+		<ClInclude Include="CCameraMoveScript.h">
+			<Filter>Scripts\Manager\MainCamera</Filter>
+		</ClInclude>
 		<ClInclude Include="CRenderMgrScript.h">
 			<Filter>Scripts\Manager\Render</Filter>
 		</ClInclude>
 		<ClInclude Include="CTimeMgrScript.h">
 			<Filter>Scripts\Manager\Time</Filter>
-		</ClInclude>
-		<ClInclude Include="CCameraMoveScript.h">
-			<Filter>Scripts\Manager\MainCamera</Filter>
 		</ClInclude>
 	</ItemGroup>
 	<ItemGroup>
@@ -77,6 +77,9 @@
 		</ClCompile>
 		<ClCompile Include="CPlayerScript.cpp">
 			<Filter>Scripts\Lecture</Filter>
+		</ClCompile>
+		<ClCompile Include="CCameraMoveScript.cpp">
+			<Filter>Scripts\Manager\MainCamera</Filter>
 		</ClCompile>
 		<ClCompile Include="CRenderMgrScript.cpp">
 			<Filter>Scripts\Manager\Render</Filter>

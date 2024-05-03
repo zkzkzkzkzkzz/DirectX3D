@@ -245,3 +245,175 @@ void LoadWString(wstring& _str, FILE* _FILE)
 	_str = szBuff;
 }
 
+#include "CPathMgr.h"
+#include <filesystem>
+void Utils::LoadAllFileNames(const wstring& _path, vector<string>& vec)
+{
+	namespace fs = std::filesystem;
+	for (const fs::directory_entry& entry : fs::directory_iterator(_path)) {
+		if (entry.is_directory()) {
+			LoadAllFileNames(entry.path().wstring(), vec);
+		}
+		else {
+			string str = entry.path().filename().string();
+			vec.push_back(str);
+		}
+	}
+}
+
+void Utils::LoadAllFilePaths(const wstring& _path, vector<string>& vec)
+{
+	namespace fs = std::filesystem;
+	for (const fs::directory_entry& entry : fs::directory_iterator(_path)) {
+		if (entry.is_directory()) {
+			LoadAllFilePaths(entry.path().wstring(), vec);
+		}
+		else {
+			string str = entry.path().string();
+			vec.push_back(str);
+		}
+	}
+}
+
+void Utils::SlicePath(const wstring& _path, vector<string>& vec)
+{
+	vector<string> paths;
+	for (const auto& str : vec) {
+		if (str.find(ToString(_path)) == string::npos) continue;
+		paths.push_back(str.substr(_path.length()));
+	}
+	vec.swap(paths);
+}
+
+string Utils::GetLineUntilString(ifstream& fin, const std::initializer_list<string>& strings)
+{
+	string s;
+
+	while (getline(fin, s)) {
+
+		for (const string& str : strings) {
+			if (s == str) {
+				return str;
+			}
+		}
+	}
+
+	wstring wstr;
+	for (const string& str : strings) {
+		wstr += ToWString(str) + L", ";
+	}
+	wstr.pop_back();
+	wstr.pop_back();
+	MessageBox(nullptr, wstr.c_str(), L"파일 읽기 실패", 0);
+	return string();
+}
+
+string Utils::GetLineUntilString(ifstream& fin, const string& str)
+{
+	string s;
+
+	while (getline(fin, s)) {
+
+		if (s == str) {
+			return str;
+		}
+	}
+
+	wstring wstr = ToWString(str);
+	MessageBox(nullptr, wstr.c_str(), L"파일 읽기 실패", 0);
+	return string();
+}
+
+string Utils::GetLineUntilString(ifstream& fin, const std::initializer_list<const char*> strings)
+{
+	string s;
+
+	while (getline(fin, s)) {
+
+		for (const char* str : strings) {
+			if (s == str) {
+				return str;
+			}
+		}
+	}
+
+	wstring wstr;
+	for (const string& str : strings) {
+		wstr += ToWString(str) + L", ";
+	}
+	wstr.pop_back();
+	wstr.pop_back();
+	MessageBox(nullptr, wstr.c_str(), L"파일 읽기 실패", 0);
+	return string();
+}
+
+// 유지보수 4/4 . 컬러변수 값할당
+const Vec4 GamePlayStatic::COLOR::WHITE = Vec4(1.f, 1.f, 1.f, 1.f);
+const Vec4 GamePlayStatic::COLOR::BLACK = Vec4(0.f, 0.f, 0.f, 1.f);
+const Vec4 GamePlayStatic::COLOR::RED = Vec4(1.f, 0.f, 0.f, 1.f);
+const Vec4 GamePlayStatic::COLOR::GREEN = Vec4(0.f, 1.f, 0.f, 1.f);
+const Vec4 GamePlayStatic::COLOR::BLUE = Vec4(0.f, 0.f, 1.f, 1.f);
+const Vec4 GamePlayStatic::COLOR::YELLOW = Vec4(1.f, 1.f, 0.f, 1.f);
+const Vec4 GamePlayStatic::COLOR::MAZENTA = Vec4(1.f, 0.f, 1.f, 1.f);
+
+float RoRMath::Lerp(float A, float B, float Alpha)
+{
+	return A * (1 - Alpha) + B * Alpha;
+}
+
+Vec2 RoRMath::Lerp(Vec2 A, Vec2 B, float Alpha)
+{
+	float x = RoRMath::Lerp(A.x, B.x, Alpha);
+	float y = RoRMath::Lerp(A.y, B.y, Alpha);
+
+	return Vec2(x, y);
+}
+
+Vec3 RoRMath::Lerp(Vec3 A, Vec3 B, float Alpha)
+{
+	float x = RoRMath::Lerp(A.x, B.x, Alpha);
+	float y = RoRMath::Lerp(A.y, B.y, Alpha);
+	float z = RoRMath::Lerp(A.z, B.z, Alpha);
+	
+	return Vec3(x, y, z);
+}
+
+Vec4 RoRMath::Lerp(Vec4 A, Vec4 B, float Alpha)
+{
+	float x = RoRMath::Lerp(A.x, B.x, Alpha);
+	float y = RoRMath::Lerp(A.y, B.y, Alpha);
+	float z = RoRMath::Lerp(A.z, B.z, Alpha);
+	float w = RoRMath::Lerp(A.w, B.w, Alpha);
+
+	return Vec4(x, y, z, w);
+}
+
+int RoRMath::ClampInt(int _input, int _min, int _max)
+{
+	if (_min > _input)
+		return _min;
+
+	if (_max < _input)
+		return _max;
+
+	return _input;
+}
+
+float RoRMath::ClampFloat(float _input, float _min)
+{
+	if (_min > _input)
+		return _min;
+
+	return _input;
+}
+
+float RoRMath::ClampFloat(float _input, float _min, float _max)
+{
+	if (_min > _input)
+		return _min;
+
+	if (_max < _input)
+		return _max;
+
+	return _input;
+}

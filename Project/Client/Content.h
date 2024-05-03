@@ -26,7 +26,7 @@ public:
 
 private:
     void FindFileName(const wstring& _Directory);
-    ASSET_TYPE GetAssetTypeByExt(const path& _relativePath);
+    ASSET_TYPE GetAssetTypeByExt(const std::experimental::filesystem::path& _relativePath);
 
 public:
     Content();

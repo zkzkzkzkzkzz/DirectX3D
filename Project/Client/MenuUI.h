@@ -15,6 +15,8 @@ private:
     void GameObject();
     void Asset();
 
+private:
+    void ContentSaveAll();
 
 public:
     MenuUI();
