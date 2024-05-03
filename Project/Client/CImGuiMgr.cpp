@@ -117,31 +117,44 @@ void CImGuiMgr::progress()
 
 FOCUS_STATE CImGuiMgr::GetFocus_debug()
 {
-    // ����Ʈ ���� ��, 
-    // 1. �ּ� Ǯ�� �ڵ� ����
-    // 2. "����Ʈ UI �� tick()"��
-    //      CImGuiMgr::isViewportFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_None); ���� �߰�
-
-    if (GetFocus() == CEngine::GetInst()->GetMainWind())
-    {
-        if (isViewportFocused)
-        {
-            return FOCUS_STATE::MAIN;
-        }
-        else
-        {
-            return FOCUS_STATE::MAIN;   // ����Ʈ ���� �� �ڵ� ����
-            //return FOCUS_STATE::OTHER;// ����Ʈ ���� �� �ּ� ����
-        }
-    }
-    else  if (ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
+    if (ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
     {
         return FOCUS_STATE::OTHER;
+    }
+    else if (GetFocus() == CEngine::GetInst()->GetMainWind())
+    {
+        return FOCUS_STATE::MAIN;
     }
     else
     {
         return FOCUS_STATE::NONE;
     }
+
+    // 뷰포트 부착 시: 
+    // 1. 아래 코드 주석 해제 
+    // 2. 위 쪽 분기 코드 제거
+    // 3. 뷰포트를 그리는 함수 마지막에 다음 구문 추가: /*CImGuiMgr::isViewportFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_None);*/
+
+    /*
+    // 현재 포커싱 된 창이 없을 경우
+    if (GetFocus() == nullptr)
+    {
+        return FOCUS_STATE::NONE;
+    }
+
+    // 현재 포커싱이 뷰포트일 경우
+    if (GetFocus() == CEngine::GetInst()->GetMainWind() && isViewportFocused)
+    {
+        isViewportFocused = false;
+        return FOCUS_STATE::MAIN;
+    }
+
+    // 뷰포트가 아닌 다른 ImGui 창이 포커싱 된 경우
+    else
+    {
+        return FOCUS_STATE::OTHER;
+    }
+    */
 }
 
 FOCUS_STATE CImGuiMgr::GetFocus_release()
