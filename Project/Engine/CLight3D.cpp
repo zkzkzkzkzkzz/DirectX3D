@@ -29,6 +29,24 @@ void CLight3D::finaltick()
 	}
 }
 
+void CLight3D::render()
+{
+	if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
+	{
+
+	}
+
+	else if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
+	{
+
+	}
+
+	else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
+	{
+
+	}
+}
+
 void CLight3D::SetLightType(LIGHT_TYPE _type)
 {
 	m_Info.LightType = (int)_type;

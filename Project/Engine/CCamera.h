@@ -79,6 +79,9 @@ private:
     void render(vector<CGameObject*>& _vecObj);
     void render_postprocess();
 
+    void Lighting();
+    void Merge();
+
     virtual void SaveToFile(FILE* _File) override;
     virtual void SaveToFile(ofstream& fout) override;
     virtual void LoadFromFile(FILE* _File) override;

@@ -2,6 +2,7 @@
 
 #define FXdebug L"shader\\debug.fx"
 #define FXfunc L"shader\\func.fx"
+#define FXlight L"shader\\light.fx"
 #define FXmerge L"shader\\merge.fx"
 #define FXparticle L"shader\\particle.fx"
 #define FXparticle_update L"shader\\particle_update.fx"

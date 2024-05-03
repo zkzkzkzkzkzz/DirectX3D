@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CRenderMgr.h"
 
 #include "CDevice.h"
@@ -79,7 +79,7 @@ void CRenderMgr::CreateMRT()
 											  , vResolution.x, vResolution.y
 											  , DXGI_FORMAT_R32G32B32A32_FLOAT
 											  , D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
-			CAssetMgr::GetInst()->CreateTexture(L"DataTargetTex"
+			CAssetMgr::GetInst()->CreateTexture(L"EmissiveTargetTex"
 											  , vResolution.x, vResolution.y
 											  , DXGI_FORMAT_R32G32B32A32_FLOAT
 											  , D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
@@ -97,6 +97,33 @@ void CRenderMgr::CreateMRT()
 		m_arrMRT[(UINT)MRT_TYPE::DEFERRED] = new CMRT;
 		m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->Create(pRTTex, 4, DSTex);
 		m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->SetClearColor(arrClearColor, 4);
+	}
+
+
+	// ============
+	// Light MRT
+	// ============
+	{
+		Ptr<CTexture> pRTTex[2] =
+		{
+			CAssetMgr::GetInst()->CreateTexture(L"DiffuseTargetTex"
+											  , vResolution.x, vResolution.y
+											  , DXGI_FORMAT_R8G8B8A8_UNORM
+											  , D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
+			CAssetMgr::GetInst()->CreateTexture(L"SpecularTargetTex"
+											  , vResolution.x, vResolution.y
+											  , DXGI_FORMAT_R8G8B8A8_UNORM
+											  , D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE),
+		};
+
+		Vec4 arrClearColor[2] = {
+			Vec4(0.f, 0.f, 0.f, 1.f),
+			Vec4(0.f, 0.f, 0.f, 1.f),
+		};
+
+		m_arrMRT[(UINT)MRT_TYPE::LIGHT] = new CMRT;
+		m_arrMRT[(UINT)MRT_TYPE::LIGHT]->Create(pRTTex, 2, nullptr);
+		m_arrMRT[(UINT)MRT_TYPE::LIGHT]->SetClearColor(arrClearColor, 2);
 	}
 }
 

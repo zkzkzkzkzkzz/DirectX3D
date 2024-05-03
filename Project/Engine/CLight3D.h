@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CComponent.h"
 class CLight3D :
     public CComponent
@@ -29,6 +29,7 @@ public:
 
 public:
     virtual void finaltick() override;
+    void render();
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void SaveToFile(ofstream& fout) override;

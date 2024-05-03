@@ -68,6 +68,8 @@ public:
 
     CMRT* GetMRT(MRT_TYPE _Type) { return m_arrMRT[(UINT)_Type]; }
 
+    const vector<CLight3D*>& GetLight3D() { return m_vecLight3D; }
+
     void SetClearColor(const Vec4& _ClearColor) { m_vClearColor = _ClearColor; }
     Vec4 GetClearColor() { return m_vClearColor;}
 public:
