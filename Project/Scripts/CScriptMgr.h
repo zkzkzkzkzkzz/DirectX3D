@@ -9,10 +9,9 @@ enum class SCRIPT_TYPE
 	MISSILESCRIPT,
 	MONSTERSCRIPT,
 	PLAYERSCRIPT,
-	RENDERMGRSCRIPT,
-	TIMEMGRSCRIPT,
 	CAMERAMOVESCRIPT,
 	RENDERMGRSCRIPT,
+	TIMEMGRSCRIPT,
 	END,
 };
 
@@ -22,7 +21,7 @@ class CScript;
 
 class CScriptMgr
 {
-public:
+public: 
 	static void GetScriptInfo(vector<wstring>& _vec);
 	static CScript* GetScript(const wstring& _strScriptName);
 	static CScript* GetScript(UINT _iScriptType);
