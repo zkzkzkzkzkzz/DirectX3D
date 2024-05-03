@@ -206,8 +206,9 @@ void CCamera::render()
 	// Deferred 정보를 SwapChain 으로 병합
 	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
 
-	Ptr<CMesh>	pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
-	Ptr<CMaterial> pMergeMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"MergeMtrl");
+	// 매쉬와 머터리얼 가져오기
+	static Ptr<CMesh>	   pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
+	static Ptr<CMaterial>  pMergeMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"MergeMtrl");
 
 	pMergeMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex")); // NormalTargetTex || PositionTargetTex || ColorTargetTex
 	pMergeMtrl->UpdateData();

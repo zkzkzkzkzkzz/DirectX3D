@@ -4,7 +4,11 @@ class CLight3D :
     public CComponent
 {
 private:
-    tLightInfo  m_Info;
+    tLightInfo      m_Info;
+    int             m_LightIdx;
+
+    Ptr<CMesh>      m_VolumeMesh;
+    Ptr<CMaterial>  m_LightMtrl;
 
 
 public:

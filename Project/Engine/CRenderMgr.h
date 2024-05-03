@@ -50,7 +50,12 @@ public:
     bool IsDebugPosition() { return m_DebugPosition; }
 
     void RegisterLight2D(CLight2D* _Light2D) { m_vecLight2D.push_back(_Light2D); }
-    void RegisterLight3D(CLight3D* _Light3D) { m_vecLight3D.push_back(_Light3D); }
+    int RegisterLight3D(CLight3D* _Light3D) 
+    { 
+        m_vecLight3D.push_back(_Light3D); 
+        return m_vecLight3D.size() - 1; 
+    }
+
 
     void CopyRenderTargetToPostProcessTarget();
     Ptr<CTexture> GetPostProcessTex() { return m_PostProcessTex; }

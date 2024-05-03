@@ -87,7 +87,7 @@ void CRenderMgr::CreateMRT()
 
 		Vec4 arrClearColor[4] = {
 			Vec4(0.f, 0.f, 0.f, 1.f),
-			Vec4(0.f, 0.f, 0.f, 1.f),
+			Vec4(0.f, 0.f, 0.f, -1.f),
 			Vec4(0.f, 0.f, 0.f, 1.f),
 			Vec4(0.f, 0.f, 0.f, 1.f),
 		};
