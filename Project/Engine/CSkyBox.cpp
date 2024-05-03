@@ -42,8 +42,10 @@ void CSkyBox::SaveToFile(ofstream& fout)
 {
 	fout << TagType << endl;
 
-	int iSkyBoxType = (int)m_SkyBoxType;
-	fout << iSkyBoxType << endl;
+	string strSkyBoxType;
+	strSkyBoxType = ToString(magic_enum::enum_name(m_SkyBoxType));
+
+	fout << strSkyBoxType << endl;
 
 	fout << TagSphere << endl;
 	SaveAssetRef(m_SphereTex, fout);
@@ -59,10 +61,12 @@ void CSkyBox::LoadFromFile(ifstream& fin)
 
 	Utils::GetLineUntilString(fin, TagType);
 	
-	int iSkyBoxType;
-	fin >> iSkyBoxType;
+	string strSkyBoxType;
+	fin >> strSkyBoxType;
 
-	m_SkyBoxType = (SKYBOX_TYPE)iSkyBoxType;
+	auto SkyboxType = magic_enum::enum_cast<SKYBOX_TYPE>(strSkyBoxType);
+
+	m_SkyBoxType = SkyboxType.value();
 
 	Utils::GetLineUntilString(fin, TagSphere);
 	LoadAssetRef(m_SphereTex, fin);
