@@ -1,24 +1,25 @@
 #include "pch.h"
-#include "Light2DUI.h"
+#include "Light3DUI.h"
 
-#include <Engine\CLight2D.h>
+#include <Engine\CLight3D.h>
 
-Light2DUI::Light2DUI()
-	: ComponentUI("Light2D", "##Light2D", COMPONENT_TYPE::LIGHT2D)
+
+Light3DUI::Light3DUI()
+	: ComponentUI("Light3D", "##Light3D", COMPONENT_TYPE::LIGHT3D)
 {
-	SetComponentTitle("Light2D");
+	SetSize(ImVec2(0.f, 430.f));
+	SetComponentTitle("LIGHT3D");
 }
 
-Light2DUI::~Light2DUI()
+Light3DUI::~Light3DUI()
 {
 }
 
-
-void Light2DUI::render_update()
+void Light3DUI::render_update()
 {
 	ComponentUI::render_update();
 
-	tLightInfo info = GetTargetObject()->Light2D()->GetLightInfo();
+	tLightInfo info = GetTargetObject()->Light3D()->GetLightInfo();
 
 	int LightType = (int)info.LightType;
 	Vec3 vColor = info.vColor;
@@ -27,8 +28,6 @@ void Light2DUI::render_update()
 	float fRadius = info.fRadius;
 	float fAngle = info.fAngle;
 
-	float Dir = 1.f;
-	vWorldDir = AngleToVector(Dir);
 
 
 	ImGui::Text("Light Type");
@@ -63,26 +62,16 @@ void Light2DUI::render_update()
 
 		ImGui::Text("LightDir");
 		ImGui::SameLine(0, 34); ImGui::PushItemWidth(200);
-		ImGui::SliderAngle("##LightDir", &Dir, 0.f, 360.f);
+		ImGui::DragFloat3("##LightDir", vWorldDir);
 
 		ImGui::Text("Angle");
 		ImGui::SameLine(0, 55); ImGui::PushItemWidth(200);
 		ImGui::SliderAngle("##LightAngle", &fAngle, 0.f, 360.f);
 	}
 
-	GetTargetObject()->Light2D()->SetLightType((LIGHT_TYPE)LightType);
-	GetTargetObject()->Light2D()->SetLightColor(vColor);
-	GetTargetObject()->Light2D()->SetAmbient(vAmbient);
-	GetTargetObject()->Light2D()->SetDir(vWorldDir);
-	GetTargetObject()->Light2D()->SetRadius(fRadius);
-	GetTargetObject()->Light2D()->SetAngle(fAngle);
-}
-
-
-Vec3 Light2DUI::AngleToVector(float _angle)
-{
-	float x = cosf(_angle);
-	float y = sinf(_angle);
-
-	return Vec3(x, y, 0.f);
+	GetTargetObject()->Light3D()->SetLightType((LIGHT_TYPE)LightType);
+	GetTargetObject()->Light3D()->SetLightColor(vColor);
+	GetTargetObject()->Light3D()->SetAmbient(vAmbient);
+	GetTargetObject()->Light3D()->SetRadius(fRadius);
+	GetTargetObject()->Light3D()->SetAngle(fAngle);
 }

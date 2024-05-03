@@ -355,3 +355,65 @@ const Vec4 GamePlayStatic::COLOR::GREEN = Vec4(0.f, 1.f, 0.f, 1.f);
 const Vec4 GamePlayStatic::COLOR::BLUE = Vec4(0.f, 0.f, 1.f, 1.f);
 const Vec4 GamePlayStatic::COLOR::YELLOW = Vec4(1.f, 1.f, 0.f, 1.f);
 const Vec4 GamePlayStatic::COLOR::MAZENTA = Vec4(1.f, 0.f, 1.f, 1.f);
+
+float RoRMath::Lerp(float A, float B, float Alpha)
+{
+	return A * (1 - Alpha) + B * Alpha;
+}
+
+Vec2 RoRMath::Lerp(Vec2 A, Vec2 B, float Alpha)
+{
+	float x = RoRMath::Lerp(A.x, B.x, Alpha);
+	float y = RoRMath::Lerp(A.y, B.y, Alpha);
+
+	return Vec2(x, y);
+}
+
+Vec3 RoRMath::Lerp(Vec3 A, Vec3 B, float Alpha)
+{
+	float x = RoRMath::Lerp(A.x, B.x, Alpha);
+	float y = RoRMath::Lerp(A.y, B.y, Alpha);
+	float z = RoRMath::Lerp(A.z, B.z, Alpha);
+	
+	return Vec3(x, y, z);
+}
+
+Vec4 RoRMath::Lerp(Vec4 A, Vec4 B, float Alpha)
+{
+	float x = RoRMath::Lerp(A.x, B.x, Alpha);
+	float y = RoRMath::Lerp(A.y, B.y, Alpha);
+	float z = RoRMath::Lerp(A.z, B.z, Alpha);
+	float w = RoRMath::Lerp(A.w, B.w, Alpha);
+
+	return Vec4(x, y, z, w);
+}
+
+int RoRMath::ClampInt(int _input, int _min, int _max)
+{
+	if (_min > _input)
+		return _min;
+
+	if (_max < _input)
+		return _max;
+
+	return _input;
+}
+
+float RoRMath::ClampFloat(float _input, float _min)
+{
+	if (_min > _input)
+		return _min;
+
+	return _input;
+}
+
+float RoRMath::ClampFloat(float _input, float _min, float _max)
+{
+	if (_min > _input)
+		return _min;
+
+	if (_max < _input)
+		return _max;
+
+	return _input;
+}

@@ -10,8 +10,11 @@ class CEditorObjMgr :
 private:
     vector<CGameObjectEx*>    m_vecEditorObj;
 
+    CGameObjectEx*            m_EditorCam;
+
 public:
     void init();
-    void progress();
+    void progress();    
+    CGameObjectEx* GetEditorCam() { return m_EditorCam; }
 };
 

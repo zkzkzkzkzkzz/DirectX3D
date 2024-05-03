@@ -78,9 +78,6 @@ void CRenderMgr::render_editor()
 
 void CRenderMgr::render_debug()
 {
-	if (m_vecCam.empty())
-		return;
-
 	//레벨이 플레이상태일경우(랜더Func가 render_play 일 경우)
 	if (&CRenderMgr::render_play == m_RenderFunc)
 	{
@@ -226,6 +223,9 @@ void CRenderMgr::Clear()
 
 void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
 {
+	if (_Idx == -1)
+		return;
+
 	if (m_vecCam.size() <= _Idx + 1)
 	{
 		m_vecCam.resize(_Idx + 1);
