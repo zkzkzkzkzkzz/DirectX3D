@@ -1,117 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<ItemGroup>
-		<ClInclude Include="framework.h">
-			<Filter>Default</Filter>
-		</ClInclude>
-		<ClInclude Include="pch.h">
-			<Filter>Default</Filter>
-		</ClInclude>
-		<ClInclude Include="CScriptMgr.h">
-			<Filter>ScriptMgr</Filter>
-		</ClInclude>
-		<ClInclude Include="strAnim.h">
-			<Filter>Default\GenString</Filter>
-		</ClInclude>
-		<ClInclude Include="strFx.h">
-			<Filter>Default\GenString</Filter>
-		</ClInclude>
-		<ClInclude Include="strLevel.h">
-			<Filter>Default\GenString</Filter>
-		</ClInclude>
-		<ClInclude Include="strMtrl.h">
-			<Filter>Default\GenString</Filter>
-		</ClInclude>
-		<ClInclude Include="strPref.h">
-			<Filter>Default\GenString</Filter>
-		</ClInclude>
-		<ClInclude Include="strSnd.h">
-			<Filter>Default\GenString</Filter>
-		</ClInclude>
-		<ClInclude Include="strTex.h">
-			<Filter>Default\GenString</Filter>
-		</ClInclude>
-		<ClInclude Include="strTxt.h">
-			<Filter>Default\GenString</Filter>
-		</ClInclude>
-		<ClInclude Include="CBackgroundScript.h">
-			<Filter>Scripts\Lecture</Filter>
-		</ClInclude>
-		<ClInclude Include="CMissileScript.h">
-			<Filter>Scripts\Lecture</Filter>
-		</ClInclude>
-		<ClInclude Include="CMonsterScript.h">
-			<Filter>Scripts\Lecture</Filter>
-		</ClInclude>
-		<ClInclude Include="CPlayerScript.h">
-			<Filter>Scripts\Lecture</Filter>
-		</ClInclude>
-		<ClInclude Include="CCameraMoveScript.h">
-			<Filter>Scripts\Manager\MainCamera</Filter>
-		</ClInclude>
-		<ClInclude Include="CRenderMgrScript.h">
-			<Filter>Scripts\Manager\Render</Filter>
-		</ClInclude>
-		<ClInclude Include="CTimeMgrScript.h">
-			<Filter>Scripts\Manager\Time</Filter>
-		</ClInclude>
-	</ItemGroup>
-	<ItemGroup>
-		<ClCompile Include="pch.cpp">
-			<Filter>Default</Filter>
-		</ClCompile>
-		<ClCompile Include="Scripts.cpp">
-			<Filter>Default</Filter>
-		</ClCompile>
-		<ClCompile Include="CScriptMgr.cpp">
-			<Filter>ScriptMgr</Filter>
-		</ClCompile>
-		<ClCompile Include="CBackgroundScript.cpp">
-			<Filter>Scripts\Lecture</Filter>
-		</ClCompile>
-		<ClCompile Include="CMissileScript.cpp">
-			<Filter>Scripts\Lecture</Filter>
-		</ClCompile>
-		<ClCompile Include="CMonsterScript.cpp">
-			<Filter>Scripts\Lecture</Filter>
-		</ClCompile>
-		<ClCompile Include="CPlayerScript.cpp">
-			<Filter>Scripts\Lecture</Filter>
-		</ClCompile>
-		<ClCompile Include="CCameraMoveScript.cpp">
-			<Filter>Scripts\Manager\MainCamera</Filter>
-		</ClCompile>
-		<ClCompile Include="CRenderMgrScript.cpp">
-			<Filter>Scripts\Manager\Render</Filter>
-		</ClCompile>
-		<ClCompile Include="CTimeMgrScript.cpp">
-			<Filter>Scripts\Manager\Time</Filter>
-		</ClCompile>
-	</ItemGroup>
-	<ItemGroup>
-		<Filter Include="Default">
-			<UniqueIdentifier>{4f2f6642-c0f0-494a-9d81-0124398fdb95}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts">
-			<UniqueIdentifier>{af5c3808-4d30-476b-b2ab-d844558017d2}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="ScriptMgr">
-			<UniqueIdentifier>{b42de7fc-e585-40cf-9c65-79e91e2b59d4}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Default\GenString">
-			<UniqueIdentifier>{46c15b8a-1132-401e-a7fa-a09bd70b5dff}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\Lecture">
-			<UniqueIdentifier>{4d80f442-9779-4484-a06b-9160bbb02db5}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\Manager\Render">
-			<UniqueIdentifier>{434f77b0-ef68-45d5-9174-f0526ab237fd}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\Manager\Time">
-			<UniqueIdentifier>{b728774b-6326-4ed2-9f8c-4f4bb7b5b56b}</UniqueIdentifier>
-		</Filter>
-		<Filter Include="Scripts\Manager\MainCamera">
-			<UniqueIdentifier>{e32f5246-dc85-4235-854f-d0cbfd1d8fdf}</UniqueIdentifier>
-		</Filter>
-	</ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="CScriptMgr.h">
+      <Filter>ScriptMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="strAnim.h">
+      <Filter>Default\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strFx.h">
+      <Filter>Default\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strLevel.h">
+      <Filter>Default\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strMtrl.h">
+      <Filter>Default\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strPref.h">
+      <Filter>Default\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strSnd.h">
+      <Filter>Default\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strTex.h">
+      <Filter>Default\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="strTxt.h">
+      <Filter>Default\GenString</Filter>
+    </ClInclude>
+    <ClInclude Include="CBackgroundScript.h">
+      <Filter>Scripts\Lecture</Filter>
+    </ClInclude>
+    <ClInclude Include="CMissileScript.h">
+      <Filter>Scripts\Lecture</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterScript.h">
+      <Filter>Scripts\Lecture</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerScript.h">
+      <Filter>Scripts\Lecture</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraMoveScript.h">
+      <Filter>Scripts\Manager\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderMgrScript.h">
+      <Filter>Scripts\Manager\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimeMgrScript.h">
+      <Filter>Scripts\Manager\Time</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>Default</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripts.cpp">
+      <Filter>Default</Filter>
+    </ClCompile>
+    <ClCompile Include="CScriptMgr.cpp">
+      <Filter>ScriptMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CBackgroundScript.cpp">
+      <Filter>Scripts\Lecture</Filter>
+    </ClCompile>
+    <ClCompile Include="CMissileScript.cpp">
+      <Filter>Scripts\Lecture</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterScript.cpp">
+      <Filter>Scripts\Lecture</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerScript.cpp">
+      <Filter>Scripts\Lecture</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraMoveScript.cpp">
+      <Filter>Scripts\Manager\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderMgrScript.cpp">
+      <Filter>Scripts\Manager\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimeMgrScript.cpp">
+      <Filter>Scripts\Manager\Time</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Default">
+      <UniqueIdentifier>{4f2f6642-c0f0-494a-9d81-0124398fdb95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{af5c3808-4d30-476b-b2ab-d844558017d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptMgr">
+      <UniqueIdentifier>{b42de7fc-e585-40cf-9c65-79e91e2b59d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default\GenString">
+      <UniqueIdentifier>{46c15b8a-1132-401e-a7fa-a09bd70b5dff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Lecture">
+      <UniqueIdentifier>{4d80f442-9779-4484-a06b-9160bbb02db5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager">
+      <UniqueIdentifier>{7e2618a0-fa56-4b89-93a1-fc7f7083d374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\Camera">
+      <UniqueIdentifier>{2e1568fc-db48-4110-923e-f26dd8be0036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\Render">
+      <UniqueIdentifier>{99d3dd37-f3db-4c46-bc52-10d6c56fd614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\Time">
+      <UniqueIdentifier>{9b5c2bf2-2681-42e9-b790-8b4aba881373}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
 </Project>

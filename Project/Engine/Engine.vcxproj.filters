@@ -175,6 +175,9 @@
     <ClInclude Include="CMRT.h">
       <Filter>04. Manager\RenderMgr\MRT</Filter>
     </ClInclude>
+    <ClInclude Include="CRandomMgr.h">
+      <Filter>04. Manager\RandomMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -333,13 +336,20 @@
     <ClCompile Include="CLight3D.cpp">
       <Filter>08. Component\07. Light3D</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleMath.cpp" />
-    <ClCompile Include="struct.cpp" />
     <ClCompile Include="CSkyBox.cpp">
       <Filter>08. Component\RenderComponent\04. SkyBox</Filter>
     </ClCompile>
     <ClCompile Include="CMRT.cpp">
       <Filter>04. Manager\RenderMgr\MRT</Filter>
+    </ClCompile>
+    <ClCompile Include="CRandomMgr.cpp">
+      <Filter>04. Manager\RandomMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="struct.cpp">
+      <Filter>01. Header</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleMath.cpp">
+      <Filter>01. Header</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -516,6 +526,9 @@
     </Filter>
     <Filter Include="04. Manager\RenderMgr\MRT">
       <UniqueIdentifier>{ba2bd62a-c26a-405d-9007-57cb89884473}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\RandomMgr">
+      <UniqueIdentifier>{5a89e353-570a-4435-a23f-d6e1271f5622}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
