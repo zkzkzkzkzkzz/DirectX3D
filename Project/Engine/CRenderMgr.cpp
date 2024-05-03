@@ -224,6 +224,9 @@ void CRenderMgr::Clear()
 
 void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
 {
+	if (_Idx == -1)
+		return;
+
 	if (m_vecCam.size() <= _Idx + 1)
 	{
 		m_vecCam.resize(_Idx + 1);

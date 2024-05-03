@@ -7,8 +7,10 @@
 #include "CPlayerScript.h"
 #include "CRenderMgrScript.h"
 #include "CTimeMgrScript.h"
+#include "CCameraMoveScript.h"
+#include "CRenderMgrScript.h"
 
-void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
+void CScriptMgr::GetScriptInfo(vector<wstring>&_vec)
 {
 	_vec.push_back(L"CBackgroundScript");
 	_vec.push_back(L"CMissileScript");
@@ -16,9 +18,11 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CRenderMgrScript");
 	_vec.push_back(L"CTimeMgrScript");
+	_vec.push_back(L"CCameraMoveScript");
+	_vec.push_back(L"CRenderMgrScript");
 }
 
-CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
+CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 {
 	if (L"CBackgroundScript" == _strScriptName)
 		return new CBackgroundScript;
@@ -32,10 +36,14 @@ CScript * CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CRenderMgrScript;
 	if (L"CTimeMgrScript" == _strScriptName)
 		return new CTimeMgrScript;
+	if (L"CCameraMoveScript" == _strScriptName)
+		return new CCameraMoveScript;
+	if (L"CRenderMgrScript" == _strScriptName)
+		return new CRenderMgrScript;
 	return nullptr;
 }
 
-CScript * CScriptMgr::GetScript(UINT _iScriptType)
+CScript* CScriptMgr::GetScript(UINT _iScriptType)
 {
 	switch (_iScriptType)
 	{
@@ -57,11 +65,17 @@ CScript * CScriptMgr::GetScript(UINT _iScriptType)
 	case (UINT)SCRIPT_TYPE::TIMEMGRSCRIPT:
 		return new CTimeMgrScript;
 		break;
+	case (UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT:
+		return new CCameraMoveScript;
+		break;
+	case (UINT)SCRIPT_TYPE::RENDERMGRSCRIPT:
+		return new CRenderMgrScript;
+		break;
 	}
 	return nullptr;
 }
 
-const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
+const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 {
 	switch ((SCRIPT_TYPE)_pScript->GetScriptType())
 	{
@@ -87,6 +101,14 @@ const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)
 
 	case SCRIPT_TYPE::TIMEMGRSCRIPT:
 		return L"CTimeMgrScript";
+		break;
+
+	case SCRIPT_TYPE::CAMERAMOVESCRIPT:
+		return L"CCameraMoveScript";
+		break;
+
+	case SCRIPT_TYPE::RENDERMGRSCRIPT:
+		return L"CRenderMgrScript";
 		break;
 
 	}
