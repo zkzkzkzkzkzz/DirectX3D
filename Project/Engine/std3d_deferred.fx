@@ -1,4 +1,4 @@
-﻿#ifndef _STD_DEFERRED
+#ifndef _STD_DEFERRED
 #define _STD_DEFERRED
 
 #include "value.fx"

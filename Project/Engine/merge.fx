@@ -1,13 +1,13 @@
-﻿#ifndef _MERGE
+#ifndef _MERGE
 #define _MERGE
 
 #include "value.fx"
+
 
 // ===============
 // Merge Shader
 // MRT : SwapChain
 // Mesh : RectMesh
-//
 // g_tex_0 : ColorTargetTex
 // g_tex_1 : DiffuseTargetTex
 // g_tex_2 : SpecularTargetTex
@@ -38,8 +38,7 @@ VS_OUT VS_Merge(VS_IN _in)
 float4 PS_Merge(VS_OUT _in) : SV_Target
 {
     float4 vOutColor = (float4) 0.f;
-    
-    // 타겟 텍스쳐에 샘플링, merge
+        
     float4 vColor = g_tex_0.Sample(g_sam_0, _in.vUV);
     float4 vDiffuse = g_tex_1.Sample(g_sam_0, _in.vUV);
     float4 Specular = g_tex_2.Sample(g_sam_0, _in.vUV);

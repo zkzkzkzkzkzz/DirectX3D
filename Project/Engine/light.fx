@@ -1,4 +1,4 @@
-ï»¿#ifndef _LIGHT
+#ifndef _LIGHT
 #define _LIGHT
 
 #include "value.fx"
@@ -9,11 +9,11 @@
 // Directional Light Shader
 // MRT      : LIGHT
 // Mesh     : RectMesh
-// DS_TYPE  : NO_TEST_NO_WRITE
-// BS_TYPE  : ONE_ONE , ì—¬ëŸ¬ê°œì˜ ë¹›ì´ ëˆ„ì ë  ìˆ˜ ìˆê²Œ
+// DS_TYPE  : NO_TEST_NO_WIRTE
+// BS_TYPE  : ONE_ONE , ¿©·¯°³ÀÇ ºûÀÌ ´©ÀûµÉ ¼ö ÀÖ°Ô
 
 // Parameter
-// g_int_0 : Light Index
+// g_int_0 : Light Idex
 // g_tex_0 : PositionTargetTex
 // g_tex_1 : NormalTargetTex
 // ========================
@@ -49,19 +49,19 @@ PS_OUT PS_DirLight(VS_OUT _in)
 {
     PS_OUT output = (PS_OUT) 0.f;
         
-    // PositionTarget ì—ì„œ í˜„ì¬ í˜¸ì¶œëœ í”½ì…€ì‰ì´ë”ë‘ ë™ì¼í•œ ì§€ì ì— ì ‘ê·¼í•´ì„œ ì¢Œí‘œê°’ì„ í™•ì¸
+    // PositionTarget ¿¡¼­ ÇöÀç È£ÃâµÈ ÇÈ¼¿½¦ÀÌ´õ¶û µ¿ÀÏÇÑ ÁöÁ¡¿¡ Á¢±ÙÇØ¼­ ÁÂÇ¥°ªÀ» È®ÀÎ
     float4 vViewPos = g_tex_0.Sample(g_sam_0, _in.vUV);
     
-    // Deferred ë‹¨ê³„ì—ì„œ ê·¸ë ¤ì§„ê²Œ ì—†ë‹¤ë©´ ë¹›ì„ ì¤„ ìˆ˜ ì—†ë‹¤.
+    // Deferred ´Ü°è¿¡¼­ ±×·ÁÁø°Ô ¾ø´Ù¸é ºûÀ» ÁÙ ¼ö ¾ø´Ù.
     if (-1.f == vViewPos.w)
         discard;
     
-    // í•´ë‹¹ ì§€ì ì˜ Normal ê°’ì„ ê°€ì ¸ì˜¨ë‹¤.
+    // ÇØ´ç ÁöÁ¡ÀÇ Normal °ªÀ» °¡Á®¿Â´Ù.
     float3 vViewNormal = normalize(g_tex_1.Sample(g_sam_0, _in.vUV).xyz);
        
-    // í•´ë‹¹ ì§€ì ì´ ë°›ì„ ë¹›ì˜ ì„¸ê¸°ë¥¼ êµ¬í•œë‹¤.
+    // ÇØ´ç ÁöÁ¡ÀÌ ¹ŞÀ» ºûÀÇ ¼¼±â¸¦ ±¸ÇÑ´Ù.
     tLightColor LightColor = (tLightColor) 0.f;
-    CalculateLight3D(g_int_0, vViewPos.xyz, vViewNormal, LightColor);
+    CalLight3D(g_int_0, vViewPos.xyz, vViewNormal, LightColor);
         
     output.vDiffuse = LightColor.vColor + LightColor.vAmbient;
     output.vSpecular = LightColor.vSpecular;
