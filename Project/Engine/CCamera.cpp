@@ -202,18 +202,6 @@ void CCamera::render()
 	// Deferred + 광원 => SwapChain 으로 병합
 	Merge();
 
-
-	// Deferred 정보를 SwapChain 으로 병합
-	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
-
-	// 매쉬와 머터리얼 가져오기
-	static Ptr<CMesh>	   pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
-	static Ptr<CMaterial>  pMergeMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"MergeMtrl");
-
-	pMergeMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex")); // NormalTargetTex || PositionTargetTex || ColorTargetTex
-	pMergeMtrl->UpdateData();
-	pRectMesh->render();
-
 	// Foward 렌더링
 	render(m_vecOpaque);	
 	render(m_vecMasked);
@@ -269,10 +257,9 @@ void CCamera::Merge()
 	// Deferred 정보를 SwapChain 으로 병합
 	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
 
-	Ptr<CMesh>	   pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
-	Ptr<CMaterial> pMergeMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"MergeMtrl");
+	static Ptr<CMesh>	  pRectMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
+	static Ptr<CMaterial> pMergeMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"MergeMtrl");
 
-	pMergeMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
 	pMergeMtrl->UpdateData();
 	pRectMesh->render();
 }

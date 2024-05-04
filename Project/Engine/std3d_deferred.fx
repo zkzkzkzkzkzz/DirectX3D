@@ -77,7 +77,7 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
     
     if (NormalMapCheck)
     {
-        float3 vNormal = NormalMap.Sample(g_sam_0, _in.vUV).grb;
+        float3 vNormal = NormalMap.Sample(g_sam_0, _in.vUV).rgb;
         vNormal = vNormal * 2.f - 1.f;
         
         float3x3 matRot =
