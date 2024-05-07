@@ -328,53 +328,15 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 	return false;
 }
 
-bool ParamUI::Param_FUNC_LERP_FlOAT(float* _Data, const string& _Desc, vector<std::variant<int, float, Vec2, Vec3, Vec4>> _Args)
-{
-	static float result = 0.f;
-	static vector<float> LerpValue;
-	static Vec3 vIdx;
 
+#include <Scripts\CRenderMgrScript.h>
+typedef void (*StaticFuncPtr)();
+bool ParamUI::Param_FUNC_LERP_FlOAT(StaticFuncPtr _Data, const string& _Desc)
+{
 	if (ImGui::Button("Lerp Calculate"))
 	{
-		// _Args 벡터의 각 원소에 접근하여 값 확인
-		for (const auto& arg : _Args)
-		{
-			// 각 원소의 형식에 따라서 값을 가져옴
-			if (std::holds_alternative<float>(arg))
-			{
-				float value = std::get<float>(arg);
-				LerpValue.push_back(value);
-			}
-			else if (std::holds_alternative<int>(arg))
-			{
-				int value = std::get<int>(arg);
-				// Lerp 함수 호출
-				result = RoRMath::Lerp(result, static_cast<float>(value), static_cast<float>(value));
-			}
-			else if (std::holds_alternative<Vec2>(arg))
-			{
-				Vec2 value = std::get<Vec2>(arg);
-				// Lerp 함수 호출
-				result = RoRMath::Lerp(result, value.x, value.y);
-			}
-		}
-
-		result = RoRMath::Lerp(LerpValue[0], LerpValue[1], LerpValue[2]);
-
-		vIdx.x = LerpValue[0];
-		vIdx.y = LerpValue[1];
-		vIdx.z = LerpValue[2];
-	}
-	
-	ImGui::Text("A          "); ImGui::SameLine(); ImGui::InputFloat("##A", &vIdx.x);
-	ImGui::Text("B          "); ImGui::SameLine(); ImGui::InputFloat("##B", &vIdx.y);
-	ImGui::Text("Alpha      "); ImGui::SameLine(); ImGui::InputFloat("##Alpha", &vIdx.z);
-
-	ImGui::Text("Lerp Result"); ImGui::SameLine();
-	if (ImGui::InputFloat("##LerpResult", &result, 0.f, 0.f, "%.1f", ImGuiSliderFlags_Logarithmic | ImGuiSliderFlags_NoInput))
-	{	
+		_Data();
 		return true;
 	}
-
 	return false;
 }

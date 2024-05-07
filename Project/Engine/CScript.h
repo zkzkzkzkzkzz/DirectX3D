@@ -10,20 +10,21 @@
 
 #include <variant>
 
+typedef void (*StaticFuncPtr)();
 struct tScriptParam
 {
     SCRIPT_PARAM    Type;
-    void*           pData;
+    void* pData;
     float           fmin;
     float           fMax;
     bool            View;
     string          Tooltip;
-    FUNC_PARAM      FuncType;
-    vector<std::variant<int, float, Vec2, Vec3, Vec4>> CallbackArgs;
-    
-//public:
-//    tScriptParam(SCRIPT_PARAM type, void* data, float _min, float _max, bool view, const string& tooltip, FUNC_PARAM funcType, const std::vector<std::variant<int, float, Vec2, Vec3, Vec4>>& args)
-//        : Type(type), pData(data), fmin(_min), fMax(_max), View(view), Tooltip(tooltip), CallbackArgs(args) {}
+    //void (*FuncPtr)(void);
+    StaticFuncPtr   StaticFunc;
+
+    //public:
+    //    tScriptParam(SCRIPT_PARAM type, void* data, float _min, float _max, bool view, const string& tooltip, FUNC_PARAM funcType, const std::vector<std::variant<int, float, Vec2, Vec3, Vec4>>& args)
+    //        : Type(type), pData(data), fmin(_min), fMax(_max), View(view), Tooltip(tooltip), CallbackArgs(args) {}
 };
 
 class CScript :
@@ -45,14 +46,10 @@ protected:
         m_umScriptParam[_Key] = tScriptParam{ _Param, _Data, _min, _Max, _View, _Tooltip};
     }
 
-    template<typename FuncType, typename... Args>
-    void TAppendScriptParam(const string& _Key, SCRIPT_PARAM _Param, FUNC_PARAM _FuncParam, FuncType _Func, Args&&... args)
+    void AppendScriptFunction(const string& _Key, SCRIPT_PARAM _Param, string _Desc, StaticFuncPtr _StaticFuncPtr)
     {
-        // 콜백 함수의 인자들을 저장하는 벡터 생성
-        std::vector<std::variant<int, float, Vec2, Vec3, Vec4>> callbackArgs = { std::forward<Args>(args)... };
-
         // 새로운 스크립트 파라미터 생성 후 맵에 추가
-        m_umScriptParam[_Key] = tScriptParam{ _Param, &_Func, 0.f, 0.f, false, {}, _FuncParam, callbackArgs };
+        m_umScriptParam[_Key] = tScriptParam{ _Param, nullptr , 0.f, 0.f, false, _Desc ,_StaticFuncPtr };
     }
 
 public:
