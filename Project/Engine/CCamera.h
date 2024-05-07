@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CComponent.h"
 
 enum class PROJ_TYPE
@@ -63,7 +63,7 @@ public:
 
     UINT GetLayerCheck() { return m_LayerCheck; }
     void SetLayerCheck(UINT _LayerCheck) { m_LayerCheck = _LayerCheck; }
-    void LayerCheckToggle(UINT _LayerIdx) { m_LayerCheck ^ (1 << _LayerIdx); }
+    void LayerCheckToggle(UINT _LayerIdx) { m_LayerCheck ^= (1 << _LayerIdx); }
 
     int GetCameraPriority() { return m_CameraPriority; }
 
@@ -78,6 +78,9 @@ public:
 private:
     void render(vector<CGameObject*>& _vecObj);
     void render_postprocess();
+
+    void Lighting();
+    void Merge();
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void SaveToFile(ofstream& fout) override;

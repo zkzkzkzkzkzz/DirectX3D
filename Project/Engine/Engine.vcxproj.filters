@@ -576,6 +576,9 @@
     <FxCompile Include="std3d_deferred.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>
+    <FxCompile Include="light.fx">
+      <Filter>ShaderCode\02. Render\3DShader</Filter>
+    </FxCompile>
     <FxCompile Include="merge.fx">
       <Filter>ShaderCode\02. Render\3DShader</Filter>
     </FxCompile>

@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CRenderMgr.h"
 
 #include "CDevice.h"
@@ -56,6 +56,7 @@ void CRenderMgr::ClearMRT()
 {
 	m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->Clear();
 	m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->ClearRT();
+	m_arrMRT[(UINT)MRT_TYPE::LIGHT]->ClearRT();
 }
 
 void CRenderMgr::render_play()

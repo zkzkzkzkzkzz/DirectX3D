@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "function.h"
 
 #include "PathMgr.h"
@@ -98,7 +98,7 @@ void MakeScriptMgrCPP()
 	fout.open(Path, ofstream::out | ofstream::trunc);
 	if (!fout.is_open()) return;
 
-	// Çì´õ ÀÔ·Â
+	// í—¤ë” ì…ë ¥
 	fout << L"#include \"pch.h\"" << endl;
 	fout << L"#include \"CScriptMgr.h\"" << endl << endl;
 
@@ -107,7 +107,7 @@ void MakeScriptMgrCPP()
 		fout << L"#include \"" << g_vecScriptNames[i] << L".h\"" << endl;
 	}
 
-	// Ã¹ ¹øÂ° ÇÔ¼ö ÀÛ¼º
+	// ì²« ë²ˆì§¸ í•¨ìˆ˜ ì‘ì„±
 	fout << L"\nvoid CScriptMgr::GetScriptInfo(vector<wstring>& _vec)" << endl << "{" << endl;
 
 	for (UINT i = 0; i < g_vecScriptNames.size(); ++i)
@@ -116,7 +116,7 @@ void MakeScriptMgrCPP()
 	}
 	fout << L"}" << endl << endl;
 
-	// µÎ¹øÂ° ÇÔ¼ö ÀÛ¼º
+	// ë‘ë²ˆì§¸ í•¨ìˆ˜ ì‘ì„±
 	fout << L"CScript * CScriptMgr::GetScript(const wstring& _strScriptName)" << endl << "{" << endl;
 
 	for (UINT i = 0; i < g_vecScriptNames.size(); ++i)
@@ -126,7 +126,7 @@ void MakeScriptMgrCPP()
 	}
 	fout << L"\treturn nullptr;" << endl << "}" << endl << endl;
 
-	// ¼¼¹øÂ° ÇÔ¼ö
+	// ì„¸ë²ˆì§¸ í•¨ìˆ˜
 	fout << L"CScript * CScriptMgr::GetScript(UINT _iScriptType)" << endl << "{" << endl;
 
 	fout << L"\tswitch (_iScriptType)" << endl << "\t{" << endl;
@@ -143,7 +143,7 @@ void MakeScriptMgrCPP()
 	}
 	fout << L"\t}\n\treturn nullptr;" << endl << "}" << endl << endl;
 
-	// ³×¹øÂ° ÇÔ¼ö
+	// ë„¤ë²ˆì§¸ í•¨ìˆ˜
 	fout << L"const wchar_t * CScriptMgr::GetScriptName(CScript * _pScript)" << endl << "{" << endl;
 	fout << L"\tswitch ((SCRIPT_TYPE)_pScript->GetScriptType())" << endl << "\t{" << endl;
 	for (UINT i = 0; i < g_vecScriptNames.size(); ++i)
@@ -219,7 +219,7 @@ void SortExtention(const string& path, const string& extention)
 		g_vecTxtNames.push_back(path);
 	}
 	else {
-		MessageBox(nullptr, wstring(extention.begin(), extention.end()).c_str(), L"¾ø´Â ÀÚ·áÇü", 0);
+		MessageBox(nullptr, wstring(extention.begin(), extention.end()).c_str(), L"ì—†ëŠ” ìë£Œí˜•", 0);
 	}
 
 	return;
@@ -230,14 +230,11 @@ void MakeStrHeader(const string& path, const string& symbol, const vector<string
 	wstring solPath = CPathMgr::GetSolutionPath();
 	string Path = string(solPath.begin(), solPath.end()) + path;
 
-	cout << Path << endl;
 	fstream fout;
 
-
-	cout << "is open ?";
 	fout.open(Path, ofstream::out | ofstream::trunc);
 	if (!fout.is_open()) return;
-	cout << " is open " << endl;
+
 	fout << "#pragma once" << endl << endl;
 	for (int i = 0; i < vec.size(); i++) {
 		std::string path = vec[i];

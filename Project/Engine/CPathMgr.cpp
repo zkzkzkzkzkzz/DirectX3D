@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "CPathMgr.h"
 
 wchar_t CPathMgr::g_szContent[255] = {};
