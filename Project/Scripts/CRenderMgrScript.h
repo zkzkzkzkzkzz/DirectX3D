@@ -1,10 +1,13 @@
 #pragma once
 #include <Engine/CScript.h>
 
+typedef float(*LerpFloatFuncPtr)(float, float, float);
+
 class CRenderMgrScript :
     public CScript
 {
 private:
+
 
 public:
 	virtual void begin() override;

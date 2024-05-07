@@ -41,24 +41,33 @@ void ScriptUI::render_update()
 			ParamUI::Param_BOOL((bool*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::INT:
-			ParamUI::Param_INT((int*)iter->second.pData, iter->first, (int)iter->second.min, (int)iter->second.Max, iter->second.View, iter->second.Tooltip);
+			ParamUI::Param_INT((int*)iter->second.pData, iter->first, (int)iter->second.fmin, (int)iter->second.fMax, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::FLOAT:
-			ParamUI::Param_FLOAT((float*)iter->second.pData, iter->first, iter->second.min, iter->second.Max, iter->second.View, iter->second.Tooltip);
+			ParamUI::Param_FLOAT((float*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::VEC2:
-			ParamUI::Param_VEC2((Vec2*)iter->second.pData, iter->first, iter->second.min, iter->second.Max, iter->second.View, iter->second.Tooltip);
+			ParamUI::Param_VEC2((Vec2*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::VEC3:
-			ParamUI::Param_VEC3((Vec3*)iter->second.pData, iter->first, iter->second.min, iter->second.Max, iter->second.View, iter->second.Tooltip);
+			ParamUI::Param_VEC3((Vec3*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::VEC4:
-			ParamUI::Param_VEC4((Vec4*)iter->second.pData, iter->first, iter->second.min, iter->second.Max, iter->second.View, iter->second.Tooltip);
+			ParamUI::Param_VEC4((Vec4*)iter->second.pData, iter->first, iter->second.fmin, iter->second.fMax, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::OBJECT:
 			break;
 		case SCRIPT_PARAM::COLOR:
 			ParamUI::Param_COLOR((Vec4*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
+			break;
+		case SCRIPT_PARAM::FUNC_LERP:
+			FUNC_PARAM funcType = iter->second.FuncType;
+
+			if (FUNC_PARAM::FLOAT == funcType)
+			{
+				ParamUI::Param_FUNC_LERP_FlOAT((float*)iter->second.pData, iter->first, iter->second.CallbackArgs);
+			}
+
 			break;
 		}
 	}

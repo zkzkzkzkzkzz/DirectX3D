@@ -5,9 +5,12 @@
 
 #define RENDERMGR CRenderMgr::GetInst()
 
+LerpFloatFuncPtr lerpFloatFunc = RoRMath::Lerp;
+
 CRenderMgrScript::CRenderMgrScript()
 	: CScript((UINT)SCRIPT_TYPE::RENDERMGRSCRIPT)
 {
+	TAppendScriptParam("LerpFloat", SCRIPT_PARAM::FUNC_LERP, FUNC_PARAM::FLOAT, &lerpFloatFunc, 1.0f, 2.0f, 0.5f);
 }
 
 CRenderMgrScript::~CRenderMgrScript()
