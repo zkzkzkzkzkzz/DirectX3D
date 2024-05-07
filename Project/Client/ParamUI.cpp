@@ -330,10 +330,9 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 
 
 #include <Scripts\CRenderMgrScript.h>
-typedef void (*StaticFuncPtr)();
-bool ParamUI::Param_FUNC_LERP_FlOAT(StaticFuncPtr _Data, const string& _Desc)
+bool ParamUI::Param_FUNC_STATIC(StaticFuncPtr _Data, const string& _Desc)
 {
-	if (ImGui::Button("Lerp Calculate"))
+	if (ImGui::Button(_Desc.c_str()))
 	{
 		_Data();
 		return true;

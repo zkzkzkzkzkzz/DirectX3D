@@ -61,7 +61,7 @@ void ScriptUI::render_update()
 			ParamUI::Param_COLOR((Vec4*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
 			break;
 		case SCRIPT_PARAM::FUNC_STATIC:
-			ParamUI::Param_FUNC_LERP_FlOAT(iter->second.StaticFunc, iter->first);
+			ParamUI::Param_FUNC_STATIC(iter->second.StaticFunc, iter->first);
 			break;
 		}
 	}
