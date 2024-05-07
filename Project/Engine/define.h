@@ -225,8 +225,7 @@ enum class SCRIPT_PARAM
 	VEC4,
 	OBJECT,
 	COLOR,
-	FUNC_LERP,
-	FUNC_CLAMP,
+	FUNC_STATIC,
 };
 
 enum class FUNC_PARAM

@@ -60,7 +60,7 @@ void ScriptUI::render_update()
 		case SCRIPT_PARAM::COLOR:
 			ParamUI::Param_COLOR((Vec4*)iter->second.pData, iter->first, iter->second.View, iter->second.Tooltip);
 			break;
-		case SCRIPT_PARAM::FUNC_LERP:
+		case SCRIPT_PARAM::FUNC_STATIC:
 			FUNC_PARAM funcType = iter->second.FuncType;
 
 			if (FUNC_PARAM::FLOAT == funcType)
