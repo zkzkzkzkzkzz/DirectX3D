@@ -17,7 +17,8 @@ class CRenderMgrScript :
 private:
 
 public:
-	static TestPram m_TestParam;
+	static TestPram TestParam;
+	TestPram m_TestParam;
 	virtual void begin() override;
 	virtual void tick() override;
 
@@ -25,6 +26,11 @@ public:
 	virtual void LoadFromFile(FILE* _File) override;
 
 	static void LerpTest()
+	{
+		TestParam.result = RoRMath::Lerp(TestParam.T1, TestParam.T2, TestParam.T3);
+	}
+
+	void m_LerpTest()
 	{
 		m_TestParam.result = RoRMath::Lerp(m_TestParam.T1, m_TestParam.T2, m_TestParam.T3);
 	}

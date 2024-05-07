@@ -226,6 +226,7 @@ enum class SCRIPT_PARAM
 	OBJECT,
 	COLOR,
 	FUNC_STATIC,
+	FUNC_MEMBER,
 };
 
 enum class FUNC_PARAM

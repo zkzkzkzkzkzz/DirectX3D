@@ -329,12 +329,21 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 }
 
 
-#include <Scripts\CRenderMgrScript.h>
-bool ParamUI::Param_FUNC_STATIC(StaticFuncPtr _Data, const string& _Desc)
+bool ParamUI::Param_FUNC_STATIC(StaticFuncPtr _Func, const string& _Desc)
 {
 	if (ImGui::Button(_Desc.c_str()))
 	{
-		_Data();
+		_Func();
+		return true;
+	}
+	return false;
+}
+
+bool ParamUI::Param_FUNC_MEMBER(std::function<void()> _Func, const string& _Desc)
+{
+	if (ImGui::Button(_Desc.c_str()))
+	{
+		_Func();
 		return true;
 	}
 	return false;

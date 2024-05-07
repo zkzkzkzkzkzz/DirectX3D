@@ -63,6 +63,9 @@ void ScriptUI::render_update()
 		case SCRIPT_PARAM::FUNC_STATIC:
 			ParamUI::Param_FUNC_STATIC(iter->second.StaticFunc, iter->first);
 			break;
+		case SCRIPT_PARAM::FUNC_MEMBER:
+			ParamUI::Param_FUNC_MEMBER(iter->second.MemberFunc, iter->first);
+			break;
 		}
 	}
 }
